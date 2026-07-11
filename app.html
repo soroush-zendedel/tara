@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tara | Interactive Music Theory Lab</title>
+    
+    <meta name="description" content="Tara - GuitarLab. A professional interactive laboratory for music theory, visualizing scales, chords, and fretboard patterns across multiple instruments.">
+    <meta name="keywords" content="Tara, GuitarLab, Guitar Scale Visualizer, Music Theory Lab, Fretboard Diagram Generator, Chord Charts, Tara - GuitarLab, Interactive Music Tools, Guitar Education">
+    <meta name="author" content="Tara - GuitarLab">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://soroush-zendedel.github.io/tara/">
+    <meta property="og:title" content="Tara - GuitarLab">
+    <meta property="og:description" content="Tara - GuitarLab. A professional interactive laboratory for music theory, visualizing scales, chords, and fretboard patterns across multiple instruments.">
+    <meta property="og:image" content="https://soroush-zendedel.github.io/tara/img/preview.jpg">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://soroush-zendedel.github.io/tara/">
+    <meta property="twitter:title" content="Tara - GuitarLab">
+    <meta property="twitter:description" content="Tara - GuitarLab. A professional interactive laboratory for music theory, visualizing scales, chords, and fretboard patterns across multiple instruments.">
+    <meta property="twitter:image" content="https://soroush-zendedel.github.io/tara/img/preview.jpg">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Tara",
+      "alternateName": "GuitarLab",
+      "url": "https://soroush-zendedel.github.io/tara/",
+      "description": "An advanced interactive laboratory for visualizing music theory, scales, chords, and instrument patterns.",
+      "applicationCategory": "EducationalApplication, MusicApplication",
+      "operatingSystem": "All",
+      "author": {
+        "@type": "Organization",
+        "name": "Tara",
+        "url": "https://soroush-zendedel.github.io/tara/"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <style>
+        :root {
+            /* Palette */
+            --bg-body: #f0f2f5; 
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --text-main: #2d3436; 
+            --text-sec: #636e72;
+            --accent: #FDB827;
+            --card-bg: #ffffff;
+            --btn-bg: #2d3436; 
+            --btn-text: #ffffff;
+            --border-color: #dfe6e9;
+            --shadow: 0 10px 20px rgba(0,0,0,0.08);
+            
+            --tuner-bg: #f1f2f6; 
+            --tuner-needle: #ff7675; 
+            --tuner-ok: #00b894;
+            
+            --chart-header: #f1f2f6;
+            --chart-row-even: #ffffff;
+            --chart-row-odd: #fafafa;
+            --chart-hover: #fff3cd;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #121212; 
+            --bg-gradient: linear-gradient(135deg, #1e1e1e 0%, #121212 100%);
+            --text-main: #dfe6e9; 
+            --text-sec: #b2bec3;
+            --accent: #D4AF37;
+            --card-bg: #2d3436;
+            --btn-bg: #D4AF37; 
+            --btn-text: #1e1e1e;
+            --border-color: #444;
+            --shadow: 0 10px 20px rgba(0,0,0,0.4);
+            
+            --tuner-bg: #222; 
+            --tuner-needle: #ff7675; 
+            --tuner-ok: #00b894;
+
+            --chart-header: #353b48;
+            --chart-row-even: #2d3436;
+            --chart-row-odd: #252a2c;
+            --chart-hover: #443c20;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--bg-gradient); color: var(--text-main);
+            display: flex; flex-direction: column; align-items: center;
+            padding: 20px; margin: 0; min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+        
+        .brand-header { text-align: center; margin-bottom: 15px; }
+        .brand-link { 
+            font-size: 2.5rem; font-weight: 800; text-decoration: none; 
+            color: var(--text-main); letter-spacing: -1px; 
+            background: linear-gradient(45deg, var(--text-main), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .main-title { margin: 5px 0; font-size: 1.5rem; color: var(--text-main); font-weight: 700; text-align: center; }
+        .instruction { margin: 5px 0 20px 0; font-size: 0.9rem; color: var(--accent); font-weight: 600; text-align: center; }
+        
+        .controls-wrapper { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 900px; margin-bottom: 25px; align-items: center; }
+
+        .main-controls { 
+            background: var(--card-bg); padding: 12px 20px; border-radius: 50px; 
+            box-shadow: var(--shadow); border: 1px solid var(--border-color);
+            display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; width: auto;
+        }
+        .main-controls select { flex: 0 0 auto; width: auto; padding: 10px 15px; font-size: 15px; border: 1px solid var(--border-color); border-radius: 20px; cursor: pointer; background: var(--bg-body); color: var(--text-main); outline: none; font-weight: 600; }
+
+        .tools-bar { background: var(--card-bg); padding: 10px 20px; border-radius: 16px; box-shadow: var(--shadow); border: 1px solid var(--border-color); display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; align-items: center; }
+
+        .fretboard-toolbar { display: flex; gap: 15px; width: 100%; justify-content: center; align-items: center; flex-wrap: wrap; margin-bottom: 10px; padding: 10px; background: var(--card-bg); border-radius: 16px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
+        .position-group { display: flex; gap: 5px; flex-wrap: nowrap; overflow-x: auto; align-items: center; scrollbar-width: none; }
+        
+        .toggle-wrapper { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; padding-left: 15px; border-left: 1px solid var(--border-color); }
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--accent); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        button { padding: 10px 18px; font-size: 14px; border: none; border-radius: 50px; cursor: pointer; transition: all 0.2s; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        .pos-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); min-width: 60px; padding: 8px 12px; font-size: 13px; justify-content: center; }
+        .pos-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        button.primary { background-color: var(--btn-bg); color: var(--btn-text); }
+        button.primary:hover { transform: translateY(-2px); opacity: 0.9; }
+        .theme-toggle { background: transparent; color: var(--text-main); padding: 8px; width: 40px; height: 40px; justify-content: center; border: 1px solid var(--border-color); border-radius: 50%; }
+
+        .metro-group { display: flex; align-items: center; gap: 10px; }
+        .metro-light { width: 14px; height: 14px; border-radius: 50%; background-color: #b2bec3; }
+        .metro-light.flash { background-color: #ff7675; box-shadow: 0 0 12px #ff7675; transform: scale(1.3); }
+        #bpmInput { width: 70px; padding: 8px 5px; text-align: center; font-size: 16px; font-weight: bold; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-main); }
+
+        .canvas-container { display: flex; flex-direction: column; gap: 25px; width: 100%; max-width: 1400px; align-items: center; }
+        .top-row { display: flex; gap: 25px; width: 100%; flex-wrap: wrap; }
+        .canvas-wrapper { background: var(--card-bg); padding: 15px; border-radius: 20px; box-shadow: var(--shadow); text-align: center; width: 100%; overflow: hidden; position: relative; border: 1px solid var(--border-color); }
+        .canvas-wrapper h3 { margin: 0 0 15px 0; font-size: 1.1rem; color: var(--text-main); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        canvas { width: 100% !important; height: auto !important; max-width: 100%; touch-action: none; border-radius: 10px; }
+        .col-circle { flex: 1 1 350px; } .col-theory { flex: 2 1 600px; }
+        #tooltip { position: fixed; display: none; background: rgba(45, 52, 54, 0.95); color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px; pointer-events: none; z-index: 9999; transform: translate(15px, 15px); backdrop-filter: blur(4px); }
+        #tunerModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .tuner-box { background: var(--card-bg); padding: 30px; border-radius: 30px; width: 90%; max-width: 400px; text-align: center; position: relative; }
+        .tuner-gauge { width: 100%; max-width: 280px; height: 140px; margin: 0 auto; border-top-left-radius: 140px; border-top-right-radius: 140px; background: var(--tuner-bg); position: relative; overflow: hidden; }
+        .tuner-needle { width: 4px; height: 130px; background: var(--text-main); position: absolute; bottom: 0; left: 50%; transform-origin: bottom center; transition: transform 0.1s ease-out; }
+        .close-tuner { position: absolute; top: 20px; right: 25px; font-size: 28px; cursor: pointer; color: var(--text-sec); }
+        .site-footer { margin-top: 40px; width: 100%; text-align: center; padding: 25px; color: var(--text-sec); font-size: 0.9rem; }
+        @media (min-width: 1000px) { .canvas-container { flex-direction: row; flex-wrap: wrap; align-items: stretch; } .canvas-wrapper { width: 100%; } .col-circle, .col-theory { height: auto; } }
+    </style>
+</head>
+<body data-theme="light">
+
+    <div id="tooltip"></div>
+
+    <div id="tunerModal">
+        <div class="tuner-box">
+            <span class="close-tuner" onclick="toggleTuner()">&times;</span>
+            <h2 style="color: var(--text-main); margin-bottom:20px;">Guitar Tuner</h2>
+            <div class="tuner-gauge">
+                <div style="position:absolute; bottom:0; left:50%; width:2px; height:20px; background:var(--tuner-ok); transform:translateX(-1px);"></div>
+                <div id="tunerNeedle" class="tuner-needle"></div>
+            </div>
+            <div id="tunerNote" style="font-size:70px; font-weight:800; color:var(--text-main); margin:10px 0;">--</div>
+            <div id="tunerStatus" style="font-size:18px; font-weight:bold; height:25px;"></div>
+            <div id="tunerFreq" style="font-size:16px; color:var(--text-sec); font-family:monospace;">0.0 Hz</div>
+        </div>
+    </div>
+
+    <div class="brand-header" style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+        <a href="https://soroush-zendedel.github.io/tara/" target="_blank" class="brand-link">Tara - GuitarLab</a>
+    </div>
+
+    <h1 class="main-title" style="line-height: 1.1; margin-top: 5px; margin-bottom: 10px;">
+        <!-- <span style="color: var(--accent);">Tara</span> - GuitarLab -->
+        <span style="display: block; font-size: 0.45em; font-weight: 400; color: var(--text-sec); letter-spacing: 3px; margin-top: 8px; text-transform: uppercase;">
+            Interactive Music Theory Lab
+        </span>
+        <!-- <a href="https://youtube.com/@tara" target="_blank" style="
+            text-decoration: none;
+            color: var(--text-sec);
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 5px;
+            padding: 6px 14px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, border-color 0.2s;"
+            onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--accent)';"
+            onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border-color)';">
+            <i class="fab fa-youtube" style="color: #ff0000; font-size: 1rem;"></i> Watch Tutorials
+        </a> -->
+    </h1>
+
+    <p class="instruction" style="color: var(--text-sec); font-weight: 500;">
+        Click any <span style="color: var(--accent);">Note</span> or <span style="color: var(--accent);">Chord</span> to hear it • Tap Chord rows to cycle Voicings
+    </p>
+
+    <div class="controls-wrapper">
+        <div class="main-controls">
+            <select id="rootSelect"></select>
+            <select id="scaleSelect"></select>
+            <button class="primary" onclick="generateVisuals()"><i class="fas fa-sync"></i> Refresh</button>
+            <button onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
+            <button class="theme-toggle" onclick="toggleTheme()"><i id="themeIcon" class="fas fa-moon"></i></button>
+        </div>
+
+        <div class="tools-bar">
+            <button onclick="toggleTuner()" style="background:var(--bg-body); color:var(--text-main); width:100px; justify-content:center;"><i class="fas fa-microphone"></i> Tuner</button>
+            <div class="metro-group">
+                <div id="metroLight" class="metro-light"></div>
+                <input type="number" id="bpmInput" value="100" min="40" max="240" onchange="updateBPM()">
+                <span style="font-size:13px; font-weight:600; color:var(--text-sec);">BPM</span>
+                <button id="metroBtn" onclick="toggleMetronome()" class="primary" style="min-width:80px; justify-content:center;">Start</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="canvas-container">
+        <div class="top-row">
+            <div class="canvas-wrapper col-circle">
+                <h3>Circle of Fifths</h3>
+                <canvas id="circleCanvas" width="450" height="550" style="cursor: pointer;"></canvas>
+            </div>
+            <div class="canvas-wrapper col-theory">
+                <h3>Theory & Chords</h3>
+                <canvas id="theoryCanvas" width="1100" height="1100"></canvas>
+            </div>
+        </div>
+
+        <div class="canvas-wrapper">
+            <h3>Notation & Tab</h3>
+            <canvas id="notationCanvas" width="1400" height="400"></canvas>
+        </div>
+
+        <div class="canvas-wrapper">
+            <div class="fretboard-toolbar">
+                <div class="position-group">
+                    <button class="pos-btn active" onclick="setPos('all')">All</button>
+                    <button class="pos-btn" onclick="setPos(1)">Pos 1</button>
+                    <button class="pos-btn" onclick="setPos(2)">Pos 2</button>
+                    <button class="pos-btn" onclick="setPos(3)">Pos 3</button>
+                    <button class="pos-btn" onclick="setPos(4)">Pos 4</button>
+                    <button class="pos-btn" onclick="setPos(5)">Pos 5</button>
+                </div>
+                <div class="toggle-wrapper">
+                    <span>Octaves</span>
+                    <label class="switch">
+                        <input type="checkbox" id="octaveSwitch" onchange="toggleOctaves()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <canvas id="fretboardCanvas" width="1400" height="320"></canvas>
+        </div>
+
+        <div class="canvas-wrapper">
+            <h3>Piano Reference</h3>
+            <canvas id="pianoCanvas" width="1400" height="200"></canvas>
+        </div>
+    </div>
+    <a href="https://soroush-zendedel.github.io/tara/" target="_blank" style="text-decoration:none; color:var(--text-sec); font-size:0.9rem; margin-top:15px;">Visit GitHub Page</a>
+    <div class="site-footer">© 2026 Soroush Zendedel</div>
+
+    <script>
+        // 1. DATA
+        const CHROMATIC_SHARP = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        const CHROMATIC_FLAT  = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+        const FLAT_ROOT_INDICES = [5, 10, 3, 8, 1, 6]; 
+
+        const PALETTE = {
+            light: { bg: '#ffffff', text: '#2d3436', textSec: '#636e72', string: '#b2bec3', fret: '#dfe6e9', nut: '#2d3436', circleBgMaj: '#ffffff', circleBgMin: '#f5f6fa', noteRoot: '#FDB827', noteOther: '#2d3436', noteText: '#ffffff', chordBg: '#ffffff', progBg: '#f1f2f6', accent: '#FDB827', pianoWhite: '#ffffff', pianoBlack: '#2d3436', pianoBorder: '#b2bec3', tabNum: '#2d3436', tabCircle: '#ffffff', chartHeader: '#f1f2f6', chartRowEven: '#ffffff', chartRowOdd: '#fafafa', chartHover: '#fff7e0' },
+            dark: { bg: '#2d3436', text: '#dfe6e9', textSec: '#b2bec3', string: '#636e72', fret: '#636e72', nut: '#dfe6e9', circleBgMaj: '#2d3436', circleBgMin: '#1e272e', noteRoot: '#D4AF37', noteOther: '#dfe6e9', noteText: '#2d3436', chordBg: '#2d3436', progBg: '#1e272e', accent: '#D4AF37', pianoWhite: '#b2bec3', pianoBlack: '#1e1e1e', pianoBorder: '#636e72', tabNum: '#ffffff', tabCircle: '#2d3436', chartHeader: '#353b48', chartRowEven: '#2d3436', chartRowOdd: '#252a2c', chartHover: '#443c20' }
+        };
+
+        const OCTAVE_COLORS = { 2: '#3498db', 3: '#00b894', 4: '#e67e22', 5: '#e17055', 6: '#9b59b6' };
+        const VALID_SCALES = { 'Major': [0,2,4,5,7,9,11], 'Minor': [0,2,3,5,7,8,10], 'Harmonic Minor': [0,2,3,5,7,8,11], 'Melodic Minor': [0,2,3,5,7,9,11], 'Pentatonic Major': [0,2,4,7,9], 'Pentatonic Minor': [0,3,5,7,10], 'Blues': [0,3,5,6,7,10], 'Dorian': [0,2,3,5,7,9,10], 'Phrygian': [0,1,3,5,7,8,10], 'Lydian': [0,2,4,6,7,9,11], 'Mixolydian': [0,2,4,5,7,9,10], 'Locrian': [0,1,3,5,6,8,10] };
+        const ROMAN_NUMERALS = ["I", "II", "III", "IV", "V", "VI", "VII"];
+        const OPEN_STRING_MIDI = [40, 45, 50, 55, 59, 64]; 
+        const OPEN_STRINGS_NAMES = ['E', 'A', 'D', 'G', 'B', 'E'];
+        
+        // s: Index in OPEN_STRING_MIDI (0=Low E, 5=High E)
+        const STANDARD_CHORDS_INDICES = {
+            '0_':   [{s:1,f:3},{s:2,f:2},{s:3,f:0},{s:4,f:1},{s:5,f:0}], '9_':   [{s:1,f:0},{s:2,f:2},{s:3,f:2},{s:4,f:2},{s:5,f:0}], '7_':   [{s:0,f:3},{s:1,f:2},{s:2,f:0},{s:3,f:0},{s:4,f:0},{s:5,f:3}], '4_':   [{s:0,f:0},{s:1,f:2},{s:2,f:2},{s:3,f:1},{s:4,f:0},{s:5,f:0}], '2_':   [{s:2,f:0},{s:3,f:2},{s:4,f:3},{s:5,f:2}], '5_':   [{s:2,f:3},{s:3,f:2},{s:4,f:1},{s:5,f:1}], 
+            '0_m':  [{s:1,f:3},{s:2,f:5},{s:3,f:5},{s:4,f:4},{s:5,f:3}], '9_m':  [{s:1,f:0},{s:2,f:2},{s:3,f:2},{s:4,f:1},{s:5,f:0}], '7_m':  [{s:0,f:3},{s:1,f:5},{s:2,f:5},{s:3,f:3},{s:4,f:3},{s:5,f:3}], '4_m':  [{s:0,f:0},{s:1,f:2},{s:2,f:2},{s:3,f:0},{s:4,f:0},{s:5,f:0}], '2_m':  [{s:2,f:0},{s:3,f:2},{s:4,f:3},{s:5,f:1}], '11_m': [{s:1,f:2},{s:2,f:4},{s:3,f:4},{s:4,f:3},{s:5,f:2}], '5_m':  [{s:0,f:1},{s:1,f:3},{s:2,f:3},{s:3,f:1},{s:4,f:1},{s:5,f:1}], '6_m':  [{s:0,f:2},{s:1,f:4},{s:2,f:4},{s:3,f:2},{s:4,f:2},{s:5,f:2}]  
+        };
+
+        const CIRCLE_DATA = [ 
+            { majIdx: 0, minIdx: 9, labelMaj: 'C', labelMin: 'A', text: 'Natural', accCount: 0, accType: '' }, 
+            { majIdx: 7, minIdx: 4, labelMaj: 'G', labelMin: 'E', text: '1 Sharp', accCount: 1, accType: '#' }, 
+            { majIdx: 2, minIdx: 11, labelMaj: 'D', labelMin: 'B', text: '2 Sharps', accCount: 2, accType: '#' }, 
+            { majIdx: 9, minIdx: 6, labelMaj: 'A', labelMin: 'F#', text: '3 Sharps', accCount: 3, accType: '#' }, 
+            { majIdx: 4, minIdx: 1, labelMaj: 'E', labelMin: 'C#', text: '4 Sharps', accCount: 4, accType: '#' }, 
+            { majIdx: 11, minIdx: 8, labelMaj: 'B', labelMin: 'G#', text: '5 Sharps', accCount: 5, accType: '#' }, 
+            { majIdx: 6, minIdx: 3, labelMaj: 'F#', labelMin: 'D#', text: '6 Sharps', accCount: 6, accType: '#' }, 
+            { majIdx: 1, minIdx: 10, labelMaj: 'Db', labelMin: 'Bb', text: '5 Flats', accCount: 5, accType: 'b' }, 
+            { majIdx: 8, minIdx: 5, labelMaj: 'Ab', labelMin: 'F', text: '4 Flats', accCount: 4, accType: 'b' }, 
+            { majIdx: 3, minIdx: 0, labelMaj: 'Eb', labelMin: 'C', text: '3 Flats', accCount: 3, accType: 'b' }, 
+            { majIdx: 10, minIdx: 7, labelMaj: 'Bb', labelMin: 'G', text: '2 Flats', accCount: 2, accType: 'b' }, 
+            { majIdx: 5, minIdx: 2, labelMaj: 'F', labelMin: 'D', text: '1 Flat', accCount: 1, accType: 'b' } 
+        ];
+
+        const PROGRESSIONS = { 'Major': [{ name: "Pop/Rock", degrees: [0,4,5,3] }, { name: "Jazz II-V-I", degrees: [1,4,0] }, { name: "50s", degrees: [0,5,3,4] }, { name: "Blues", degrees: [0,3,0,4,3,0] }], 'Minor': [{ name: "Ballad", degrees: [0,5,2,6] }, { name: "Jazz Minor", degrees: [1,4,0] }, { name: "Andalusian", degrees: [0,6,5,4] }, { name: "Sad Pop", degrees: [0,5,3,6] }], 'Other': [{ name: "1-4-5", degrees: [0,3,4] }] };
+        const SHARP_POS = [0, 15, -5, 10, 25, 5, 20]; const FLAT_POS = [20, 5, 25, 10, 30, 15, 35];
+
+        let COLORS = { ...PALETTE.light };
+        let isDark = false; 
+        let CURRENT_CHROMATIC = CHROMATIC_SHARP;
+
+        var fbCanvas, thCanvas, circleCanvas, pianoCanvas, notationCanvas, tooltip;
+        var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        var fbHitboxes=[], theoryHitboxes=[], circleHitboxes=[], pianoHitboxes=[], notationHitboxes=[];
+        var fbHovered=null, theoryHovered=null, pianoHovered=null, notationHovered=null, circleHovered=null;
+        var activeGuitarMidi = new Set();
+        
+        var selectedRootIndex = 9; var selectedScaleName = 'Minor'; var useFlatNotation = false;
+        var currentChordIndex = -1, currentVoicingIndex = 0;
+        var currentVoicingNotes = [], currentNotationNotes = [];
+        var currentNotationType = 'scale';
+        var currentPos = 'all', showOctaves = false;
+        var calculatedPositions = [];
+        var isMetroPlaying = false, bpm = 100, nextNoteTime = 0.0, timerID = null;
+        var isTunerActive = false, tunerStream = null, analyser = null, tunerRafId = null;
+
+        // --- CORE FUNCTIONS (GLOBAL SCOPE) ---
+        function toggleTheme() {
+            isDark = !isDark;
+            const body = document.body;
+            const icon = document.getElementById('themeIcon');
+            if (isDark) { body.setAttribute('data-theme', 'dark'); icon.classList.replace('fa-moon', 'fa-sun'); COLORS = { ...PALETTE.dark }; } 
+            else { body.setAttribute('data-theme', 'light'); icon.classList.replace('fa-sun', 'fa-moon'); COLORS = { ...PALETTE.light }; }
+            generateVisuals();
+        }
+
+        function toggleOctaves() {
+            const checkbox = document.getElementById('octaveSwitch');
+            showOctaves = checkbox.checked;
+            generateVisuals();
+        }
+
+        function getNoteName(idx) { return useFlatNotation ? CHROMATIC_FLAT[idx % 12] : CHROMATIC_SHARP[idx % 12]; }
+        function midiToFreq(midi) { return 440 * Math.pow(2, (midi - 69) / 12); }
+        function getOctaveFromFreq(freq) { return Math.floor(69 + 12 * Math.log2(freq / 440)) / 12 - 1; }
+        
+        function getFrequency(noteIndex, baseOctave=3) { 
+            let octave = baseOctave; if (noteIndex < selectedRootIndex) octave += 1; 
+            return midiToFreq((octave + 1) * 12 + noteIndex); 
+        }
+
+        function playGuitarNote(frequency, startTime=0, duration=1.2) { 
+            if (audioCtx.state === 'suspended') audioCtx.resume(); 
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); const filter = audioCtx.createBiquadFilter(); 
+            osc.type = 'triangle'; osc.frequency.setValueAtTime(frequency, audioCtx.currentTime + startTime); 
+            filter.type = 'lowpass'; filter.frequency.setValueAtTime(2000, audioCtx.currentTime + startTime); 
+            gain.gain.setValueAtTime(0, audioCtx.currentTime + startTime); 
+            gain.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime + startTime + 0.01); 
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + startTime + duration); 
+            osc.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination); 
+            osc.start(audioCtx.currentTime + startTime); osc.stop(audioCtx.currentTime + startTime + duration); 
+        }
+        function playVoicing(voicing) { if (audioCtx.state === 'suspended') audioCtx.resume(); voicing.forEach((n, i) => { playGuitarNote(n.freq, i * 0.03, 1.5); }); }
+        function playProgression(sequence) { if (audioCtx.state === 'suspended') audioCtx.resume(); const chordDuration = 60 / bpm * 2; sequence.forEach((chordData, i) => { chordData.notes.forEach((n, ni) => playGuitarNote(n.freq, (i * chordDuration) + (ni * 0.04))); }); }
+        
+        function nextNote() { nextNoteTime += 60.0 / bpm; }
+        function scheduleVisual(time) { setTimeout(() => { const light = document.getElementById('metroLight'); if(light){ light.classList.add('flash'); setTimeout(()=>light.classList.remove('flash'), 100); } }, Math.max(0, (time - audioCtx.currentTime) * 1000)); }
+        function playClick(time) { const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.value = 1200; gain.gain.setValueAtTime(0, time); gain.gain.linearRampToValueAtTime(1, time + 0.001); gain.gain.exponentialRampToValueAtTime(0.001, time + 0.05); osc.start(time); osc.stop(time + 0.05); }
+        function scheduler() { while (nextNoteTime < audioCtx.currentTime + 0.1) { playClick(nextNoteTime); scheduleVisual(nextNoteTime); nextNote(); } timerID = window.setTimeout(scheduler, 25.0); }
+        function toggleMetronome() { const btn = document.getElementById('metroBtn'); if (isMetroPlaying) { isMetroPlaying = false; clearTimeout(timerID); btn.innerText = "Start"; btn.classList.remove('playing'); } else { if (audioCtx.state === 'suspended') audioCtx.resume(); isMetroPlaying = true; nextNoteTime = audioCtx.currentTime + 0.05; scheduler(); btn.innerText = "Stop"; btn.classList.add('playing'); } }
+        function updateBPM() { let val = parseInt(document.getElementById('bpmInput').value); if (val < 40) val = 40; if (val > 240) val = 240; bpm = val; }
+        
+        function getScaleData() {
+            useFlatNotation = false;
+            if (FLAT_ROOT_INDICES.includes(selectedRootIndex)) { if (selectedScaleName === 'Major' || selectedScaleName === 'Minor') useFlatNotation = true; }
+            const circleEntry = CIRCLE_DATA.find(c => (selectedScaleName==='Major' && c.majIdx===selectedRootIndex) || (selectedScaleName==='Minor' && c.minIdx===selectedRootIndex));
+            if(circleEntry && circleEntry.accType === 'b') useFlatNotation = true;
+            CURRENT_CHROMATIC = useFlatNotation ? CHROMATIC_FLAT : CHROMATIC_SHARP;
+            const intervals = VALID_SCALES[selectedScaleName] || VALID_SCALES['Major']; 
+            return intervals.map(interval => (selectedRootIndex + interval) % 12); 
+        }
+
+        function identifyChord(rootIdx, thirdIdx, fifthIdx) { 
+            const d3 = (thirdIdx - rootIdx + 12) % 12; const d5 = (fifthIdx - rootIdx + 12) % 12; 
+            if (d3 === 4 && d5 === 7) return { q: "Major", s: "" }; 
+            if (d3 === 3 && d5 === 7) return { q: "Minor", s: "m" }; 
+            if (d3 === 3 && d5 === 6) return { q: "Dim", s: "dim" }; 
+            return { q: "Unknown", s: "?" }; 
+        }
+        function getIntervalLabel(idx1, idx2) { 
+            const diff = (idx2 - idx1 + 12) % 12; if (diff === 1) return 'H'; if (diff === 2) return 'W'; if (diff === 3) return '1½'; if (diff === 4) return '2'; return diff; 
+        }
+        function setPos(p) { currentPos = p; document.querySelectorAll('.pos-btn').forEach(b => { b.classList.toggle('active', (p === 'all' && b.innerText === 'All') || b.innerText === 'Pos ' + p); }); generateVisuals(); }
+        
+        function calculatePositionsForKey() { 
+            let rootFretOn6 = (selectedRootIndex - 4 + 12) % 12; 
+            const shapes = [{ id: 'E', offsets: [-1, 3] }, { id: 'D', offsets: [2, 6] }, { id: 'C', offsets: [4, 8] }, { id: 'A', offsets: [7, 11] }, { id: 'G', offsets: [9, 13] }]; return shapes.map(shape => { let min = rootFretOn6 + shape.offsets[0]; let max = rootFretOn6 + shape.offsets[1]; if (min > 12) { min -= 12; max -= 12; } else if (min < 0) { min += 12; max += 12; } if (min >= 11) { min -= 12; max -= 12; } return { min, max }; }).sort((a, b) => a.min - b.min); 
+        }
+        function isInCurrentPosition(fret) { if (currentPos === 'all') return true; const range = calculatedPositions[currentPos - 1]; if (!range) return true; const checks = [[range.min, range.max], [range.min + 12, range.max + 12], [range.min - 12, range.max - 12]]; return checks.some(([l, h]) => fret >= l && fret <= h); }
+
+        function toggleTuner() { const modal = document.getElementById('tunerModal'); if (!isTunerActive) { isTunerActive = true; modal.style.display = 'flex'; if (audioCtx.state === 'suspended') audioCtx.resume(); startTuner(); } else { isTunerActive = false; modal.style.display = 'none'; stopTuner(); } }
+        async function startTuner() { try { tunerStream = await navigator.mediaDevices.getUserMedia({ audio: true }); tunerSource = audioCtx.createMediaStreamSource(tunerStream); analyser = audioCtx.createAnalyser(); analyser.fftSize = 2048; tunerSource.connect(analyser); updateTuner(); } catch (err) { alert("Microphone access denied."); toggleTuner(); } }
+        function stopTuner() { if (tunerStream) tunerStream.getTracks().forEach(track => track.stop()); if (tunerRafId) cancelAnimationFrame(tunerRafId); if (tunerSource) tunerSource.disconnect(); }
+        function autoCorrelate(buf, sampleRate) { let SIZE = buf.length; let rms = 0; for (let i = 0; i < SIZE; i++) rms += buf[i] * buf[i]; rms = Math.sqrt(rms / SIZE); if (rms < 0.01) return -1; let r1 = 0, r2 = SIZE - 1, thres = 0.2; for (let i = 0; i < SIZE / 2; i++) if (Math.abs(buf[i]) < thres) { r1 = i; break; } for (let i = 1; i < SIZE / 2; i++) if (Math.abs(buf[SIZE - i]) < thres) { r2 = SIZE - i; break; } buf = buf.slice(r1, r2); SIZE = buf.length; let c = new Array(SIZE).fill(0); for (let i = 0; i < SIZE; i++) for (let j = 0; j < SIZE - i; j++) c[i] = c[i] + buf[j] * buf[j + i]; let d = 0; while (c[d] > c[d + 1]) d++; let maxval = -1, maxpos = -1; for (let i = d; i < SIZE; i++) if (c[i] > maxval) { maxval = c[i]; maxpos = i; } let T0 = maxpos; let x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1]; let a = (x1 + x3 - 2 * x2) / 2; let b = (x3 - x1) / 2; if (a) T0 = T0 - b / (2 * a); return sampleRate / T0; }
+        function updateTuner() { if (!isTunerActive) return; const buf = new Float32Array(analyser.fftSize); analyser.getFloatTimeDomainData(buf); const freq = autoCorrelate(buf, audioCtx.sampleRate); const noteDiv = document.getElementById('tunerNote'); const freqDiv = document.getElementById('tunerFreq'); const needle = document.getElementById('tunerNeedle'); const statusDiv = document.getElementById('tunerStatus'); if (freq === -1) { noteDiv.innerText = "--"; freqDiv.innerText = "0.0 Hz"; needle.style.transform = "rotate(0deg)"; statusDiv.innerText = ""; } else { const noteNum = 12 * (Math.log(freq / 440) / Math.log(2)); const midi = Math.round(noteNum) + 69; const noteName = CURRENT_CHROMATIC[midi % 12]; const octave = Math.floor(midi / 12) - 1; const detune = Math.floor(1200 * Math.log2(freq / midiToFreq(midi))); noteDiv.innerText = noteName + octave; freqDiv.innerText = freq.toFixed(1) + " Hz"; let rot = detune; if (rot > 45) rot = 45; if (rot < -45) rot = -45; needle.style.transform = `rotate(${rot}deg)`; if (Math.abs(detune) < 5) { statusDiv.innerText = "In Tune! ✨"; statusDiv.style.color = "#27ae60"; needle.style.backgroundColor = "#27ae60"; } else { statusDiv.innerText = detune < 0 ? "Flat ♭" : "Sharp ♯"; statusDiv.style.color = "#e74c3c"; needle.style.backgroundColor = "#e74c3c"; } } tunerRafId = requestAnimationFrame(updateTuner); }
+
+        function getStaffY(note, octave) {
+            const diatonic = {'C':0, 'D':1, 'E':2, 'F':3, 'G':4, 'A':5, 'B':6};
+            const cleanNote = note.charAt(0);
+            const noteStep = diatonic[cleanNote];
+            const octaveStep = (octave - 4) * 7;
+            const stepsFromC4 = noteStep + octaveStep;
+            const stepsFromE4 = stepsFromC4 - 2; 
+            return 120 - (stepsFromE4 * 10);
+        }
+
+        // --- DRAWING ---
+        function drawRoundedRect(ctx, x, y, width, height, radius, fill, stroke) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+            if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+            if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1; ctx.stroke(); }
+        }
+
+        function drawNotation(notes = [], type = 'scale') {
+            const ctx = notationCanvas.getContext('2d');
+            ctx.clearRect(0, 0, notationCanvas.width, notationCanvas.height);
+            notationHitboxes.length = 0; currentNotationNotes = notes; currentNotationType = type;
+            const staffStartX = 50, staffEndX = notationCanvas.width - 50, staffTopY = 40, lineDist = 20;
+            ctx.strokeStyle = COLORS.text; ctx.lineWidth = 1;
+            for (let i = 0; i < 5; i++) { ctx.beginPath(); ctx.moveTo(staffStartX, staffTopY + i * lineDist); ctx.lineTo(staffEndX, staffTopY + i * lineDist); ctx.stroke(); }
+            ctx.fillStyle = COLORS.text; ctx.font = '60px serif'; ctx.fillText('\uD834\uDD1E', staffStartX, staffTopY + 65);
+            const tabTopY = 250, tabLineDist = 15;
+            for (let i = 0; i < 6; i++) { ctx.beginPath(); ctx.moveTo(staffStartX, tabTopY + i * tabLineDist); ctx.lineTo(staffEndX, tabTopY + i * tabLineDist); ctx.stroke(); }
+            ctx.font = 'bold 20px serif'; ctx.fillText('T', staffStartX - 20, tabTopY + 25); ctx.fillText('A', staffStartX - 20, tabTopY + 45); ctx.fillText('B', staffStartX - 20, tabTopY + 65);
+            if (!notes || notes.length === 0) return;
+            const noteSpacing = type === 'chord' ? 0 : ((staffEndX - staffStartX - 60) / Math.max(notes.length, 12));
+            let startNoteX = staffStartX + 80;
+            notes.forEach((n, index) => {
+                const x = type === 'chord' ? (notationCanvas.width / 2) : (startNoteX + index * noteSpacing);
+                const isHovered = notationHovered && notationHovered.s === n.s && notationHovered.f === n.f;
+                const noteMidi = n.midi;
+                const isCrossHover = (fbHovered && fbHovered.s === n.s && fbHovered.f === n.f) || (pianoHovered && pianoHovered.midi === noteMidi);
+                const visualOctave = n.octave + 1; const staffY = getStaffY(n.note, visualOctave);
+                
+                ctx.strokeStyle = COLORS.text;
+                if (staffY >= 140) { ctx.beginPath(); ctx.moveTo(x - 12, 140); ctx.lineTo(x + 12, 140); ctx.stroke(); }
+                if (staffY >= 160) { ctx.beginPath(); ctx.moveTo(x - 12, 160); ctx.lineTo(x + 12, 160); ctx.stroke(); }
+                if (staffY <= 20) { ctx.beginPath(); ctx.moveTo(x - 12, 20); ctx.lineTo(x + 12, 20); ctx.stroke(); }
+                
+                ctx.beginPath(); ctx.ellipse(x, staffY, 8, 6, Math.PI / -2.5, 0, 2 * Math.PI); 
+                if (isHovered || isCrossHover) ctx.fillStyle = isDark ? '#D4AF37' : '#FDB827'; else ctx.fillStyle = COLORS.text; ctx.fill();
+                
+                ctx.beginPath(); if (staffY < 80) { ctx.moveTo(x - 7, staffY); ctx.lineTo(x - 7, staffY + 35); } else { ctx.moveTo(x + 7, staffY); ctx.lineTo(x + 7, staffY - 35); } ctx.stroke();
+                
+                if (n.note.includes('#')) { ctx.font = '16px Arial'; ctx.fillText('♯', x - 20, staffY + 5); }
+                if (n.note.includes('b')) { ctx.font = '16px Arial'; ctx.fillText('♭', x - 20, staffY + 5); }
+
+                if (type === 'scale') { ctx.fillStyle = COLORS.textSec; ctx.font = 'bold 12px Arial'; ctx.textAlign = 'center'; ctx.fillText(n.note, x, 20); } 
+                else { ctx.fillStyle = COLORS.textSec; ctx.font = 'bold 12px Arial'; ctx.textAlign = 'left'; ctx.fillText(n.note, x + 15, staffY + 4); }
+                
+                const tabLineIndex = 5 - n.s; const tabY = tabTopY + tabLineIndex * tabLineDist;
+                ctx.save(); ctx.beginPath(); ctx.arc(x, tabY, 10, 0, Math.PI*2); if (isHovered || isCrossHover) ctx.fillStyle = isDark ? '#D4AF37' : '#FDB827'; else ctx.fillStyle = COLORS.tabCircle; ctx.fill(); ctx.restore();
+                if (isHovered || isCrossHover) ctx.fillStyle = 'black'; else ctx.fillStyle = COLORS.tabText; ctx.font = 'bold 14px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(n.f, x, tabY);
+                notationHitboxes.push({ type: 'notationNote', x: x, y: staffY, w: 40, h: 300, note: n.note, octave: n.octave, midi: noteMidi, freq: n.freq, s: n.s, f: n.f });
+            });
+        }
+
+        function getVoicings(triadIndices) {
+            const rIdx = triadIndices[0]; const tIdx = triadIndices[1];
+            const d3 = (tIdx - rIdx + 12) % 12; const quality = (d3 === 3) ? '_m' : '_'; const key = rIdx + quality;
+            const standardShapes = STANDARD_CHORDS_INDICES[key]; const allVoicings = [];
+            if (standardShapes) {
+                const standardNotes = standardShapes.map(pos => {
+                    const m = OPEN_STRING_MIDI[pos.s] + pos.f;
+                    return { idx: m%12, note: getNoteName(m%12), octave: Math.floor(m/12)-1, s: pos.s, f: pos.f, freq: midiToFreq(m), midi: m };
+                });
+                allVoicings.push(standardNotes);
+            }
+            let rootFret6 = (rIdx - 4 + 12) % 12; if (rootFret6 <= 12) { const v = buildVoicing(0, rootFret6, triadIndices); if(v) allVoicings.push(v); }
+            let rootFret5 = (rIdx - 9 + 12) % 12; if (rootFret5 <= 12) { const v = buildVoicing(1, rootFret5, triadIndices); if(v) allVoicings.push(v); }
+            
+            return allVoicings;
+        }
+
+        function buildVoicing(stringIdx, rootFret, triadIndices) {
+            if (rootFret > 12) return null;
+            let notes = []; let openMidi = OPEN_STRING_MIDI[stringIdx]; let midi = openMidi + rootFret;
+            let idx = midi % 12;
+            notes.push({ idx: idx, note: getNoteName(idx), octave: Math.floor(midi/12)-1, s: stringIdx, f: rootFret, freq: midiToFreq(midi), midi: midi });
+            let rangeMin = Math.max(0, rootFret - 1); let rangeMax = Math.min(12, rootFret + 3);
+            for (let s = stringIdx + 1; s < 6; s++) {
+                let sOpen = OPEN_STRING_MIDI[s]; let mOpen = sOpen % 12;
+                if (triadIndices.includes(mOpen)) { notes.push({ idx: mOpen, note: getNoteName(mOpen), octave: Math.floor(sOpen/12)-1, s: s, f: 0, freq: midiToFreq(sOpen), midi: sOpen }); continue; }
+                for (let f = rangeMin; f <= rangeMax; f++) { let m = sOpen + f; let mIdx = m % 12; if (triadIndices.includes(mIdx)) { notes.push({ idx: mIdx, note: getNoteName(mIdx), octave: Math.floor(m/12)-1, s: s, f: f, freq: midiToFreq(m), midi: m }); break; } }
+            }
+            return notes.length >= 3 ? notes : null;
+        }
+
+        function drawAll() {
+            calculatedPositions = calculatePositionsForKey();
+            drawFretboard(); drawCircleOfFifths(); drawPiano();
+
+            if (currentNotationType === 'scale') {
+                const scaleIndices = getScaleData();
+                const rootFret = (selectedRootIndex - 4 + 12) % 12;
+                const baseMidi = OPEN_STRING_MIDI[0] + rootFret;
+                let scaleNotations = [];
+                const intervals = VALID_SCALES[selectedScaleName];
+                for(let i=0; i<8; i++) {
+                    let step = i===7 ? 12 : intervals[i];
+                    let m = baseMidi + step;
+                    let pos = null;
+                    for(let s=5; s>=0; s--) {
+                        let open = OPEN_STRING_MIDI[s]; let f = m - open;
+                        if(f>=0 && f<=15) { pos={s:s, f:f}; break; }
+                    }
+                    if(pos) { scaleNotations.push({ idx: m%12, note: getNoteName(m%12), octave: Math.floor(m/12)-1, midi: m, freq: midiToFreq(m), s: pos.s, f: pos.f }); }
+                }
+                drawNotation(scaleNotations, 'scale');
+                drawTheoryChart();
+            } else {
+                drawNotation(currentVoicingNotes, 'chord');
+                drawTheoryChart();
+            }
+        }
+
+        function drawCircleOfFifths() {
+            const ctx = circleCanvas.getContext('2d'); const width = circleCanvas.width, height = circleCanvas.height; const cx = width / 2, cy = 200; const outerRadius = 160, innerRadius = 110;
+            ctx.fillStyle = COLORS.bg; ctx.fillRect(0, 0, width, height); circleHitboxes.length = 0;
+            CIRCLE_DATA.forEach((data, i) => {
+                const startAngle = -Math.PI/2 - (Math.PI/12) + (i * Math.PI*2/12); const endAngle = startAngle + (Math.PI*2/12);
+                const isMaj = (selectedScaleName === 'Major' && selectedRootIndex === data.majIdx); const isMin = (selectedScaleName === 'Minor' && selectedRootIndex === data.minIdx);
+                if (isMaj || isMin) currentKeyData = data;
+                ctx.beginPath(); ctx.arc(cx, cy, outerRadius, startAngle, endAngle); ctx.arc(cx, cy, innerRadius, endAngle, startAngle, true); ctx.closePath();
+                ctx.fillStyle = isMaj ? COLORS.noteRoot : (i % 2 === 0 ? COLORS.circleBgMaj : (isDark ? '#333' : '#f9f9f9'));
+                ctx.fill(); ctx.strokeStyle = COLORS.textSec; ctx.lineWidth = 1; ctx.stroke();
+                circleHitboxes.push({ type: 'circle', mode: 'Major', rootIdx: data.majIdx, startAngle, endAngle, rMin: innerRadius, rMax: outerRadius });
+                const textAngle = startAngle + (Math.PI/12); ctx.save(); ctx.translate(cx + Math.cos(textAngle)*135, cy + Math.sin(textAngle)*135); ctx.rotate(textAngle + Math.PI/2);
+                ctx.fillStyle = isMaj ? 'black' : COLORS.text; ctx.font = 'bold 18px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(data.labelMaj, 0, 0); ctx.restore();
+                ctx.beginPath(); ctx.arc(cx, cy, innerRadius, startAngle, endAngle); ctx.arc(cx, cy, 55, endAngle, startAngle, true); ctx.closePath();
+                ctx.fillStyle = isMin ? (isDark ? '#B8860B' : '#FFCC80') : (i % 2 === 0 ? COLORS.circleBgMin : (isDark ? '#2b2b2b' : '#e0e0e0')); ctx.fill(); ctx.stroke();
+                circleHitboxes.push({ type: 'circle', mode: 'Minor', rootIdx: data.minIdx, startAngle, endAngle, rMin: 55, rMax: innerRadius });
+                ctx.save(); ctx.translate(cx + Math.cos(textAngle)*85, cy + Math.sin(textAngle)*85); ctx.rotate(textAngle + Math.PI/2);
+                ctx.fillStyle = isMin ? 'black' : COLORS.textSec; ctx.font = 'bold 14px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(data.labelMin + 'm', 0, 0); ctx.restore();
+            });
+            if (currentKeyData) {
+                const staffY = 430; const lineGap = 10; const staffWidth = 200; const staffX = (width - staffWidth) / 2;
+                ctx.fillStyle = COLORS.text; ctx.font = 'bold 16px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+                ctx.fillText(currentKeyData.text, cx, staffY - 40);
+                ctx.strokeStyle = COLORS.textSec; ctx.lineWidth = 1; for (let i = 0; i < 5; i++) { ctx.beginPath(); ctx.moveTo(staffX, staffY + i * lineGap); ctx.lineTo(staffX + staffWidth, staffY + i * lineGap); ctx.stroke(); }
+                ctx.font = '40px serif'; ctx.textAlign = 'left'; ctx.fillText('𝄞', staffX + 10, staffY + 35); 
+                ctx.font = 'bold 24px Arial'; const accStart = staffX + 60; const accGap = 15;
+                for (let j = 0; j < currentKeyData.accCount; j++) { let yOffset = currentKeyData.accType === '#' ? SHARP_POS[j] : FLAT_POS[j]; ctx.fillText(currentKeyData.accType === '#' ? '♯' : '♭', accStart + j * accGap, staffY + yOffset); }
+            }
+        }
+
+        function drawTheoryChart() {
+            const ctx = theoryCanvas.getContext('2d'); ctx.fillStyle = COLORS.bg; ctx.fillRect(0, 0, theoryCanvas.width, theoryCanvas.height); theoryHitboxes.length = 0;
+            const indices = getScaleData();
+            
+            ctx.fillStyle = COLORS.text; ctx.font = 'bold 30px Arial'; ctx.textAlign = 'center';
+            ctx.fillText(`${getNoteName(selectedRootIndex)} ${selectedScaleName} Scale`, theoryCanvas.width/2, 50);
+
+            // 1. NOTES TABLE
+            const tableY = 120; const tableX = 50; const cellW = 140; const cellH = 70;
+            const headers = ["I", "II", "III", "IV", "V", "VI", "VII"];
+            const lineY = tableY - 30;
+            for(let i=0; i<6; i++) {
+                const x1 = tableX + i*cellW + cellW/2; const x2 = tableX + (i+1)*cellW + cellW/2;
+                ctx.beginPath(); ctx.moveTo(x1, lineY); ctx.lineTo(x2, lineY); ctx.strokeStyle = COLORS.textSec; ctx.lineWidth = 2; ctx.stroke();
+                const midX = (x1+x2)/2;
+                drawRoundedRect(ctx, midX-15, lineY-10, 30, 20, 10, COLORS.bg, COLORS.textSec);
+                ctx.fillStyle = COLORS.textSec; ctx.font = 'bold 11px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(getIntervalLabel(indices[i], indices[i+1]), midX, lineY);
+            }
+            for(let i=0; i<7; i++) {
+                const idx = indices[i]; const noteName = getNoteName(idx);
+                const x = tableX + i*cellW;
+                const isHovered = theoryHovered && theoryHovered.type === 'scaleNote' && theoryHovered.index === i;
+                let bg = isHovered ? COLORS.chartHover : COLORS.chartRowEven;
+                if(i===0) bg = COLORS.noteRoot; 
+                drawRoundedRect(ctx, x+5, tableY, cellW-10, cellH, 12, bg, COLORS.border);
+                ctx.fillStyle = (i===0) ? 'black' : COLORS.textSec; ctx.font = 'bold 14px Arial'; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+                ctx.fillText(headers[i], x + cellW/2, tableY + 20);
+                ctx.fillStyle = (i===0) ? 'black' : COLORS.text; ctx.font = 'bold 24px Arial'; 
+                ctx.fillText(noteName, x + cellW/2, tableY + 50);
+                let freq = getFrequency(idx, 3);
+                theoryHitboxes.push({ type: 'scaleNote', x: x + cellW/2, y: tableY + cellH/2, w: cellW, h: cellH, index: i, noteName: noteName, freq: freq });
+            }
+
+            // 2. DIATONIC CHORDS
+            const yChordStart = 280;
+            ctx.fillStyle = COLORS.text; ctx.font = 'bold 24px Arial'; ctx.textAlign='center';
+            ctx.fillText("Diatonic Chords", theoryCanvas.width/2, 250);
+            const col1 = 150, col2 = 350, col3 = 700;
+            drawRoundedRect(ctx, 100, yChordStart, 900, 40, 8, COLORS.chartHeader, null);
+            ctx.fillStyle = COLORS.textSec; ctx.font = 'bold 16px Arial'; ctx.textAlign = 'left';
+            ctx.fillText("Degree", col1, yChordStart+25); ctx.fillText("Chord Name", col2, yChordStart+25); ctx.fillText("Notes", col3, yChordStart+25);
+
+            for(let i=0; i<7; i++) {
+                const rootIdx = indices[i]; const thirdIdx = indices[(i+2)%7]; const fifthIdx = indices[(i+4)%7];
+                const chordInfo = identifyChord(rootIdx, thirdIdx, fifthIdx);
+                const chordName = getNoteName(rootIdx) + chordInfo.s;
+                const triadStr = `${getNoteName(rootIdx)} - ${getNoteName(thirdIdx)} - ${getNoteName(fifthIdx)}`;
+                const yc = yChordStart + 50 + i*55;
+                const isHovered = theoryHovered && theoryHovered.type === 'chord' && theoryHovered.index === i;
+                let bg = isHovered ? COLORS.chartHover : (i%2===0 ? COLORS.chartRowEven : COLORS.chartRowOdd);
+                drawRoundedRect(ctx, 100, yc-5, 900, 45, 8, bg, isHovered ? COLORS.accent : COLORS.border);
+                ctx.fillStyle = COLORS.text; ctx.font = 'bold 18px Arial'; ctx.textAlign = 'left';
+                ctx.fillText(ROMAN_NUMERALS[i] + (chordInfo.q==='Minor'?'m':'') + (chordInfo.q==='Dim'?'°':''), col1, yc+25);
+                ctx.fillStyle = (i===0) ? (isDark?'#e67e22':'#d35400') : COLORS.text; ctx.font = 'bold 18px Arial'; ctx.fillText(chordName, col2, yc+25);
+                ctx.fillStyle = COLORS.textSec; ctx.font = '16px monospace'; ctx.fillText(triadStr, col3, yc+25);
+                theoryHitboxes.push({ type: 'chord', x: 550, y: yc+17.5, w: 900, h: 45, index: i, triadIndices: [rootIdx, thirdIdx, fifthIdx] });
+            }
+
+            // 3. PROGRESSIONS
+            const yProg = 780;
+            const progs = PROGRESSIONS[selectedScaleName] || PROGRESSIONS['Other'];
+            ctx.fillStyle = COLORS.text; ctx.font = 'bold 24px Arial'; ctx.textAlign = 'center'; ctx.fillText("Progressions", theoryCanvas.width/2, 740);
+            progs.forEach((p, pi) => {
+               const yp = yProg + pi * 70;
+               const isHovered = theoryHovered && theoryHovered.type === 'prog' && theoryHovered.index === pi;
+               drawRoundedRect(ctx, 200, yp, 700, 50, 25, isHovered ? COLORS.chartHover : COLORS.progBg, isHovered ? COLORS.accent : COLORS.border);
+               
+               const centerY = yp + 25; // Middle of rect
+               ctx.textBaseline = 'middle';
+               
+               ctx.fillStyle = isHovered ? COLORS.accent : COLORS.textSec; ctx.beginPath(); ctx.moveTo(225, centerY-10); ctx.lineTo(245, centerY); ctx.lineTo(225, centerY+10); ctx.fill();
+               ctx.fillStyle = COLORS.text; ctx.textAlign = 'left'; ctx.font = 'bold 18px Arial'; ctx.fillText(p.name, 260, centerY);
+               const seqText = p.degrees.map(d => { const dIdx = indices[d]; const info = identifyChord(dIdx, indices[(d+2)%7], indices[(d+4)%7]); return getNoteName(dIdx) + info.s; }).join("  ➜  ");
+               const seqObj = p.degrees.map(d => { return { notes: [{freq: getFrequency(indices[d], 3)}, {freq: getFrequency(indices[(d+2)%7], 3)}, {freq: getFrequency(indices[(d+4)%7], 3)}]}; });
+               ctx.fillStyle = COLORS.textSec; ctx.textAlign = 'right'; ctx.font = '16px Arial'; ctx.fillText(seqText, 860, centerY);
+               
+               ctx.textBaseline = 'alphabetic'; // reset
+               theoryHitboxes.push({ type: 'prog', x: 550, y: centerY, w: 700, h: 50, index: pi, sequence: seqObj });
+            });
+        }
+
+
+        function drawFretboard() {
+            const ctx = fbCanvas.getContext('2d'); ctx.fillStyle = COLORS.bg; ctx.fillRect(0, 0, fbCanvas.width, fbCanvas.height); fbHitboxes.length=0;
+            const indices = getScaleData();
+            const activeSet = new Set(indices);
+            const nutX = 80, stringY = 60, stringGap = 40, fretGap = 50;
+            for(let s=0; s<6; s++) { const y = stringY + s*stringGap; ctx.beginPath(); ctx.moveTo(nutX, y); ctx.lineTo(1350, y); ctx.lineWidth = 1 + s*0.5; ctx.strokeStyle = COLORS.string; ctx.stroke(); }
+            for(let f=0; f<=24; f++) {
+                const x = nutX + f*fretGap; ctx.beginPath(); ctx.moveTo(x, stringY); ctx.lineTo(x, stringY+5*stringGap); 
+                ctx.lineWidth = f===0 ? 8 : 2; ctx.strokeStyle = f===0 ? COLORS.nut : COLORS.fret; ctx.stroke();
+                if(f>0 && [3,5,7,9,15,17,19,21].includes(f)) { ctx.beginPath(); ctx.arc(x-fretGap/2, stringY+2.5*stringGap, 5, 0, Math.PI*2); ctx.fillStyle='#ddd'; ctx.fill(); }
+                if(f===12 || f===24) { ctx.beginPath(); ctx.arc(x-fretGap/2, stringY+1.5*stringGap, 5, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(x-fretGap/2, stringY+3.5*stringGap, 5, 0, Math.PI*2); ctx.fill(); }
+                if(f>0) { ctx.fillStyle = COLORS.textSec; ctx.font = '12px Arial'; ctx.textAlign = 'center'; ctx.fillText(f, x-fretGap/2, stringY + 5*stringGap + 20); }
+            }
+
+            let notesToShow = [];
+            if (currentNotationType === 'chord') { 
+                notesToShow = currentVoicingNotes.map(n => ({ ...n, s: 5 - n.s, isRoot: (n.midi%12 === selectedRootIndex) })); 
+            } else {
+                activeGuitarMidi.clear();
+                for(let s=0; s<6; s++) {
+                    const openVal = OPEN_STRING_MIDI[5-s]; 
+                    for(let f=0; f<=24; f++) {
+                        const m = openVal + f; const idx = m % 12;
+                        if (activeSet.has(idx) && isInCurrentPosition(f)) {
+                            
+                            // --- منطق حذف نت هم‌صدای تکراری در پوزیشن ---
+                            let isDuplicateInPos = false;
+                            if (currentPos !== 'all' && s > 0) { 
+                                // بررسی سیم بالایی (نازک‌تر)
+                                const upperStringOpen = OPEN_STRING_MIDI[5-(s-1)];
+                                const neededFretOnUpper = m - upperStringOpen;
+                                // اگر همان نت روی سیم نازک‌تر و در همان پوزیشن باشد، این یکی را حذف کن
+                                if (neededFretOnUpper >= 0 && neededFretOnUpper <= 24 && isInCurrentPosition(neededFretOnUpper)) {
+                                    isDuplicateInPos = true;
+                                }
+                            }
+
+                            if (!isDuplicateInPos) {
+                                notesToShow.push({ s:s, f:f, midi:m, note: getNoteName(idx), isRoot: idx===selectedRootIndex });
+                                activeGuitarMidi.add(m);
+                            }
+                        }
+                    }
+                }
+            }
+
+            notesToShow.forEach(n => {
+                const x = nutX + n.f*fretGap - (n.f===0 ? 20 : fretGap/2); const y = stringY + n.s*stringGap;
+                const isHovered = fbHovered && fbHovered.s === n.s && fbHovered.f === n.f;
+                const isPianoMatch = pianoHovered && pianoHovered.midi === n.midi;
+                const isNotationMatch = notationHovered && notationHovered.midi === n.midi;
+                const r = n.isRoot ? 16 : 13;
+                if(isHovered || isPianoMatch || isNotationMatch) { ctx.beginPath(); ctx.arc(x, y, r+5, 0, Math.PI*2); ctx.fillStyle = isDark ? 'rgba(212, 175, 55, 0.6)' : 'rgba(253, 184, 39, 0.5)'; ctx.fill(); }
+                ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2);
+                if (showOctaves) { const oct = Math.floor(n.midi/12)-1; ctx.fillStyle = OCTAVE_COLORS[oct] || COLORS.noteOther; } 
+                else { ctx.fillStyle = n.isRoot ? COLORS.noteRoot : ((isHovered || isPianoMatch) ? '#444' : COLORS.noteOther); }
+                ctx.fill(); ctx.fillStyle = (showOctaves || n.isRoot) ? 'white' : COLORS.noteText; ctx.font = 'bold 12px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
+                ctx.fillText(showOctaves ? n.note + (Math.floor(n.midi/12)-1) : n.note, x, y);
+                fbHitboxes.push({ type: 'note', x, y, radius: r, s: n.s, f: n.f, midi: n.midi, noteName: n.note, freq: midiToFreq(n.midi) });
+            });
+        }
+
+        function drawPiano() {
+            const ctx = pianoCanvas.getContext('2d'); ctx.fillStyle = COLORS.bg; ctx.fillRect(0, 0, pianoCanvas.width, pianoCanvas.height); pianoHitboxes.length = 0;
+            const startMidi = 36; const endMidi = 84; let whiteKeyCount = 0; for(let m=startMidi; m<=endMidi; m++) { if(![1, 3, 6, 8, 10].includes(m % 12)) whiteKeyCount++; }
+            const keyWidth = pianoCanvas.width / whiteKeyCount; const keyHeight = 180; const blackKeyHeight = 110; const blackKeyWidth = keyWidth * 0.65; let xPos = 0;
+            for (let m = startMidi; m <= endMidi; m++) {
+                const noteVal = m % 12; const isBlack = [1, 3, 6, 8, 10].includes(noteVal);
+                if (!isBlack) {
+                    const isActive = activeGuitarMidi.has(m); const isHovered = pianoHovered && pianoHovered.midi === m; const isGuitarMatch = fbHovered && fbHovered.midi === m; const isNotationMatch = notationHovered && notationHovered.midi === m; const oct = Math.floor(m / 12) - 1; const noteName = getNoteName(noteVal);
+                    ctx.fillStyle = isActive ? (showOctaves ? OCTAVE_COLORS[oct] : COLORS.noteRoot) : COLORS.pianoWhite; if (isHovered || isGuitarMatch || isNotationMatch) ctx.fillStyle = '#ddd'; if (!isActive && !isHovered && !isGuitarMatch && !isNotationMatch) ctx.fillStyle = isDark ? '#333' : '#fcfcfc';
+                    ctx.strokeStyle = COLORS.pianoBorder; ctx.lineWidth = 1; if (noteVal === 0) { ctx.lineWidth = 3; ctx.strokeStyle = isDark ? '#888' : '#333'; }
+                    ctx.fillRect(xPos, 0, keyWidth, keyHeight); ctx.strokeRect(xPos, 0, keyWidth, keyHeight); ctx.lineWidth = 1; 
+                    pianoHitboxes.push({ type: 'pianoKey', x: xPos, y: 0, w: keyWidth, h: keyHeight, midi: m, note: noteName, oct: oct, isBlack: false });
+                    if (isActive || isHovered || isGuitarMatch || isNotationMatch || noteVal === 0) { ctx.fillStyle = (isActive && showOctaves) ? 'white' : (isDark ? '#eee' : '#444'); ctx.font = (noteVal === 0 && !isActive) ? 'bold 14px Arial' : 'bold 12px Arial'; ctx.textAlign = 'center'; let label = noteName; if (showOctaves || noteVal === 0) label += oct; ctx.fillText(label, xPos + keyWidth/2, keyHeight - 15); }
+                    xPos += keyWidth;
+                }
+            }
+            xPos = 0;
+            for (let m = startMidi; m <= endMidi; m++) {
+                const noteVal = m % 12; const isBlack = [1, 3, 6, 8, 10].includes(noteVal);
+                if (!isBlack) { xPos += keyWidth; } else {
+                    const bx = xPos - (blackKeyWidth / 2); const isActive = activeGuitarMidi.has(m); const isHovered = pianoHovered && pianoHovered.midi === m; const isGuitarMatch = fbHovered && fbHovered.midi === m; const isNotationMatch = notationHovered && notationHovered.midi === m; const oct = Math.floor(m / 12) - 1; const noteName = getNoteName(noteVal);
+                    ctx.fillStyle = isActive ? (showOctaves ? OCTAVE_COLORS[oct] : COLORS.noteRoot) : COLORS.pianoBlack; if (isHovered || isGuitarMatch || isNotationMatch) ctx.fillStyle = '#666'; 
+                    ctx.fillRect(bx, 0, blackKeyWidth, blackKeyHeight); ctx.strokeStyle = isDark ? '#555' : '#000'; ctx.strokeRect(bx, 0, blackKeyWidth, blackKeyHeight);
+                    pianoHitboxes.push({ type: 'pianoKey', x: bx, y: 0, w: blackKeyWidth, h: blackKeyHeight, midi: m, note: noteName, oct: oct, isBlack: true });
+                    if (isActive || isHovered || isGuitarMatch || isNotationMatch) { ctx.fillStyle = 'white'; ctx.font = 'bold 10px Arial'; ctx.textAlign = 'center'; ctx.fillText(noteName, bx + blackKeyWidth/2, blackKeyHeight - 8); }
+                }
+            }
+        }
+
+        // --- HANDLERS ---
+        function handleMouse(e, canvas, hitboxes, hoverVarName) {
+            const rect = canvas.getBoundingClientRect(); 
+            let clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            let clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            if(!clientX) return;
+            const x = (clientX - rect.left) * (canvas.width / rect.width); 
+            const y = (clientY - rect.top) * (canvas.height / rect.height);
+            
+            let found = null;
+            if (canvas.id === 'theoryCanvas') {
+                found = hitboxes.find(h => {
+                    if (h.type === 'scaleNote') return x >= h.x - h.w/2 && x <= h.x + h.w/2 && y >= h.y - h.h/2 && y <= h.y + h.h/2;
+                    if (h.type === 'chord') return x >= h.x - h.w/2 && x <= h.x + h.w/2 && y >= h.y - h.h/2 && y <= h.y + h.h/2; 
+                    if (h.type === 'prog') return x >= h.x - h.w/2 && x <= h.x + h.w/2 && y >= h.y - h.h/2 && y <= h.y + h.h/2;
+                    return false;
+                });
+            } 
+            else if (canvas.id === 'circleCanvas') {
+                 const cx = 225, cy = 200;
+                 const d = Math.sqrt((x-cx)**2 + (y-cy)**2);
+                 let ang = Math.atan2(y-cy, x-cx);
+                 if(ang < -Math.PI/2 - Math.PI/12) ang += Math.PI*2; 
+                 found = hitboxes.find(h => d >= h.rMin && d <= h.rMax && ang >= h.startAngle && ang <= h.endAngle);
+            }
+            else if (canvas.id === 'notationCanvas') { found = hitboxes.find(h => Math.abs(x - h.x) < 20); }
+            else {
+                 for(let h of hitboxes) {
+                     if (h.radius && Math.sqrt((x-h.x)**2 + (y-h.y)**2) < h.radius) { found = h; break; }
+                     if (h.w && x >= h.x && x <= h.x+h.w && y >= h.y && y <= h.y+h.h) { found = h; break; }
+                 }
+            }
+
+            const tooltip = document.getElementById('tooltip');
+            if (found && (found.type === 'scaleNote' || found.type === 'note' || found.type === 'pianoKey' || found.type === 'notationNote')) {
+                 tooltip.style.display = 'block';
+                 tooltip.style.left = clientX + 'px'; tooltip.style.top = clientY + 'px';
+                 let f = found.freq || (found.midi ? midiToFreq(found.midi) : 0);
+                 let n = found.noteName || (found.midi ? getNoteName(found.midi%12) : found.note);
+                 let o = found.octave || (found.midi ? Math.floor(found.midi/12)-1 : 0);
+                 tooltip.innerHTML = `<strong>${n}${o}</strong><br>${f.toFixed(1)} Hz`;
+            } else { tooltip.style.display = 'none'; }
+
+            let needsRedraw = false;
+            if (canvas.id === 'fretboardCanvas') { if(JSON.stringify(fbHovered) !== JSON.stringify(found)) { fbHovered = found; needsRedraw = true; } }
+            if (canvas.id === 'pianoCanvas') { if(JSON.stringify(pianoHovered) !== JSON.stringify(found)) { pianoHovered = found; needsRedraw = true; } }
+            if (canvas.id === 'notationCanvas') { if(JSON.stringify(notationHovered) !== JSON.stringify(found)) { notationHovered = found; needsRedraw = true; } }
+            if (canvas.id === 'theoryCanvas') { if(JSON.stringify(theoryHovered) !== JSON.stringify(found)) { theoryHovered = found; needsRedraw = true; } }
+            if (canvas.id === 'circleCanvas') { if(circleHovered !== found) { circleHovered = found; needsRedraw = true; } }
+
+            if (needsRedraw) { drawAll(); }
+            
+            if (e.type === 'mousedown' || e.type === 'touchstart') {
+                if (e.type === 'touchstart') e.preventDefault(); 
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                if (!found) return;
+                
+                if (found.type === 'chord') {
+                    if (currentChordIndex === found.index) { currentVoicingIndex++; } 
+                    else { currentChordIndex = found.index; currentVoicingIndex = 0; }
+                    
+                    const allVoicings = getVoicings(found.triadIndices);
+                    if (allVoicings.length > 0) {
+                        const v = allVoicings[currentVoicingIndex % allVoicings.length];
+                        currentVoicingNotes = v; currentNotationType = 'chord';
+                        playVoicing(v); drawAll();
+                    }
+                }
+                else if (found.type === 'prog') {
+                    const sequence = found.sequence.map(s => { return s; });
+                    playProgression(sequence);
+                    currentNotationType = 'scale'; drawAll();
+                }
+                else if (found.type === 'circle') {
+                    selectedRootIndex = found.rootIdx;
+                    selectedScaleName = found.mode;
+                    const select = document.getElementById('rootSelect');
+                    for(let i=0; i<select.options.length; i++) {
+                        if(parseInt(select.options[i].value) === selectedRootIndex) {
+                            select.selectedIndex = i; break;
+                        }
+                    }
+                    document.getElementById('scaleSelect').value = selectedScaleName;
+                    currentNotationType = 'scale';
+                    generateVisuals();
+                }
+                else if (found.freq || found.midi) {
+                    let f = found.freq || midiToFreq(found.midi);
+                    playGuitarNote(f);
+                }
+            }
+        }
+
+        // --- INIT ---
+        window.addEventListener('load', () => {
+            fbCanvas = document.getElementById('fretboardCanvas');
+            thCanvas = document.getElementById('theoryCanvas');
+            circleCanvas = document.getElementById('circleCanvas');
+            pianoCanvas = document.getElementById('pianoCanvas');
+            notationCanvas = document.getElementById('notationCanvas');
+            tooltip = document.getElementById('tooltip');
+
+            const rSel = document.getElementById('rootSelect');
+            const sSel = document.getElementById('scaleSelect');
+            
+            for(let i=0; i<12; i++) {
+                let label = CHROMATIC_SHARP[i];
+                if (CHROMATIC_SHARP[i] !== CHROMATIC_FLAT[i]) label += " / " + CHROMATIC_FLAT[i];
+                let opt = new Option(label, i);
+                rSel.add(opt);
+            }
+            Object.keys(VALID_SCALES).forEach(s => sSel.add(new Option(s, s)));
+            
+            rSel.value = 9; sSel.value = 'Minor';
+
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                toggleTheme();
+            }
+
+            rSel.addEventListener('change', (e) => { selectedRootIndex = parseInt(e.target.value); generateVisuals(); });
+            sSel.addEventListener('change', (e) => { selectedScaleName = e.target.value; generateVisuals(); });
+
+            const attachEvents = (cvs, hitboxes, hoverVarName) => {
+                cvs.addEventListener('mousemove', e => handleMouse(e, cvs, hitboxes, hoverVarName));
+                cvs.addEventListener('mousedown', e => handleMouse(e, cvs, hitboxes, hoverVarName));
+                cvs.addEventListener('touchstart', e => handleMouse(e, cvs, hitboxes, hoverVarName), {passive: false});
+                cvs.addEventListener('touchmove', e => handleMouse(e, cvs, hitboxes, hoverVarName), {passive: false});
+            };
+
+            attachEvents(fbCanvas, fbHitboxes, 'fbHovered');
+            attachEvents(thCanvas, theoryHitboxes, 'theoryHovered');
+            attachEvents(circleCanvas, circleHitboxes, 'circleHovered');
+            attachEvents(pianoCanvas, pianoHitboxes, 'pianoHovered');
+            attachEvents(notationCanvas, notationHitboxes, 'notationHovered');
+            
+            generateVisuals();
+        });
+
+        function generateVisuals() { drawAll(); }
+
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            const pageWidth = 210;
+            const margin = 10;
+            let currentY = 20;
+
+            doc.setFontSize(22);
+            doc.text("Interactive Guitar Studio", pageWidth/2, currentY, { align: 'center' });
+            currentY += 10;
+            doc.setFontSize(14);
+            doc.setTextColor(100);
+            doc.text(`Scale: ${getNoteName(selectedRootIndex)} ${selectedScaleName}`, pageWidth/2, currentY, { align: 'center' });
+            currentY += 20;
+
+            function addCanvasToDoc(canvasObj, title) {
+                if (currentY > 250) { doc.addPage(); currentY = 20; }
+                
+                doc.setFontSize(12); doc.setTextColor(0);
+                doc.text(title, margin, currentY);
+                currentY += 5;
+
+                const imgData = canvasObj.toDataURL('image/png');
+                const imgProps = doc.getImageProperties(imgData);
+                const pdfWidth = pageWidth - (margin * 2);
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+                doc.addImage(imgData, 'PNG', margin, currentY, pdfWidth, pdfHeight);
+                currentY += pdfHeight + 15;
+            }
+
+            addCanvasToDoc(circleCanvas, "Circle of Fifths");
+            addCanvasToDoc(theoryCanvas, "Theory & Chords");
+            
+            doc.addPage(); currentY = 20;
+            addCanvasToDoc(fretboardCanvas, "Fretboard");
+            addCanvasToDoc(pianoCanvas, "Piano");
+            addCanvasToDoc(notationCanvas, "Notation & Tabs");
+
+            const pageCount = doc.internal.getNumberOfPages();
+            for(let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(10);
+                doc.setTextColor(150);
+                doc.text(`Page ${i} of ${pageCount} - Tara, GuitarLab`, pageWidth/2, 290, { align: 'center' });
+            }
+
+            doc.save(`Tara_${getNoteName(selectedRootIndex)}_${selectedScaleName}.pdf`);
+        }
+    </script>
+</body>
+</html>

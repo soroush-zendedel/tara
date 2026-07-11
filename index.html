@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tara GuitarLab | Interactive Music Theory</title>
+    <meta name="description" content="Tara - GuitarLab. The ultimate interactive laboratory for music theory, scales, chords, and fretboard visualization.">
+    
+    <!-- Fonts: Vazirmatn for Persian, Inter for English -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS (CDN for rapid styling) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tara: {
+                            dark: '#121212',
+                            card: '#1e1e1e',
+                            accent: '#FDB827',
+                            accentHover: '#D4AF37',
+                            text: '#dfe6e9',
+                            textMuted: '#b2bec3'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Language Display Logic */
+        html[lang="fa"] .en-text { display: none !important; }
+        html[lang="en"] .fa-text { display: none !important; }
+        
+        html[lang="fa"] { font-family: 'Vazirmatn', sans-serif; }
+        html[lang="en"] { font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: #121212;
+            background-image: radial-gradient(circle at top, #1e1e1e 0%, #121212 100%);
+            color: #dfe6e9;
+            overflow-x: hidden;
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, #dfe6e9, #FDB827);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(253, 184, 39, 0.1);
+            border-color: rgba(253, 184, 39, 0.5);
+        }
+
+        /* Image Shadows */
+        .img-glow {
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="w-full fixed top-0 z-50 bg-tara-dark/80 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-guitar text-tara-accent text-2xl"></i>
+                <span class="font-bold text-xl tracking-tight text-white">Tara <span class="text-tara-textMuted font-normal text-sm uppercase tracking-widest ml-1 fa-text mr-1">GuitarLab</span><span class="text-tara-textMuted font-normal text-sm uppercase tracking-widest ml-1 en-text">GuitarLab</span></span>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <!-- Language Toggle -->
+                <button id="langToggle" onclick="toggleLanguage()" class="px-3 py-1 rounded-full border border-white/20 hover:border-tara-accent hover:text-tara-accent transition-colors text-sm font-semibold">
+                    <span class="fa-text">English</span>
+                    <span class="en-text">فارسی</span>
+                </button>
+                
+                <a href="https://github.com/soroush-zendedel/tara" target="_blank" class="text-tara-textMuted hover:text-white transition-colors">
+                    <i class="fab fa-github text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="flex-grow pt-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-16 pb-20">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6">
+                <span class="block fa-text gradient-text leading-tight">تسلط بر تئوری موسیقی <br> و فرت‌بورد گیتار</span>
+                <span class="block en-text gradient-text leading-tight">Master Music Theory <br> & The Fretboard</span>
+            </h1>
+            
+            <p class="mt-4 text-xl text-tara-textMuted max-w-2xl mx-auto fa-text leading-relaxed">
+                تارا گیتارلپ، پیشرفته‌ترین آزمایشگاه تعاملی برای تجسم گام‌ها، آکوردها، نت‌نویسی و ارتباط آن‌ها روی سازهای مختلف است. ابزاری ضروری برای هر موسیقیدان.
+            </p>
+            <p class="mt-4 text-xl text-tara-textMuted max-w-2xl mx-auto en-text leading-relaxed">
+                Tara GuitarLab is the ultimate interactive laboratory for visualizing scales, chords, notation, and their relationships across instruments. An essential tool for every musician.
+            </p>
+
+            <div class="mt-10 flex justify-center gap-4">
+                <!-- Link to the actual app (assuming you renamed your code file to app.html) -->
+                <a href="app.html" class="px-8 py-4 bg-tara-accent hover:bg-tara-accentHover text-tara-dark font-bold rounded-full transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(253,184,39,0.4)] flex items-center gap-2">
+                    <i class="fas fa-play"></i>
+                    <span class="fa-text">اجرای برنامه</span>
+                    <span class="en-text">Launch App</span>
+                </a>
+                <a href="#features" class="px-8 py-4 bg-tara-card border border-white/10 hover:border-white/30 text-white font-semibold rounded-full transition-all flex items-center gap-2">
+                    <i class="fas fa-arrow-down"></i>
+                    <span class="fa-text">ویژگی‌ها</span>
+                    <span class="en-text">Features</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Fretboard Banner -->
+        <div class="max-w-7xl mx-auto px-4 mb-24 overflow-hidden rounded-2xl relative group">
+            <div class="absolute inset-0 bg-tara-accent/10 group-hover:bg-transparent transition-colors z-10 pointer-events-none"></div>
+            <img src="img/FretBoard.jpg" alt="Interactive Fretboard" class="w-full h-auto rounded-2xl img-glow">
+        </div>
+
+        <!-- Features Section -->
+        <section id="features" class="py-16 bg-tara-dark">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Section Title -->
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-tara-accent fa-text">امکانات جامع و یکپارچه</h2>
+                    <h2 class="text-3xl font-bold text-tara-accent en-text">Comprehensive & Integrated Features</h2>
+                    <div class="w-24 h-1 bg-tara-accent mx-auto mt-4 rounded-full opacity-50"></div>
+                </div>
+
+                <!-- Feature 1 -->
+                <div class="flex flex-col lg:flex-row items-center gap-12 mb-24">
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-bold text-white mb-4 fa-text">دایره پنجم‌ها (Circle of Fifths)</h3>
+                        <h3 class="text-2xl font-bold text-white mb-4 en-text">Interactive Circle of Fifths</h3>
+                        <p class="text-tara-textMuted text-lg leading-relaxed fa-text">
+                            درک روابط هارمونیک هیچ‌گاه تا این حد ساده نبوده است. با کلیک بر روی دایره، گام ماژور و مینور نسبی آن را انتخاب کنید و فوراً سرکلیدها و علامت‌های تغییردهنده (دیز و بمل) را روی خطوط حامل مشاهده کنید.
+                        </p>
+                        <p class="text-tara-textMuted text-lg leading-relaxed en-text">
+                            Understanding harmonic relationships has never been easier. Click on the circle to select Major and relative Minor keys, and instantly view their key signatures on the standard staff.
+                        </p>
+                    </div>
+                    <div class="flex-1 w-full flex justify-center">
+                        <img src="img/Circle.jpg" alt="Circle of Fifths" class="rounded-xl img-glow max-w-sm w-full">
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="flex flex-col lg:flex-row-reverse items-center gap-12 mb-24">
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-bold text-white mb-4 fa-text">تئوری، آکوردها و توالی‌ها</h3>
+                        <h3 class="text-2xl font-bold text-white mb-4 en-text">Theory, Chords & Progressions</h3>
+                        <p class="text-tara-textMuted text-lg leading-relaxed fa-text">
+                            تولید خودکار درجات گام، فرمول‌های فاصله‌ای و آکوردهای دیاتونیک. توالی‌های معروف آکورد (مانند Pop، Jazz، Blues) را در گام انتخابی کشف کنید. با کلیک روی هر آکورد، صدای آن را بشنوید و الگوهای آن را روی دسته‌ی گیتار ببینید.
+                        </p>
+                        <p class="text-tara-textMuted text-lg leading-relaxed en-text">
+                            Auto-generate scale degrees, interval formulas, and diatonic chords. Explore popular chord progressions (Pop, Jazz, Blues) in your chosen key. Click any chord to hear it and see its voicings mapped out.
+                        </p>
+                    </div>
+                    <div class="flex-1 w-full">
+                        <img src="img/Scale.jpg" alt="Music Theory Chart" class="rounded-xl img-glow w-full">
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="flex flex-col lg:flex-row items-center gap-12 mb-24">
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-bold text-white mb-4 fa-text">تطبیق با کلاویه پیانو</h3>
+                        <h3 class="text-2xl font-bold text-white mb-4 en-text">Piano Keyboard Reference</h3>
+                        <p class="text-tara-textMuted text-lg leading-relaxed fa-text">
+                            ارتباط تصویری مستقیم بین نت‌های روی فرت‌بورد و کلاویه‌های پیانو. با نگه‌داشتن موس روی نت‌های گیتار، معادل آن‌ها را روی پیانو ببینید و درک عمیق‌تری از ساختار نت‌ها پیدا کنید.
+                        </p>
+                        <p class="text-tara-textMuted text-lg leading-relaxed en-text">
+                            Establish a direct visual connection between fretboard positions and piano keys. Hover over notes on the guitar to see their exact counterparts illuminated on the piano, deepening your structural understanding.
+                        </p>
+                    </div>
+                    <div class="flex-1 w-full">
+                        <img src="img/PianoKeys.jpg" alt="Piano Keyboard Reference" class="rounded-xl img-glow w-full">
+                    </div>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="flex flex-col lg:flex-row-reverse items-center gap-12 mb-16">
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-bold text-white mb-4 fa-text">نت‌خوانی استاندارد و تبلچر</h3>
+                        <h3 class="text-2xl font-bold text-white mb-4 en-text">Standard Notation & Tablature</h3>
+                        <p class="text-tara-textMuted text-lg leading-relaxed fa-text">
+                            گام‌ها و آکوردها به صورت همزمان روی خطوط حامل استاندارد و تبلچر (TAB) گیتار ترسیم می‌شوند. این ابزار کمک بزرگی برای تقویت مهارت نت‌خوانی و پیدا کردن جایگاه نت‌ها روی دسته‌ی ساز است.
+                        </p>
+                        <p class="text-tara-textMuted text-lg leading-relaxed en-text">
+                            Scales and chords are simultaneously drawn on standard musical staves and guitar TABs. This visual aid bridges the gap between reading sheet music and fretboard navigation.
+                        </p>
+                    </div>
+                    <div class="flex-1 w-full">
+                        <img src="img/NotationAndTabs.jpg" alt="Notation and Tablature" class="rounded-xl img-glow w-full">
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Tools Grid -->
+        <section class="py-16 bg-tara-card border-y border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl font-bold text-white fa-text">جعبه ابزار داخلی</h2>
+                    <h2 class="text-2xl font-bold text-white en-text">Built-in Utilities</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Audio -->
+                    <div class="bg-tara-dark p-6 rounded-2xl border border-white/10 text-center feature-card">
+                        <div class="w-16 h-16 bg-tara-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-volume-up text-3xl text-tara-accent"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-white mb-2 fa-text">پخش صوتی دقیق</h4>
+                        <h4 class="text-lg font-bold text-white mb-2 en-text">Accurate Audio Playback</h4>
+                        <p class="text-sm text-tara-textMuted fa-text">با کلیک روی هر نت یا آکورد، صدای سنتز شده‌ی دقیق آن را بشنوید.</p>
+                        <p class="text-sm text-tara-textMuted en-text">Click any note or chord to hear its precise synthesized audio output.</p>
+                    </div>
+
+                    <!-- Tuner -->
+                    <div class="bg-tara-dark p-6 rounded-2xl border border-white/10 text-center feature-card">
+                        <div class="w-16 h-16 bg-tara-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-microphone text-3xl text-tara-accent"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-white mb-2 fa-text">تیونر کروماتیک</h4>
+                        <h4 class="text-lg font-bold text-white mb-2 en-text">Chromatic Tuner</h4>
+                        <p class="text-sm text-tara-textMuted fa-text">گیتار خود را به کمک میکروفون دستگاه، مستقیماً در مرورگر کوک کنید.</p>
+                        <p class="text-sm text-tara-textMuted en-text">Tune your guitar directly in the browser using your device's microphone.</p>
+                    </div>
+
+                    <!-- Metronome -->
+                    <div class="bg-tara-dark p-6 rounded-2xl border border-white/10 text-center feature-card">
+                        <div class="w-16 h-16 bg-tara-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-stopwatch text-3xl text-tara-accent"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-white mb-2 fa-text">مترونوم هوشمند</h4>
+                        <h4 class="text-lg font-bold text-white mb-2 en-text">Smart Metronome</h4>
+                        <p class="text-sm text-tara-textMuted fa-text">تنظیم تمپو (BPM) با بازخورد دیداری و شنیداری برای تمرین ریتم.</p>
+                        <p class="text-sm text-tara-textMuted en-text">Adjustable BPM with visual and audio feedback for rhythm practice.</p>
+                    </div>
+
+                    <!-- Export -->
+                    <div class="bg-tara-dark p-6 rounded-2xl border border-white/10 text-center feature-card">
+                        <div class="w-16 h-16 bg-tara-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-file-pdf text-3xl text-tara-accent"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-white mb-2 fa-text">خروجی PDF جزوه</h4>
+                        <h4 class="text-lg font-bold text-white mb-2 en-text">PDF Export</h4>
+                        <p class="text-sm text-tara-textMuted fa-text">با یک کلیک، تمام نمودارها و آکوردها را به صورت یک جزوه PDF ذخیره کنید.</p>
+                        <p class="text-sm text-tara-textMuted en-text">Export all current diagrams and charts into a printable PDF booklet with one click.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Bottom -->
+        <section class="py-20 text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-tara-accent opacity-5"></div>
+            <div class="relative z-10 max-w-3xl mx-auto px-4">
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 fa-text">آماده ارتقای دانش موسیقی خود هستید؟</h2>
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 en-text">Ready to elevate your music theory?</h2>
+                <p class="text-tara-textMuted mb-10 text-lg fa-text">تارا کاملاً رایگان، متن‌باز و اجرا شونده روی مرورگر است. نیازی به نصب هیچ نرم‌افزاری نیست.</p>
+                <p class="text-tara-textMuted mb-10 text-lg en-text">Tara is completely free, open-source, and runs directly in your browser. No installation required.</p>
+                <a href="app.html" class="inline-block px-10 py-4 bg-tara-accent hover:bg-tara-accentHover text-tara-dark font-bold text-xl rounded-full transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(253,184,39,0.3)]">
+                    <span class="fa-text">ورود به آزمایشگاه</span>
+                    <span class="en-text">Enter the Lab</span>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-tara-dark border-t border-white/10 py-8 text-center text-tara-textMuted">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="fa-text font-serif">توسعه یافته با <i class="fas fa-heart text-red-500 mx-1"></i> توسط سروش زنده‌دل</p>
+            <p class="en-text font-serif">Developed with <i class="fas fa-heart text-red-500 mx-1"></i> by Soroush Zendedel</p>
+            <p class="text-sm mt-2">© 2026 Tara GuitarLab. Open Source Project.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Language Toggle -->
+    <script>
+        function toggleLanguage() {
+            const htmlTag = document.documentElement;
+            const currentLang = htmlTag.getAttribute('lang');
+            
+            if (currentLang === 'fa') {
+                htmlTag.setAttribute('lang', 'en');
+                htmlTag.setAttribute('dir', 'ltr');
+            } else {
+                htmlTag.setAttribute('lang', 'fa');
+                htmlTag.setAttribute('dir', 'rtl');
+            }
+        }
+    </script>
+</body>
+</html>
