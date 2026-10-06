@@ -15,6 +15,23 @@
             if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1; ctx.stroke(); }
         }
 
+        function drawTeachingRoleBadge(ctx, x, y, role, radius = 9) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = role.color;
+            ctx.fill();
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = COLORS.bg;
+            ctx.stroke();
+            ctx.fillStyle = '#fff';
+            ctx.font = `bold ${Math.max(10, radius + 1)}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(role.marker, x, y + 0.5);
+            ctx.restore();
+        }
+
         // Draw each canvas view and maintain the hit regions used by pointer input.
         function drawNotation(notes = [], type = 'scale') {
             const ctx = notationCanvas.getContext('2d');
@@ -232,11 +249,18 @@
                ctx.fillStyle = isHovered ? COLORS.accent : COLORS.textSec; ctx.beginPath(); ctx.moveTo(225, centerY-10); ctx.lineTo(245, centerY); ctx.lineTo(225, centerY+10); ctx.fill();
                ctx.fillStyle = COLORS.text; ctx.textAlign = 'left'; ctx.font = 'bold 18px Arial'; ctx.fillText(p.name, 260, centerY);
                const seqText = p.degrees.map(d => { const dIdx = indices[d]; const info = identifyChord(dIdx, indices[(d+2)%7], indices[(d+4)%7]); return getNoteName(dIdx) + info.s; }).join("  ➜  ");
-               const seqObj = p.degrees.map(d => { return { notes: [{freq: getFrequency(indices[d], 3)}, {freq: getFrequency(indices[(d+2)%7], 3)}, {freq: getFrequency(indices[(d+4)%7], 3)}]}; });
+               const seqObj = p.degrees.map(d => {
+                   const chordRoot = indices[d];
+                   const chordQuality = identifyChord(chordRoot, indices[(d+2)%7], indices[(d+4)%7]).q.toLowerCase();
+                   return {
+                       label: `${getNoteName(chordRoot)} ${chordQuality}`,
+                       notes: [{freq: getFrequency(chordRoot, 3)}, {freq: getFrequency(indices[(d+2)%7], 3)}, {freq: getFrequency(indices[(d+4)%7], 3)}]
+                   };
+               });
                ctx.fillStyle = COLORS.textSec; ctx.textAlign = 'right'; ctx.font = '16px Arial'; ctx.fillText(seqText, 860, centerY);
                
                ctx.textBaseline = 'alphabetic'; // reset
-               theoryHitboxes.push({ type: 'prog', x: 550, y: centerY, w: 700, h: 50, index: pi, sequence: seqObj });
+               theoryHitboxes.push({ type: 'prog', x: 550, y: centerY, w: 700, h: 50, index: pi, name: p.name, sequence: seqObj });
             });
         }
 
@@ -265,7 +289,8 @@
                 }));
                 notesToShow.forEach((note) => activeGuitarMidi.add(note.midi));
             } else if (currentNotationType === 'chord') {
-                notesToShow = currentVoicingNotes.map(n => ({ ...n, s: 5 - n.s, isRoot: (n.midi%12 === selectedRootIndex) })); 
+                const chordRootIndex = currentVoicingNotes[0]?.midi % 12;
+                notesToShow = currentVoicingNotes.map(n => ({ ...n, s: 5 - n.s, isRoot: (n.midi % 12 === chordRootIndex) }));
             } else {
                 activeGuitarMidi.clear();
                 for(let s=0; s<6; s++) {
@@ -346,14 +371,17 @@
                 const isHovered = fbHovered && fbHovered.s === n.s && fbHovered.f === n.f;
                 const isPianoMatch = pianoHovered && pianoHovered.midi === n.midi;
                 const isNotationMatch = notationHovered && notationHovered.midi === n.midi;
+                const isLiveInput = liveInputMidi.has(n.midi);
                 const r = n.isRoot ? 16 : 13;
                 if(isHovered || isPianoMatch || isNotationMatch) { ctx.beginPath(); ctx.arc(x, y, r+5, 0, Math.PI*2); ctx.fillStyle = isDark ? 'rgba(212, 175, 55, 0.6)' : 'rgba(253, 184, 39, 0.5)'; ctx.fill(); }
+                if (isLiveInput) { ctx.beginPath(); ctx.arc(x, y, r + 5, 0, Math.PI * 2); ctx.strokeStyle = '#00a896'; ctx.lineWidth = 3; ctx.stroke(); }
                 ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2);
                 if (showOctaves) { const oct = Math.floor(n.midi/12)-1; ctx.fillStyle = OCTAVE_COLORS[oct] || COLORS.noteOther; } 
                 else { ctx.fillStyle = n.isRoot ? COLORS.noteRoot : ((isHovered || isPianoMatch) ? '#444' : COLORS.noteOther); }
                 if (n.isPracticeTarget) ctx.fillStyle = '#00b894';
                 if (n.isScaleChoice) ctx.fillStyle = n.isScaleTarget ? '#00b894' : n.isSelected ? COLORS.noteRoot : COLORS.noteOther;
-                ctx.fill(); ctx.fillStyle = (showOctaves || n.isRoot) ? 'white' : COLORS.noteText; ctx.font = 'bold 12px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
+                if (isLiveInput) ctx.fillStyle = '#00a896';
+                ctx.fill(); ctx.fillStyle = (showOctaves || n.isRoot || isLiveInput) ? 'white' : COLORS.noteText; ctx.font = 'bold 12px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
                 if (n.isPracticeTarget) { ctx.strokeStyle = '#006d58'; ctx.lineWidth = 3; ctx.stroke(); }
                 if (n.isScaleChoice && n.isScaleTarget) { ctx.strokeStyle = '#006d58'; ctx.lineWidth = 3; ctx.stroke(); }
                 const hideAnswerLabels = (
@@ -365,6 +393,19 @@
                 }
                 fbHitboxes.push({ type: 'note', x, y, radius: r, s: n.s, f: n.f, midi: n.midi, noteName: n.note, freq: midiToFreq(n.midi) });
             });
+
+            // Live inputs are shown at every matching fret, including notes outside the selected scale.
+            for (let string = 0; string < 6; string++) {
+                for (let fret = 0; fret <= 24; fret++) {
+                    const midi = OPEN_STRING_MIDI[5 - string] + fret;
+                    if (!liveInputMidi.has(midi) || notesToShow.some((note) => note.s === string && note.f === fret)) continue;
+                    const x = nutX + fret * fretGap - (fret === 0 ? 20 : fretGap / 2);
+                    const y = stringY + string * stringGap;
+                    ctx.beginPath(); ctx.arc(x, y, 13, 0, Math.PI * 2); ctx.fillStyle = '#00a896'; ctx.fill();
+                    ctx.fillStyle = '#fff'; ctx.font = 'bold 11px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                    ctx.fillText(getNoteName(midi % 12), x, y);
+                }
+            }
 
             if (teachingModeEnabled) {
                 const hitPositions = new Set(fbHitboxes.map((hitbox) => `${hitbox.s}:${hitbox.f}`));
@@ -409,11 +450,7 @@
                     ctx.textBaseline = 'middle';
                     ctx.fillText(getNoteName(marker.midi % 12), x, y);
                 }
-                ctx.fillStyle = role.color;
-                ctx.font = 'bold 9px Arial';
-                ctx.textAlign = 'left';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(role.marker, x + 14, y - 14);
+                drawTeachingRoleBadge(ctx, x + 15, y - 15, role, 9);
             });
         }
 
@@ -424,19 +461,19 @@
             for (let m = startMidi; m <= endMidi; m++) {
                 const noteVal = m % 12; const isBlack = [1, 3, 6, 8, 10].includes(noteVal);
                 if (!isBlack) {
-                    const isActive = activeGuitarMidi.has(m); const isHovered = pianoHovered && pianoHovered.midi === m; const isGuitarMatch = fbHovered && fbHovered.midi === m; const isNotationMatch = notationHovered && notationHovered.midi === m; const oct = Math.floor(m / 12) - 1; const noteName = getNoteName(noteVal);
+                    const isActive = activeGuitarMidi.has(m); const isLive = liveInputMidi.has(m); const isHovered = pianoHovered && pianoHovered.midi === m; const isGuitarMatch = fbHovered && fbHovered.midi === m; const isNotationMatch = notationHovered && notationHovered.midi === m; const oct = Math.floor(m / 12) - 1; const noteName = getNoteName(noteVal);
                     const teachingAnnotation = getTeachingAnnotationForMidi(m);
                     ctx.fillStyle = isHovered || isGuitarMatch || isNotationMatch ? '#ddd'
-                        : teachingAnnotation ? getTeachingRole(teachingAnnotation.role).color
+                        : isLive ? '#00a896'
+                            : teachingAnnotation ? getTeachingRole(teachingAnnotation.role).color
                             : isActive ? (showOctaves ? OCTAVE_COLORS[oct] : COLORS.noteRoot)
                                 : isDark ? '#333' : '#fcfcfc';
                     ctx.strokeStyle = COLORS.pianoBorder; ctx.lineWidth = 1; if (noteVal === 0) { ctx.lineWidth = 3; ctx.strokeStyle = isDark ? '#888' : '#333'; }
                     ctx.fillRect(xPos, 0, keyWidth, keyHeight); ctx.strokeRect(xPos, 0, keyWidth, keyHeight); ctx.lineWidth = 1; 
                     pianoHitboxes.push({ type: 'pianoKey', x: xPos, y: 0, w: keyWidth, h: keyHeight, midi: m, note: noteName, oct: oct, isBlack: false });
-                    if (isActive || teachingAnnotation || isHovered || isGuitarMatch || isNotationMatch || noteVal === 0) { ctx.fillStyle = (isActive && showOctaves) || teachingAnnotation ? 'white' : (isDark ? '#eee' : '#444'); ctx.font = (noteVal === 0 && !isActive) ? 'bold 14px Arial' : 'bold 12px Arial'; ctx.textAlign = 'center'; let label = noteName; if (showOctaves || noteVal === 0) label += oct; ctx.fillText(label, xPos + keyWidth/2, keyHeight - 15); }
+                    if (isActive || isLive || teachingAnnotation || isHovered || isGuitarMatch || isNotationMatch || noteVal === 0) { ctx.fillStyle = (isActive && showOctaves) || teachingAnnotation || isLive ? 'white' : (isDark ? '#eee' : '#444'); ctx.font = (noteVal === 0 && !isActive) ? 'bold 14px Arial' : 'bold 12px Arial'; ctx.textAlign = 'center'; let label = noteName; if (showOctaves || noteVal === 0) label += oct; ctx.fillText(label, xPos + keyWidth/2, keyHeight - 15); }
                     if (teachingAnnotation) {
-                        ctx.fillStyle = '#fff'; ctx.font = 'bold 10px Arial'; ctx.textAlign = 'center';
-                        ctx.fillText(getTeachingRole(teachingAnnotation.role).marker, xPos + keyWidth / 2, 18);
+                        drawTeachingRoleBadge(ctx, xPos + keyWidth / 2, 18, getTeachingRole(teachingAnnotation.role), 9);
                     }
                     xPos += keyWidth;
                 }
@@ -445,17 +482,17 @@
             for (let m = startMidi; m <= endMidi; m++) {
                 const noteVal = m % 12; const isBlack = [1, 3, 6, 8, 10].includes(noteVal);
                 if (!isBlack) { xPos += keyWidth; } else {
-                    const bx = xPos - (blackKeyWidth / 2); const isActive = activeGuitarMidi.has(m); const isHovered = pianoHovered && pianoHovered.midi === m; const isGuitarMatch = fbHovered && fbHovered.midi === m; const isNotationMatch = notationHovered && notationHovered.midi === m; const oct = Math.floor(m / 12) - 1; const noteName = getNoteName(noteVal);
+                    const bx = xPos - (blackKeyWidth / 2); const isActive = activeGuitarMidi.has(m); const isLive = liveInputMidi.has(m); const isHovered = pianoHovered && pianoHovered.midi === m; const isGuitarMatch = fbHovered && fbHovered.midi === m; const isNotationMatch = notationHovered && notationHovered.midi === m; const oct = Math.floor(m / 12) - 1; const noteName = getNoteName(noteVal);
                     const teachingAnnotation = getTeachingAnnotationForMidi(m);
                     ctx.fillStyle = isHovered || isGuitarMatch || isNotationMatch ? '#666'
-                        : teachingAnnotation ? getTeachingRole(teachingAnnotation.role).color
+                        : isLive ? '#00a896'
+                            : teachingAnnotation ? getTeachingRole(teachingAnnotation.role).color
                             : isActive ? (showOctaves ? OCTAVE_COLORS[oct] : COLORS.noteRoot) : COLORS.pianoBlack;
                     ctx.fillRect(bx, 0, blackKeyWidth, blackKeyHeight); ctx.strokeStyle = isDark ? '#555' : '#000'; ctx.strokeRect(bx, 0, blackKeyWidth, blackKeyHeight);
                     pianoHitboxes.push({ type: 'pianoKey', x: bx, y: 0, w: blackKeyWidth, h: blackKeyHeight, midi: m, note: noteName, oct: oct, isBlack: true });
-                    if (isActive || teachingAnnotation || isHovered || isGuitarMatch || isNotationMatch) { ctx.fillStyle = 'white'; ctx.font = 'bold 10px Arial'; ctx.textAlign = 'center'; ctx.fillText(noteName, bx + blackKeyWidth/2, blackKeyHeight - 8); }
+                    if (isActive || isLive || teachingAnnotation || isHovered || isGuitarMatch || isNotationMatch) { ctx.fillStyle = 'white'; ctx.font = 'bold 10px Arial'; ctx.textAlign = 'center'; ctx.fillText(noteName, bx + blackKeyWidth/2, blackKeyHeight - 8); }
                     if (teachingAnnotation) {
-                        ctx.fillStyle = '#fff'; ctx.font = 'bold 9px Arial'; ctx.textAlign = 'center';
-                        ctx.fillText(getTeachingRole(teachingAnnotation.role).marker, bx + blackKeyWidth / 2, 14);
+                        drawTeachingRoleBadge(ctx, bx + blackKeyWidth / 2, 14, getTeachingRole(teachingAnnotation.role), 8);
                     }
                 }
             }

@@ -1,5 +1,125 @@
 // Wire page controls after the app has initialized its canvases and selectors.
 const SECTION_VISIBILITY_STORAGE_KEY = 'tara.visibleSections.v1';
+const SECTION_HINT_DURATION_MS = 5000;
+const sectionRestoreHintTimers = new WeakMap();
+let activeToolbarPanel = null;
+
+function setToolbarPanel(panelName, forceOpen = false) {
+    const shouldOpen = forceOpen || activeToolbarPanel !== panelName;
+    activeToolbarPanel = shouldOpen ? panelName : null;
+    document.querySelectorAll('[data-toolbar-tab]').forEach((tab) => {
+        const selected = shouldOpen && tab.dataset.toolbarTab === panelName;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.setAttribute('aria-expanded', String(selected));
+    });
+    document.querySelectorAll('.toolbar-panel').forEach((panel) => {
+        panel.hidden = !shouldOpen || panel.id !== `toolbarPanel${panelName[0].toUpperCase()}${panelName.slice(1)}`;
+    });
+}
+
+function initializeToolbarTabs() {
+    document.querySelectorAll('[data-toolbar-tab]').forEach((tab) => {
+        tab.addEventListener('click', () => setToolbarPanel(tab.dataset.toolbarTab));
+    });
+    document.addEventListener('click', (event) => {
+        if (activeToolbarPanel && !(event.target instanceof Element && event.target.closest('.app-toolbar'))) {
+            setToolbarPanel(activeToolbarPanel);
+        }
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && activeToolbarPanel) setToolbarPanel(activeToolbarPanel);
+    });
+    setToolbarPanel('tools', true);
+}
+
+function addSectionDismissButton(section) {
+    const heading = section.querySelector('.canvas-panel-heading, .practice-heading, .teaching-panel-heading');
+    const container = section.dataset.customizableSection === 'teacher'
+        ? section.querySelector('.teaching-heading-actions')
+        : heading;
+    if (!heading || !container || container.querySelector('.section-dismiss-button')) return;
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'section-dismiss-button';
+    button.setAttribute('aria-label', `Hide ${section.dataset.sectionLabel}`);
+    button.title = `Hide ${section.dataset.sectionLabel}`;
+    button.textContent = '×';
+    button.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setSectionVisibility(section, false);
+    });
+    container.append(button);
+}
+
+function showSectionRestoreHint(section) {
+    const existingHint = [...document.querySelectorAll('.section-restore-hint')]
+        .find((hint) => hint.dataset.restoresSection === section.id);
+    if (existingHint) {
+        window.clearTimeout(sectionRestoreHintTimers.get(existingHint));
+        sectionRestoreHintTimers.set(existingHint, window.setTimeout(() => existingHint.remove(), SECTION_HINT_DURATION_MS));
+        return;
+    }
+
+    const hint = document.createElement('div');
+    hint.className = 'section-restore-hint';
+    hint.dataset.restoresSection = section.id;
+    hint.setAttribute('role', 'status');
+
+    const message = document.createElement('span');
+    message.textContent = `${section.dataset.sectionLabel} is hidden. Restore it from Customize visible sections.`;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = 'Customize visible sections';
+    button.addEventListener('click', () => openSectionCustomization(section));
+
+    hint.append(message, button);
+    section.after(hint);
+    sectionRestoreHintTimers.set(hint, window.setTimeout(() => hint.remove(), SECTION_HINT_DURATION_MS));
+}
+
+function removeSectionRestoreHint(section) {
+    document.querySelectorAll('.section-restore-hint').forEach((hint) => {
+        if (hint.dataset.restoresSection === section.id) {
+            window.clearTimeout(sectionRestoreHintTimers.get(hint));
+            hint.remove();
+        }
+    });
+}
+
+function openSectionCustomization(section) {
+    const preferences = document.getElementById('viewPreferences');
+    const control = document.querySelector(`input[aria-controls="${section.id}"]`);
+    if (!preferences || !control) return;
+    setToolbarPanel('view', true);
+    preferences.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    window.setTimeout(() => control.focus({ preventScroll: true }), 250);
+}
+
+function resetAppPreferences() {
+    const confirmed = window.confirm(
+        'Restore all sections and default input/Teacher Tool settings? Saved teaching notes and practice progress will be kept.'
+    );
+    if (!confirmed) return;
+
+    try {
+        localStorage.removeItem(SECTION_VISIBILITY_STORAGE_KEY);
+        localStorage.removeItem('tara.computerKeyboardEnabled.v1');
+        const savedTeachingNotes = JSON.parse(localStorage.getItem(TEACHING_NOTES_STORAGE_KEY));
+        if (savedTeachingNotes && typeof savedTeachingNotes === 'object') {
+            localStorage.setItem(TEACHING_NOTES_STORAGE_KEY, JSON.stringify({
+                annotations: Array.isArray(savedTeachingNotes.annotations) ? savedTeachingNotes.annotations : [],
+                visible: true,
+                matchOctaves: false,
+                role: 'note'
+            }));
+        }
+    } catch {
+        // Reload still restores in-memory defaults if browser storage is unavailable.
+    }
+    window.location.reload();
+}
 
 function initializeSectionVisibility() {
     const sections = [...document.querySelectorAll('[data-customizable-section]')];
@@ -17,6 +137,7 @@ function initializeSectionVisibility() {
         const sectionKey = section.dataset.customizableSection;
         const sectionId = `custom-section-${sectionKey}`;
         section.id = sectionId;
+        addSectionDismissButton(section);
 
         const label = document.createElement('label');
         label.className = 'section-visibility-option';
@@ -43,6 +164,7 @@ function initializeSectionVisibility() {
         sections.forEach((section) => setSectionVisibility(section, true, false));
         saveSectionVisibility(sections);
     });
+    document.getElementById('resetAppPreferences').addEventListener('click', resetAppPreferences);
     document.getElementById('showFretboardSection').addEventListener('click', () => {
         const fretboardToggle = controls.querySelector('input[aria-controls="custom-section-fretboard"]');
         if (fretboardToggle && !fretboardToggle.checked) {
@@ -58,12 +180,21 @@ function initializeSectionVisibility() {
 function setSectionVisibility(section, visible, save = true) {
     section.hidden = !visible;
     section.classList.toggle('is-user-hidden', !visible);
+    if (visible) removeSectionRestoreHint(section);
+    else showSectionRestoreHint(section);
 
     const toggle = document.querySelector(`input[aria-controls="${section.id}"]`);
     if (toggle) toggle.checked = visible;
 
     if (!visible && section.dataset.customizableSection === 'practice') {
         stopPracticeMicrophone();
+    }
+    if (!visible && section.dataset.customizableSection === 'teacher') {
+        const teachingToggle = document.getElementById('teachingModeToggle');
+        if (teachingToggle?.checked) {
+            teachingToggle.checked = false;
+            teachingToggle.dispatchEvent(new Event('change'));
+        }
     }
 
     const sections = [...document.querySelectorAll('[data-customizable-section]')];
@@ -228,6 +359,7 @@ function initializeMobileSectionExpansion() {
 }
 
 window.addEventListener('load', () => {
+    initializeToolbarTabs();
     document.getElementById('refreshButton').addEventListener('click', generateVisuals);
     document.getElementById('downloadPdfButton').addEventListener('click', downloadPDF);
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
@@ -246,6 +378,7 @@ window.addEventListener('load', () => {
 
     initializeTeachingNotes();
     initializePracticeLab();
+    initializeLiveInputs();
     initializeSectionVisibility();
     initializeMobileSectionExpansion();
 });

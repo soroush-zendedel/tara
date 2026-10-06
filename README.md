@@ -4,6 +4,8 @@
 [*برای مطالعه توضیحات فارسی به پایین صفحه مراجعه کنید 🇮🇷*](#توضیحات-فارسی)  
 🔗 [**Live Demo / اجرای آنلاین**](https://soroush-zendedel.github.io/tara/)
 
+**Current release:** `v1.0.0` · [What's new](https://soroush-zendedel.github.io/tara/#release-notes) · [Changelog](CHANGELOG.md)
+
 ## **✨ Features**
 
 * **Interactive Fretboard:** Visualize any scale or chord across the entire guitar fretboard. Toggle between different CAGED positions and highlight octaves.  
@@ -15,7 +17,9 @@
 * **Chromatic Tuner:** Built-in guitar tuner using your device's microphone (Web Audio API).  
 * **Smart Metronome:** Adjustable BPM with visual and audio feedback.  
 * **PDF Export:** Generate and download a comprehensive PDF booklet of your current scales and charts with a single click.  
-* **Interactive Practice:** Calculate fretboard, scale, diatonic chord, ear-training, and microphone exercises; includes a 20-lesson guide linked to the app's tools and locally saved progress.
+* **Interactive Practice:** Try note-finding, scale-building, interval, chord, ear-training, and microphone exercises; includes 20 guided lessons linked to the app's tools and locally saved progress.
+* **Teacher Notes:** Mark and label notes on the guitar or piano, play the selection in order, step through it, and undo or redo edits.
+* **Live Input:** Play notes with computer keys or a connected MIDI keyboard; use keyboard shortcuts for scales, chords, fretboard positions, and tempo.
 * **Customizable Workspace:** Hide or restore learning, theory, notation, fretboard, and piano sections; preferences persist on the current device.
 * **Mobile Instrument View:** Open instrument and theory diagrams in an immersive view with landscape orientation support and readable, scrollable detail.
 * **Dark/Light Theme:** Fully responsive UI with seamless theme switching.
@@ -97,6 +101,8 @@ Distributed under the MIT License. See LICENSE for more information.
 * **مترونوم هوشمند:** دارای بازخورد دیداری و شنیداری با قابلیت تنظیم تمپو.  
 * **خروجی PDF جزوه:** ذخیره تمام نمودارها و آموزش‌های روی صفحه در قالب یک فایل PDF با یک کلیک.  
 * **تمرین تعاملی:** تمرین دسته، ساخت گام، آکوردهای دیاتونیک، تشخیص شنیداری، تمرین با میکروفون و درس‌های کوتاه همراه توضیح پاسخ و ذخیره‌ی محلی پیشرفت.
+* **ابزار مدرس:** علامت‌گذاری و نام‌گذاری نت‌ها روی گیتار یا پیانو، پخش ترتیبی، حرکت بین نت‌ها و بازگردانی تغییرها.
+* **ورودی زنده:** نواختن نت‌ها با صفحه‌کلید کامپیوتر یا کیبورد MIDI و استفاده از میانبرها برای انتخاب گام، آکورد، پوزیشن و تمپو.
 * **تم تاریک/روشن:** رابط کاربری مدرن و سازگار با انواع صفحات نمایش.
 
 ### **⚙️ نحوه اجرا (اجرای محلی)**

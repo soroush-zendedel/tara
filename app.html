@@ -3,44 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Guitar Theory &amp; Fretboard Tool | Tara GuitarLab</title>
-    <meta name="description" content="Explore guitar scales, chords, fretboard positions, piano notes, and standard notation with Tara GuitarLab’s free interactive music theory tools and practice lessons.">
+    <title>Guitar Music Theory &amp; Fretboard Tools | Tara GuitarLab</title>
+    <meta name="description" content="Learn guitar music theory with interactive scales, chords, fretboard and piano, Circle of Fifths, tuner, metronome, and guided practice. Free, browser-based tools.">
     <link rel="canonical" href="https://soroush-zendedel.github.io/tara/app.html">
     <meta name="theme-color" content="#f0f2f5">
-    <meta name="author" content="Tara - GuitarLab">
+    <meta name="author" content="Soroush Zendedel">
     <meta name="robots" content="index, follow">
 
     <meta property="og:locale" content="en_US">
     <meta property="og:site_name" content="Tara GuitarLab">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://soroush-zendedel.github.io/tara/app.html">
-    <meta property="og:title" content="Interactive Guitar Theory &amp; Fretboard Tool | Tara GuitarLab">
-    <meta property="og:description" content="Explore guitar scales, chords, fretboard positions, piano notes, and standard notation with free interactive tools and guided practice.">
+    <meta property="og:title" content="Guitar Music Theory &amp; Fretboard Tools | Tara GuitarLab">
+    <meta property="og:description" content="Learn guitar music theory with interactive scales, chords, fretboard and piano, Circle of Fifths, tuner, metronome, and guided practice. Free, browser-based tools.">
     <meta property="og:image" content="https://soroush-zendedel.github.io/tara/img/preview.jpg">
     <meta property="og:image:alt" content="Tara GuitarLab interactive guitar fretboard and music theory tools">
+    <meta property="og:image:type" content="image/jpeg">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Interactive Guitar Theory &amp; Fretboard Tool | Tara GuitarLab">
-    <meta name="twitter:description" content="Explore guitar scales, chords, fretboard positions, piano notes, and standard notation with free interactive tools and guided practice.">
+    <meta name="twitter:title" content="Guitar Music Theory &amp; Fretboard Tools | Tara GuitarLab">
+    <meta name="twitter:description" content="Learn guitar music theory with interactive scales, chords, fretboard and piano, Circle of Fifths, tuner, metronome, and guided practice. Free, browser-based tools.">
     <meta name="twitter:image" content="https://soroush-zendedel.github.io/tara/img/preview.jpg">
+    <meta name="twitter:image:alt" content="Tara GuitarLab interactive guitar fretboard and music theory tools">
 
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "Tara",
-      "alternateName": "GuitarLab",
+      "name": "Tara GuitarLab Guitar Music Theory Tools",
+      "alternateName": "Tara GuitarLab",
+      "softwareVersion": "1.0.0",
       "url": "https://soroush-zendedel.github.io/tara/app.html",
-      "description": "A free interactive guitar and music theory learning app for exploring scales, chords, fretboard positions, piano notes, notation, and ear training.",
+      "description": "A free interactive guitar music theory lab with linked fretboard and piano views, guided lessons and practice, teacher note sequences, and live computer-keyboard or MIDI input.",
       "applicationCategory": "EducationalApplication, MusicApplication",
       "operatingSystem": "Any",
       "browserRequirements": "Requires a modern web browser",
       "inLanguage": "en",
       "isAccessibleForFree": true,
-      "featureList": "Interactive guitar fretboard, scale and chord visualization, piano reference, standard notation and tablature, ear training, tuner, metronome, and PDF export",
-      "author": {
+      "featureList": "Interactive guitar fretboard, scale and chord visualization, Circle of Fifths, piano reference, standard notation and tablature, guided lessons, ear training, teacher annotations, computer-keyboard and MIDI input, tuner, metronome, and PDF export",
+      "creator": {
+        "@type": "Person",
+        "name": "Soroush Zendedel",
+        "url": "https://soroush-zendedel.github.io/"
+      },
+      "publisher": {
         "@type": "Organization",
-        "name": "Tara",
+        "name": "Tara GuitarLab",
         "url": "https://soroush-zendedel.github.io/tara/",
         "sameAs": "https://github.com/soroush-zendedel/tara"
       },
@@ -107,37 +115,81 @@
         Click any <span style="color: var(--accent);">Note</span> or <span style="color: var(--accent);">Chord</span> to hear it • Tap Chord rows to cycle Voicings
     </p>
 
-    <div class="controls-wrapper">
-        <div class="main-controls">
-            <select id="rootSelect"></select>
-            <select id="scaleSelect"></select>
-            <button class="primary" id="refreshButton" type="button"><i class="fas fa-sync"></i> Refresh</button>
-            <button id="downloadPdfButton" type="button"><i class="fas fa-file-pdf"></i> PDF</button>
-            <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme"><i id="themeIcon" class="fas fa-moon"></i></button>
+    <nav class="app-toolbar" aria-label="Application toolbar">
+        <div class="toolbar-tabs" role="tablist" aria-label="App controls">
+            <button class="toolbar-tab" id="toolbarTabView" type="button" role="tab" aria-selected="false" aria-expanded="false" aria-controls="toolbarPanelView" data-toolbar-tab="view"><i class="fas fa-eye" aria-hidden="true"></i> View</button>
+            <button class="toolbar-tab" id="toolbarTabKey" type="button" role="tab" aria-selected="false" aria-expanded="false" aria-controls="toolbarPanelKey" data-toolbar-tab="key"><i class="fas fa-music" aria-hidden="true"></i> Key &amp; Scale</button>
+            <button class="toolbar-tab" id="toolbarTabTools" type="button" role="tab" aria-selected="true" aria-expanded="true" aria-controls="toolbarPanelTools" data-toolbar-tab="tools"><i class="fas fa-sliders-h" aria-hidden="true"></i> Tools</button>
+            <button class="toolbar-tab" id="toolbarTabShortcuts" type="button" role="tab" aria-selected="false" aria-expanded="false" aria-controls="toolbarPanelShortcuts" data-toolbar-tab="shortcuts"><i class="fas fa-keyboard" aria-hidden="true"></i> Shortcuts</button>
         </div>
 
-        <div class="tools-bar">
-            <button id="tunerToggle" type="button" style="background:var(--bg-body); color:var(--text-main); width:100px; justify-content:center;"><i class="fas fa-microphone"></i> Tuner</button>
-            <div class="metro-group">
-                <div id="metroLight" class="metro-light"></div>
-                <input type="number" id="bpmInput" value="100" min="40" max="240">
-                <span style="font-size:13px; font-weight:600; color:var(--text-sec);">BPM</span>
-                <button id="metroBtn" class="primary" type="button" style="min-width:80px; justify-content:center;">Start</button>
+        <div class="toolbar-panel" id="toolbarPanelView" role="tabpanel" aria-labelledby="toolbarTabView" hidden>
+            <div class="toolbar-panel-heading"><strong>View &amp; layout</strong><span>Choose what stays on screen</span></div>
+            <div class="view-toolbar-row">
+                <label class="toggle-wrapper octave-view-toggle" for="octaveSwitch">
+                    <span>Octave colors</span>
+                    <span class="switch"><input type="checkbox" id="octaveSwitch" checked><span class="slider"></span></span>
+                </label>
+                <section class="view-preferences" id="viewPreferences" aria-labelledby="viewPreferencesTitle">
+                    <h3 id="viewPreferencesTitle"><i class="fas fa-sliders-h" aria-hidden="true"></i> Customize visible sections</h3>
+                    <div class="view-preferences-content">
+                        <p>Hide panels you do not need. Your choices are saved on this device.</p>
+                        <div id="sectionVisibilityControls" class="section-visibility-controls" aria-label="Visible app sections"></div>
+                        <div class="view-preferences-footer">
+                            <span id="viewVisibilityStatus" aria-live="polite">All sections shown</span>
+                            <div class="view-preferences-actions">
+                                <button id="showAllSections" type="button">Show all sections</button>
+                                <button id="resetAppPreferences" type="button">Reset app preferences</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
 
-        <details class="view-preferences">
-            <summary><i class="fas fa-sliders-h" aria-hidden="true"></i> Customize visible sections</summary>
-            <div class="view-preferences-content">
-                <p>Hide panels you do not need. Your choices are saved on this device.</p>
-                <div id="sectionVisibilityControls" class="section-visibility-controls" aria-label="Visible app sections"></div>
-                <div class="view-preferences-footer">
-                    <span id="viewVisibilityStatus" aria-live="polite">All sections shown</span>
-                    <button id="showAllSections" type="button">Show all sections</button>
+        <div class="toolbar-panel" id="toolbarPanelKey" role="tabpanel" aria-labelledby="toolbarTabKey" hidden>
+            <div class="toolbar-panel-heading"><strong>Key &amp; scale</strong><span>Update the shared fretboard, piano, and theory views</span></div>
+            <div class="main-controls">
+                <label class="toolbar-field"><span>Root</span><select id="rootSelect" aria-label="Root note"></select></label>
+                <label class="toolbar-field"><span>Scale</span><select id="scaleSelect" aria-label="Scale"></select></label>
+                <button class="primary" id="refreshButton" type="button"><i class="fas fa-sync" aria-hidden="true"></i> Refresh</button>
+            </div>
+        </div>
+
+        <div class="toolbar-panel" id="toolbarPanelTools" role="tabpanel" aria-labelledby="toolbarTabTools">
+            <div class="toolbar-panel-heading"><strong>Tools</strong><span>Audio, tuning, and export</span></div>
+            <div class="tools-bar">
+                <button id="tunerToggle" type="button"><i class="fas fa-microphone" aria-hidden="true"></i> Tuner</button>
+                <div class="metro-group">
+                    <div id="metroLight" class="metro-light"></div>
+                    <span id="metroBeatVisual" class="metro-beat-visual" aria-hidden="true">BEAT</span>
+                    <input type="number" id="bpmInput" value="100" min="40" max="240" aria-label="Tempo in beats per minute">
+                    <span class="bpm-label">BPM</span>
+                    <button id="metroBtn" class="primary" type="button">Start</button>
                 </div>
+                <label class="live-keyboard-toggle" for="computerKeyboardToggle">
+                    <input id="computerKeyboardToggle" type="checkbox">
+                    <span>Computer keys</span>
+                </label>
+                <button id="midiConnectButton" type="button"><i class="fas fa-plug" aria-hidden="true"></i> Connect MIDI</button>
+                <select id="midiInputSelect" aria-label="MIDI input device" hidden></select>
+                <button id="downloadPdfButton" type="button"><i class="fas fa-file-pdf" aria-hidden="true"></i> Export PDF</button>
+                <button id="themeToggle" type="button" aria-label="Toggle color theme"><i id="themeIcon" class="fas fa-moon" aria-hidden="true"></i> Theme</button>
+                <span id="liveInputStatus" class="toolbar-status" role="status" aria-live="polite">Live input off</span>
             </div>
-        </details>
-    </div>
+        </div>
+
+        <div class="toolbar-panel" id="toolbarPanelShortcuts" role="tabpanel" aria-labelledby="toolbarTabShortcuts" hidden>
+            <div class="toolbar-panel-heading"><strong>Keyboard shortcuts</strong><span>Shortcuts work when focus is outside controls</span></div>
+            <div class="shortcut-grid">
+                <div><b>Play notes</b><span>Computer keys: QWERTYU / ZXCVBNM · sharps: 2 3 5 6 7 / S D G H J</span></div>
+                <div><b>Teaching</b><span>Ins toggle · Enter play marked sequence · ←/→ step · ↑ Redo · ↓ Undo · Delete clear</span></div>
+                <div><b>Guitar positions</b><span>Numpad 1–5 select · 0 or NumLock off: All · +/− next or previous</span></div>
+                <div><b>Tempo</b><span>Shift+Enter start/stop · Page Up/Down ±5 · ↑/↓ ±5 while running</span></div>
+                <div><b>Key and chords</b><span>Alt + upper rows: Minor · Alt + lower rows: Major · Ctrl: major chord · Shift: minor chord</span></div>
+            </div>
+        </div>
+    </nav>
 
     <section class="practice-panel" aria-labelledby="practiceTitle" data-customizable-section="practice" data-section-label="Learn by Doing">
         <div class="practice-heading">
@@ -204,17 +256,19 @@
         </div>
     </section>
 
-    <section class="teaching-panel" aria-labelledby="teachingNotesTitle">
+    <section class="teaching-panel" aria-labelledby="teachingNotesTitle" data-customizable-section="teacher" data-section-label="Teacher Tool">
         <div class="teaching-panel-heading">
-            <div>
+            <div class="teaching-heading-copy">
                 <p class="practice-eyebrow">TEACHER TOOL</p>
                 <h2 id="teachingNotesTitle">Teaching Notes</h2>
                 <p>Mark notes on the guitar or piano. Matching notes stay highlighted in both tools.</p>
             </div>
-            <label class="teaching-mode-control" for="teachingModeToggle">
-                <input id="teachingModeToggle" type="checkbox">
-                <span>Teaching Mode</span>
-            </label>
+            <div class="teaching-heading-actions">
+                <label class="teaching-mode-control" for="teachingModeToggle">
+                    <input id="teachingModeToggle" type="checkbox">
+                    <span>Teaching Mode</span>
+                </label>
+            </div>
         </div>
         <div class="teaching-controls" aria-describedby="teachingNotesStatus">
             <label for="teachingRoleSelect">Marker</label>
@@ -234,8 +288,10 @@
                 <span>Match all octaves</span>
             </label>
             <button id="undoTeachingNoteButton" type="button" disabled>Undo</button>
+            <button id="redoTeachingNoteButton" type="button" disabled>Redo</button>
             <button id="clearTeachingNotesButton" type="button" disabled>Clear notes</button>
         </div>
+        <p class="teaching-keyboard-hint">Ins toggles Teaching Mode · Enter plays marked notes in order · ←/→ previous or next · ↑ redo · ↓ undo (when metronome is stopped) · Delete resets Teacher Tool settings</p>
         <p id="teachingNotesStatus" class="teaching-status" role="status" aria-live="polite"></p>
     </section>
 
@@ -288,13 +344,6 @@
                     <button class="pos-btn" type="button" data-position="4">Pos 4</button>
                     <button class="pos-btn" type="button" data-position="5">Pos 5</button>
                 </div>
-                <div class="toggle-wrapper">
-                    <span>Octaves</span>
-                    <label class="switch">
-                        <input type="checkbox" id="octaveSwitch">
-                        <span class="slider"></span>
-                    </label>
-                </div>
             </div>
             <p class="instrument-hint">Open full screen and rotate to landscape for more room; swipe to explore all 24 frets.</p>
             <div class="diagram-scroll instrument-scroll" role="region" aria-label="Scrollable guitar fretboard" tabindex="0">
@@ -313,14 +362,31 @@
             </div>
         </div>
     </div>
-    <a href="https://soroush-zendedel.github.io/tara/" target="_blank" style="text-decoration:none; color:var(--text-sec); font-size:0.9rem; margin-top:15px;">Visit GitHub Page</a>
-    <div class="site-footer">© 2026 Soroush Zendedel</div>
+    <a href="https://soroush-zendedel.github.io/tara/" target="_blank" rel="noopener" style="text-decoration:none; color:var(--text-sec); font-size:0.9rem; margin-top:15px;">Visit Tara GuitarLab home</a>
+    <footer class="site-footer">© 2026 Tara GuitarLab · <a href="index.html#release-notes" aria-label="Read Tara GuitarLab release notes">v1.0.0</a> · Created by <a href="https://soroush-zendedel.github.io/" rel="author">Soroush Zendedel</a></footer>
+
+    <div id="teachingModeHint" class="teaching-mode-hint" role="status" aria-live="polite" hidden>
+        Teaching Mode is on · Mark notes on the fretboard or piano · Enter plays the sequence · Shift+Enter toggles the metronome · ↑/↓ changes its tempo while running
+    </div>
+    <aside id="playbackDock" class="playback-dock" aria-label="Recent playback" hidden>
+        <div class="playback-dock-heading">
+            <div class="playback-dock-copy">
+                <span class="playback-dock-eyebrow">RECENT PLAYBACK</span>
+                <strong id="playbackCurrent" aria-live="polite">Nothing played recently</strong>
+                <span id="playbackDetails" class="playback-dock-details"></span>
+            </div>
+            <button id="playbackDockDismiss" class="playback-dock-dismiss" type="button" aria-label="Dismiss recent playback">&times;</button>
+        </div>
+        <ol id="playbackSequence" class="playback-sequence" aria-label="Recent notes and selections"></ol>
+    </aside>
 
     <!-- These classic scripts share the app's top-level state and load in dependency order. -->
     <script src="assets/js/data/music-data.js"></script>
     <script src="assets/js/core/state.js"></script>
     <script src="assets/js/core/music-theory.js"></script>
+    <script src="assets/js/ui/playback-dock.js"></script>
     <script src="assets/js/core/audio.js"></script>
+    <script src="assets/js/ui/live-inputs.js"></script>
     <script src="assets/js/core/tuner.js"></script>
     <script src="assets/js/data/lesson-catalog.js"></script>
     <script src="assets/js/rendering/renderers.js"></script>

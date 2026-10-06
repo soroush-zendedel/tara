@@ -66,12 +66,14 @@
                     if (allVoicings.length > 0) {
                         const v = allVoicings[currentVoicingIndex % allVoicings.length];
                         currentVoicingNotes = v; currentNotationType = 'chord';
-                        playVoicing(v); drawAll();
+                        const chordRoot = found.triadIndices[0];
+                        const chordQuality = identifyChord(...found.triadIndices).q.toLowerCase();
+                        playVoicing(v, `${getNoteName(chordRoot)} ${chordQuality} chord`); drawAll();
                     }
                 }
                 else if (found.type === 'prog') {
                     const sequence = found.sequence.map(s => { return s; });
-                    playProgression(sequence);
+                    playProgression(sequence, found.name);
                     currentNotationType = 'scale'; drawAll();
                 }
                 else if (found.type === 'circle') {
@@ -87,6 +89,7 @@
                     currentNotationType = 'scale';
                     generateVisuals();
                     refreshPracticeForKeyChange();
+                    recordPlaybackEvent({ title: 'Selected scale', detail: `${getNoteName(selectedRootIndex)} ${selectedScaleName}` });
                 }
                 else if (found.freq || found.midi) {
                     let f = found.freq || midiToFreq(found.midi);
@@ -134,8 +137,18 @@
                 toggleTheme();
             }
 
-            rSel.addEventListener('change', (e) => { selectedRootIndex = parseInt(e.target.value); generateVisuals(); refreshPracticeForKeyChange(); });
-            sSel.addEventListener('change', (e) => { selectedScaleName = e.target.value; generateVisuals(); refreshPracticeForKeyChange(); });
+            rSel.addEventListener('change', (e) => {
+                selectedRootIndex = parseInt(e.target.value);
+                generateVisuals();
+                refreshPracticeForKeyChange();
+                recordPlaybackEvent({ title: 'Selected scale', detail: `${getNoteName(selectedRootIndex)} ${selectedScaleName}` });
+            });
+            sSel.addEventListener('change', (e) => {
+                selectedScaleName = e.target.value;
+                generateVisuals();
+                refreshPracticeForKeyChange();
+                recordPlaybackEvent({ title: 'Selected scale', detail: `${getNoteName(selectedRootIndex)} ${selectedScaleName}` });
+            });
 
             const attachEvents = (cvs, hitboxes, hoverVarName) => {
                 cvs.addEventListener('pointermove', e => {
