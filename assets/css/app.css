@@ -167,6 +167,31 @@
         .close-tuner { position: absolute; top: 20px; right: 25px; padding: 0; border: 0; background: transparent; font-size: 28px; cursor: pointer; color: var(--text-sec); }
         .site-footer { margin-top: 40px; width: 100%; text-align: center; padding: 25px; color: var(--text-sec); font-size: 0.9rem; }
         body.mobile-section-expanded { overflow: hidden; }
+        .canvas-wrapper.mobile-expanded,
+        .canvas-wrapper:fullscreen,
+        .canvas-wrapper:-webkit-full-screen {
+            position: fixed; inset: 0; z-index: 4000; display: flex; flex-direction: column;
+            width: 100vw !important; height: 100vh !important; height: 100dvh !important;
+            max-width: none; max-height: none; margin: 0; padding: 10px;
+            padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+            overflow: hidden; border: 0; border-radius: 0; background: var(--bg-body); text-align: center;
+        }
+        .canvas-wrapper.mobile-expanded .canvas-panel-heading,
+        .canvas-wrapper:fullscreen .canvas-panel-heading,
+        .canvas-wrapper:-webkit-full-screen .canvas-panel-heading { flex: 0 0 auto; }
+        .canvas-wrapper.mobile-expanded .diagram-scroll,
+        .canvas-wrapper:fullscreen .diagram-scroll,
+        .canvas-wrapper:-webkit-full-screen .diagram-scroll {
+            display: flex; flex: 1 1 auto; align-items: center; justify-content: center;
+            min-width: 0; min-height: 0; max-height: none; height: auto; overflow: hidden;
+            border: 1px solid var(--border-color); border-radius: 10px; background: var(--bg-body);
+        }
+        .canvas-wrapper.mobile-expanded .diagram-scroll canvas,
+        .canvas-wrapper:fullscreen .diagram-scroll canvas,
+        .canvas-wrapper:-webkit-full-screen .diagram-scroll canvas {
+            flex: 0 1 auto; width: auto !important; height: auto !important;
+            max-width: 100%; max-height: 100%; object-fit: contain;
+        }
         @media (max-width: 640px), (pointer: coarse) and (max-height: 600px) {
             body { padding: 12px; }
             .brand-link { font-size: 2rem; }
@@ -201,11 +226,10 @@
             .mobile-expand-button { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; min-height: 42px; padding: 8px 12px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-main); font-size: 0.8rem; }
             .mobile-expand-button i { color: var(--accent); }
             .diagram-hint { display: block; margin: -3px 0 8px; color: var(--text-sec); font-size: 0.78rem; line-height: 1.4; text-align: left; }
-            .diagram-scroll { max-height: 55vh; max-height: 55dvh; border: 1px solid var(--border-color); border-radius: 10px; background: var(--bg-body); touch-action: pan-x pan-y; }
-            .diagram-scroll canvas { max-width: none; touch-action: pan-x pan-y; }
-            #circleCanvas { width: 450px !important; }
-            #theoryCanvas { width: 1100px !important; }
-            #notationCanvas, #fretboardCanvas, #pianoCanvas { width: 1400px !important; }
+            .diagram-scroll { max-height: none; overflow: visible; border: 0; border-radius: 0; background: transparent; touch-action: pan-x pan-y; }
+            .diagram-scroll canvas { width: 100% !important; max-width: 100%; touch-action: pan-x pan-y; }
+            .instrument-scroll { overflow-x: auto; overflow-y: hidden; }
+            .instrument-scroll canvas { width: 1400px !important; max-width: none; }
             .instrument-hint { display: block; }
             .instrument-scroll { touch-action: pan-x pan-y; }
             .fretboard-toolbar { justify-content: flex-start; }
@@ -224,7 +248,17 @@
             .canvas-wrapper:-webkit-full-screen .canvas-panel-heading { flex: 0 0 auto; }
             .canvas-wrapper.mobile-expanded .diagram-scroll,
             .canvas-wrapper:fullscreen .diagram-scroll,
-            .canvas-wrapper:-webkit-full-screen .diagram-scroll { flex: 1 1 auto; min-height: 0; max-height: none; height: auto; }
+            .canvas-wrapper:-webkit-full-screen .diagram-scroll {
+                flex: 1 1 auto; min-width: 0; min-height: 0; max-height: none; height: auto;
+                display: flex; align-items: center; justify-content: center; overflow: hidden;
+                border: 1px solid var(--border-color); border-radius: 10px; background: var(--bg-body);
+            }
+            .canvas-wrapper.mobile-expanded .diagram-scroll canvas,
+            .canvas-wrapper:fullscreen .diagram-scroll canvas,
+            .canvas-wrapper:-webkit-full-screen .diagram-scroll canvas {
+                flex: 0 1 auto; width: auto !important; height: auto !important;
+                max-width: 100%; max-height: 100%; object-fit: contain;
+            }
             .canvas-wrapper.mobile-expanded .instrument-hint,
             .canvas-wrapper:fullscreen .instrument-hint,
             .canvas-wrapper:-webkit-full-screen .instrument-hint { flex: 0 0 auto; }
