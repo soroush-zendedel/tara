@@ -311,6 +311,7 @@ function startPracticeQuestion() {
     stopPracticeMicrophone();
     practiceQuestion = buildPracticeQuestion(document.getElementById('practiceMode').value);
     renderPracticeQuestion();
+    if (typeof updatePracticeSectionNotice === 'function') updatePracticeSectionNotice();
 }
 
 function recordPracticeResult(isCorrect) {
@@ -443,6 +444,8 @@ function stopPracticeMicrophone() {
     practiceMicSource = null;
     practiceMicAnalyser = null;
     practiceMicStream = null;
+    const micButton = document.getElementById('micPracticeButton');
+    if (micButton) micButton.innerText = 'Listen with microphone';
 }
 
 function refreshPracticeForKeyChange() {

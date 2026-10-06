@@ -16,6 +16,8 @@
 * **Smart Metronome:** Adjustable BPM with visual and audio feedback.  
 * **PDF Export:** Generate and download a comprehensive PDF booklet of your current scales and charts with a single click.  
 * **Interactive Practice:** Calculate fretboard, scale, diatonic chord, ear-training, and microphone exercises; includes a 20-lesson guide linked to the app's tools and locally saved progress.
+* **Customizable Workspace:** Hide or restore learning, theory, notation, fretboard, and piano sections; preferences persist on the current device.
+* **Mobile Instrument View:** Open instrument and theory diagrams in an immersive view with landscape orientation support and readable, scrollable detail.
 * **Dark/Light Theme:** Fully responsive UI with seamless theme switching.
 
 ## **📸 Screenshots**

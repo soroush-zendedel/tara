@@ -125,9 +125,21 @@
                 <button id="metroBtn" class="primary" type="button" style="min-width:80px; justify-content:center;">Start</button>
             </div>
         </div>
+
+        <details class="view-preferences">
+            <summary><i class="fas fa-sliders-h" aria-hidden="true"></i> Customize visible sections</summary>
+            <div class="view-preferences-content">
+                <p>Hide panels you do not need. Your choices are saved on this device.</p>
+                <div id="sectionVisibilityControls" class="section-visibility-controls" aria-label="Visible app sections"></div>
+                <div class="view-preferences-footer">
+                    <span id="viewVisibilityStatus" aria-live="polite">All sections shown</span>
+                    <button id="showAllSections" type="button">Show all sections</button>
+                </div>
+            </div>
+        </details>
     </div>
 
-    <section class="practice-panel" aria-labelledby="practiceTitle">
+    <section class="practice-panel" aria-labelledby="practiceTitle" data-customizable-section="practice" data-section-label="Learn by Doing">
         <div class="practice-heading">
             <div>
                 <p class="practice-eyebrow">LEARN BY DOING</p>
@@ -156,6 +168,11 @@
             <button id="checkScaleNotes" class="primary" type="button" hidden>Check my scale</button>
             <button id="micPracticeButton" type="button" hidden>Listen with microphone</button>
         </div>
+
+        <p id="sectionDependencyNotice" class="section-dependency-notice" role="status" hidden>
+            This exercise needs the guitar fretboard. Show that section again or choose a different exercise.
+            <button id="showFretboardSection" type="button">Show guitar fretboard</button>
+        </p>
 
         <h3 class="practice-question" id="practicePrompt" aria-live="polite">Choose an exercise and start a question.</h3>
         <div class="practice-choices" id="practiceChoices" role="group" aria-label="Answer choices"></div>
@@ -189,22 +206,44 @@
 
     <div class="canvas-container">
         <div class="top-row">
-            <div class="canvas-wrapper col-circle">
-                <h3>Circle of Fifths</h3>
-                <canvas id="circleCanvas" width="450" height="550" aria-label="Interactive Circle of Fifths showing major and relative minor keys" style="cursor: pointer;"></canvas>
+            <div class="canvas-wrapper col-circle" data-customizable-section="circle" data-section-label="Circle of Fifths">
+                <div class="canvas-panel-heading">
+                    <h3>Circle of Fifths</h3>
+                    <button class="mobile-expand-button" type="button" aria-label="Open Circle of Fifths full screen"><i class="fas fa-expand" aria-hidden="true"></i><span>Full screen</span></button>
+                </div>
+                <p class="diagram-hint">Scroll the chart or open it full screen; landscape gives you more room.</p>
+                <div class="diagram-scroll" role="region" aria-label="Scrollable Circle of Fifths" tabindex="0">
+                    <canvas id="circleCanvas" width="450" height="550" aria-label="Interactive Circle of Fifths showing major and relative minor keys" style="cursor: pointer;"></canvas>
+                </div>
             </div>
-            <div class="canvas-wrapper col-theory">
-                <h3>Theory & Chords</h3>
-                <canvas id="theoryCanvas" width="1100" height="1100" aria-label="Scale notes, diatonic chords, and chord progressions for the selected key"></canvas>
+            <div class="canvas-wrapper col-theory" data-customizable-section="theory" data-section-label="Theory & Chords">
+                <div class="canvas-panel-heading">
+                    <h3>Theory &amp; Chords</h3>
+                    <button class="mobile-expand-button" type="button" aria-label="Open Theory and Chords full screen"><i class="fas fa-expand" aria-hidden="true"></i><span>Full screen</span></button>
+                </div>
+                <p class="diagram-hint">Scroll the chart or open it full screen; landscape gives chord names more room.</p>
+                <div class="diagram-scroll" role="region" aria-label="Scrollable theory and chords chart" tabindex="0">
+                    <canvas id="theoryCanvas" width="1100" height="1100" aria-label="Scale notes, diatonic chords, and chord progressions for the selected key"></canvas>
+                </div>
             </div>
         </div>
 
-        <div class="canvas-wrapper">
-            <h3>Notation & Tab</h3>
-            <canvas id="notationCanvas" width="1400" height="400" aria-label="Standard music notation and guitar tablature for the selected scale or chord"></canvas>
+        <div class="canvas-wrapper" data-customizable-section="notation" data-section-label="Notation & Tab">
+            <div class="canvas-panel-heading">
+                <h3>Notation &amp; Tab</h3>
+                <button class="mobile-expand-button" type="button" aria-label="Open notation and tablature full screen"><i class="fas fa-expand" aria-hidden="true"></i><span>Full screen</span></button>
+            </div>
+            <p class="diagram-hint">Scroll to follow the notes, or open the notation full screen in landscape.</p>
+            <div class="diagram-scroll" role="region" aria-label="Scrollable notation and tablature" tabindex="0">
+                <canvas id="notationCanvas" width="1400" height="400" aria-label="Standard music notation and guitar tablature for the selected scale or chord"></canvas>
+            </div>
         </div>
 
-        <div class="canvas-wrapper">
+        <div class="canvas-wrapper" data-customizable-section="fretboard" data-section-label="Guitar Fretboard">
+            <div class="canvas-panel-heading">
+                <h3>Guitar Fretboard</h3>
+                <button class="mobile-expand-button" type="button" aria-label="Open guitar fretboard full screen"><i class="fas fa-expand" aria-hidden="true"></i><span>Full screen</span></button>
+            </div>
             <div class="fretboard-toolbar">
                 <div class="position-group">
                     <button class="pos-btn active" type="button" data-position="all">All</button>
@@ -222,17 +261,20 @@
                     </label>
                 </div>
             </div>
-            <p class="instrument-hint">Swipe horizontally to explore all 24 frets.</p>
-            <div class="instrument-scroll" role="region" aria-label="Scrollable guitar fretboard" tabindex="0">
+            <p class="instrument-hint">Open full screen and rotate to landscape for more room; swipe to explore all 24 frets.</p>
+            <div class="diagram-scroll instrument-scroll" role="region" aria-label="Scrollable guitar fretboard" tabindex="0">
                 <canvas id="fretboardCanvas" width="1400" height="320" aria-label="Interactive six-string guitar fretboard with notes highlighted for the selected scale or chord"></canvas>
             </div>
         </div>
 
-        <div class="canvas-wrapper">
-            <h3>Piano Reference</h3>
-            <p class="instrument-hint">Swipe horizontally to explore the full piano keyboard.</p>
-            <div class="instrument-scroll" role="region" aria-label="Scrollable piano keyboard" tabindex="0">
-            <canvas id="pianoCanvas" width="1400" height="200" aria-label="Interactive piano keyboard showing notes that match the guitar fretboard"></canvas>
+        <div class="canvas-wrapper" data-customizable-section="piano" data-section-label="Piano Reference">
+            <div class="canvas-panel-heading">
+                <h3>Piano Reference</h3>
+                <button class="mobile-expand-button" type="button" aria-label="Open piano keyboard full screen"><i class="fas fa-expand" aria-hidden="true"></i><span>Full screen</span></button>
+            </div>
+            <p class="instrument-hint">Open full screen and rotate to landscape for more room; swipe across the keyboard.</p>
+            <div class="diagram-scroll instrument-scroll" role="region" aria-label="Scrollable piano keyboard" tabindex="0">
+                <canvas id="pianoCanvas" width="1400" height="200" aria-label="Interactive piano keyboard showing notes that match the guitar fretboard"></canvas>
             </div>
         </div>
     </div>
