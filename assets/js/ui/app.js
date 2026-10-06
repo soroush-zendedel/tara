@@ -102,9 +102,13 @@ function updatePracticeSectionNotice() {
 
 function setMobileExpandedState(section, expanded) {
     section.classList.toggle('mobile-expanded', expanded);
-    if (!expanded) delete section.dataset.nativeFullscreen;
+    if (!expanded) {
+        delete section.dataset.nativeFullscreen;
+        section.style.removeProperty('--fullscreen-canvas-width');
+        section.style.removeProperty('--fullscreen-canvas-height');
+    }
     document.body.classList.toggle('mobile-section-expanded', expanded);
-    const button = section.querySelector('.mobile-expand-button');
+    const button = section.querySelector('.section-fullscreen-button');
     if (button) {
         const sectionName = section.dataset.sectionLabel || 'section';
         button.dataset.expanded = String(expanded);
@@ -115,6 +119,27 @@ function setMobileExpandedState(section, expanded) {
         icon.classList.toggle('fa-expand', !expanded);
         icon.classList.toggle('fa-compress', expanded);
     }
+}
+
+// Fit the canvas by its intrinsic aspect ratio inside the actual available viewport area.
+function fitFullscreenCanvas(section) {
+    if (!section?.classList.contains('mobile-expanded')) return;
+
+    const canvas = section.querySelector('canvas');
+    const viewport = section.querySelector('.diagram-scroll');
+    if (!canvas || !viewport || !canvas.width || !canvas.height) return;
+
+    const availableWidth = viewport.clientWidth;
+    const availableHeight = viewport.clientHeight;
+    if (!availableWidth || !availableHeight) return;
+
+    const scale = Math.min(availableWidth / canvas.width, availableHeight / canvas.height);
+    section.style.setProperty('--fullscreen-canvas-width', `${canvas.width * scale}px`);
+    section.style.setProperty('--fullscreen-canvas-height', `${canvas.height * scale}px`);
+}
+
+function fitActiveFullscreenCanvas() {
+    fitFullscreenCanvas(document.querySelector('.canvas-wrapper.mobile-expanded'));
 }
 
 async function closeMobileExpandedSection(section) {
@@ -137,7 +162,7 @@ async function closeMobileExpandedSection(section) {
 }
 
 function initializeMobileSectionExpansion() {
-    document.querySelectorAll('.mobile-expand-button').forEach((button) => {
+    document.querySelectorAll('.section-fullscreen-button').forEach((button) => {
         const section = button.closest('.canvas-wrapper');
         button.addEventListener('click', async () => {
             if (section.classList.contains('mobile-expanded')) {
@@ -160,13 +185,18 @@ function initializeMobileSectionExpansion() {
                 // Keep the in-page full-screen layout when native full-screen is unavailable.
             }
 
-            try {
-                if (screen.orientation?.lock) await screen.orientation.lock('landscape');
-            } catch {
-                // Users can rotate the device manually when orientation lock is unavailable.
+            if (window.matchMedia?.('(pointer: coarse)').matches) {
+                try {
+                    if (screen.orientation?.lock) await screen.orientation.lock('landscape');
+                } catch {
+                    // Users can rotate the device manually when orientation lock is unavailable.
+                }
             }
             section.querySelector('.diagram-scroll')?.focus({ preventScroll: true });
-            drawAll();
+            requestAnimationFrame(() => {
+                fitFullscreenCanvas(section);
+                drawAll();
+            });
         });
     });
 
@@ -186,6 +216,7 @@ function initializeMobileSectionExpansion() {
     };
     document.addEventListener('fullscreenchange', handleFullscreenChange);
     document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    window.addEventListener('resize', fitActiveFullscreenCanvas);
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
             const fallbackSection = document.querySelector('.canvas-wrapper.mobile-expanded');

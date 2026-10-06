@@ -152,7 +152,12 @@
         .canvas-wrapper { background: var(--card-bg); padding: 15px; border-radius: 20px; box-shadow: var(--shadow); text-align: center; width: 100%; overflow: hidden; position: relative; border: 1px solid var(--border-color); }
         .canvas-panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
         .canvas-wrapper h3 { margin: 0; font-size: 1.1rem; color: var(--text-main); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .mobile-expand-button { display: none; }
+        .section-fullscreen-button {
+            display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center;
+            min-height: 40px; padding: 8px 12px; border: 1px solid var(--border-color);
+            background: var(--bg-body); color: var(--text-main); font-size: 0.8rem;
+        }
+        .section-fullscreen-button i { color: var(--accent); }
         .diagram-hint { display: none; }
         canvas { width: 100% !important; height: auto !important; max-width: 100%; touch-action: none; border-radius: 10px; }
         .diagram-scroll { width: 100%; overflow: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
@@ -172,7 +177,7 @@
         .canvas-wrapper:-webkit-full-screen {
             position: fixed; inset: 0; z-index: 4000; display: flex; flex-direction: column;
             width: 100vw !important; height: 100vh !important; height: 100dvh !important;
-            max-width: none; max-height: none; margin: 0; padding: 10px;
+            box-sizing: border-box; max-width: none; max-height: none; margin: 0; padding: 10px;
             padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
             overflow: hidden; border: 0; border-radius: 0; background: var(--bg-body); text-align: center;
         }
@@ -189,8 +194,11 @@
         .canvas-wrapper.mobile-expanded .diagram-scroll canvas,
         .canvas-wrapper:fullscreen .diagram-scroll canvas,
         .canvas-wrapper:-webkit-full-screen .diagram-scroll canvas {
-            flex: 0 1 auto; width: auto !important; height: auto !important;
-            max-width: 100%; max-height: 100%; object-fit: contain;
+            flex: 0 1 auto;
+            width: var(--fullscreen-canvas-width, auto) !important;
+            height: var(--fullscreen-canvas-height, auto) !important;
+            max-width: 100%; max-height: 100%; min-width: 0; min-height: 0;
+            object-fit: contain;
         }
         @media (max-width: 640px), (pointer: coarse) and (max-height: 600px) {
             body { padding: 12px; }
@@ -223,8 +231,7 @@
             .canvas-container, .top-row { gap: 14px; }
             .canvas-wrapper { padding: 12px; border-radius: 16px; }
             .canvas-panel-heading { margin-bottom: 10px; }
-            .mobile-expand-button { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; min-height: 42px; padding: 8px 12px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-main); font-size: 0.8rem; }
-            .mobile-expand-button i { color: var(--accent); }
+            .section-fullscreen-button { min-height: 42px; }
             .diagram-hint { display: block; margin: -3px 0 8px; color: var(--text-sec); font-size: 0.78rem; line-height: 1.4; text-align: left; }
             .diagram-scroll { max-height: none; overflow: visible; border: 0; border-radius: 0; background: transparent; touch-action: pan-x pan-y; }
             .diagram-scroll canvas { width: 100% !important; max-width: 100%; touch-action: pan-x pan-y; }
@@ -240,7 +247,7 @@
             .canvas-wrapper:-webkit-full-screen {
                 position: fixed; inset: 0; z-index: 4000; display: flex; flex-direction: column;
                 width: 100vw !important; height: 100vh !important; height: 100dvh !important; max-width: none; max-height: none;
-                margin: 0; padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+                box-sizing: border-box; margin: 0; padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
                 overflow: hidden; border: 0; border-radius: 0; background: var(--bg-body); text-align: center;
             }
             .canvas-wrapper.mobile-expanded .canvas-panel-heading,
@@ -256,12 +263,20 @@
             .canvas-wrapper.mobile-expanded .diagram-scroll canvas,
             .canvas-wrapper:fullscreen .diagram-scroll canvas,
             .canvas-wrapper:-webkit-full-screen .diagram-scroll canvas {
-                flex: 0 1 auto; width: auto !important; height: auto !important;
-                max-width: 100%; max-height: 100%; object-fit: contain;
+                flex: 0 1 auto;
+                width: var(--fullscreen-canvas-width, auto) !important;
+                height: var(--fullscreen-canvas-height, auto) !important;
+                max-width: 100%; max-height: 100%; min-width: 0; min-height: 0;
+                object-fit: contain;
             }
             .canvas-wrapper.mobile-expanded .instrument-hint,
             .canvas-wrapper:fullscreen .instrument-hint,
             .canvas-wrapper:-webkit-full-screen .instrument-hint { flex: 0 0 auto; }
             body.mobile-section-expanded .site-footer { display: none; }
         }
-        @media (min-width: 1000px) { .canvas-container { flex-direction: row; flex-wrap: wrap; align-items: stretch; } .canvas-wrapper { width: 100%; } .col-circle, .col-theory { height: auto; } }
+        @media (min-width: 1000px) {
+            .canvas-container { flex-direction: row; flex-wrap: wrap; align-items: stretch; }
+            .canvas-wrapper { width: 100%; }
+            .col-circle, .col-theory { height: auto; }
+            .desktop-fullscreen-unavailable { display: none; }
+        }
