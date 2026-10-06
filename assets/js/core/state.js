@@ -8,6 +8,10 @@
         var fbHitboxes=[], theoryHitboxes=[], circleHitboxes=[], pianoHitboxes=[], notationHitboxes=[];
         var fbHovered=null, theoryHovered=null, pianoHovered=null, notationHovered=null, circleHovered=null;
         var activeGuitarMidi = new Set();
+        var teachingAnnotations = [];
+        var teachingHistory = [];
+        var teachingModeEnabled = false, showTeachingAnnotations = true, matchTeachingOctaves = false;
+        var selectedTeachingRole = 'note';
         
         var selectedRootIndex = 9; var selectedScaleName = 'Minor'; var useFlatNotation = false;
         var currentChordIndex = -1, currentVoicingIndex = 0;

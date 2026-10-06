@@ -84,6 +84,20 @@
         .practice-feedback { min-height: 1.5em; margin: 13px 0 0; color: var(--text-sec); text-align: center; }
         .practice-feedback.is-correct { color: #00a878; font-weight: 700; }
         .practice-feedback.is-incorrect { color: #e74c3c; font-weight: 700; }
+        .teaching-panel { width: 100%; max-width: 1400px; margin: 0 auto 24px; padding: 18px 22px; border: 1px solid var(--border-color); border-radius: 16px; background: var(--card-bg); box-shadow: var(--shadow); }
+        .teaching-panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+        .teaching-panel-heading h2 { margin: 0; font-size: 1.15rem; }
+        .teaching-panel-heading p:last-child { margin: 5px 0 0; color: var(--text-sec); font-size: 0.9rem; }
+        .teaching-mode-control, .teaching-option { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; font-weight: 700; cursor: pointer; }
+        .teaching-mode-control { flex: 0 0 auto; padding: 8px 13px; border: 1px solid var(--border-color); border-radius: 22px; background: var(--bg-body); }
+        .teaching-mode-control input, .teaching-option input { width: 18px; height: 18px; accent-color: var(--accent); }
+        .teaching-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+        .teaching-controls > label:first-child { font-weight: 700; }
+        .teaching-controls select { min-height: 40px; padding: 7px 12px; border: 1px solid var(--border-color); border-radius: 20px; background: var(--bg-body); color: var(--text-main); }
+        .teaching-option { padding: 5px 9px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 0.9rem; }
+        .teaching-controls button { min-height: 40px; padding: 8px 14px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-main); }
+        .teaching-controls button:disabled { cursor: not-allowed; opacity: 0.5; }
+        .teaching-status { min-height: 1.4em; margin: 12px 0 0; color: var(--text-sec); font-size: 0.88rem; }
         .lesson-block { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--border-color); }
         .lesson-heading-row { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
         .lesson-heading-row > div { margin-right: auto; }
@@ -211,6 +225,14 @@
             .tools-bar { width: 100%; gap: 12px; padding: 12px; }
             .metro-group { flex-wrap: wrap; justify-content: center; }
             .practice-panel { padding: 18px 14px; border-radius: 16px; }
+            .teaching-panel { padding: 16px 14px; }
+            .teaching-panel-heading { align-items: flex-start; flex-direction: column; gap: 10px; }
+            .teaching-mode-control { min-height: 44px; }
+            .teaching-controls { align-items: stretch; }
+            .teaching-controls > label:first-child { flex: 1 0 100%; }
+            .teaching-controls select { flex: 1 1 100%; min-height: 44px; }
+            .teaching-option { flex: 1 1 100%; min-height: 44px; }
+            .teaching-controls button { flex: 1 1 calc(50% - 10px); min-height: 44px; justify-content: center; }
             .practice-heading { flex-direction: column; gap: 12px; }
             .practice-score { align-self: flex-start; }
             .practice-controls { justify-content: flex-start; }

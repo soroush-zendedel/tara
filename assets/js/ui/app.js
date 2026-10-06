@@ -244,6 +244,7 @@ window.addEventListener('load', () => {
         });
     });
 
+    initializeTeachingNotes();
     initializePracticeLab();
     initializeSectionVisibility();
     initializeMobileSectionExpansion();

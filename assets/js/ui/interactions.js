@@ -25,7 +25,8 @@
             }
             else if (canvas.id === 'notationCanvas') { found = hitboxes.find(h => Math.abs(x - h.x) < 20); }
             else {
-                 for(let h of hitboxes) {
+                 const orderedHitboxes = canvas.id === 'pianoCanvas' ? [...hitboxes].reverse() : hitboxes;
+                 for(let h of orderedHitboxes) {
                      if (h.radius && Math.sqrt((x-h.x)**2 + (y-h.y)**2) < h.radius) { found = h; break; }
                      if (h.w && x >= h.x && x <= h.x+h.w && y >= h.y && y <= h.y+h.h) { found = h; break; }
                  }
@@ -52,6 +53,7 @@
             if (needsRedraw) { drawAll(); }
             
             if (e.type === 'click') {
+                if (handleTeachingNoteClick(canvas, found)) return;
                 if (canvas.id === 'fretboardCanvas' && handleFretboardPracticeClick(found)) return;
                 if (audioCtx.state === 'suspended') audioCtx.resume();
                 if (!found) return;
@@ -93,6 +95,19 @@
             }
         }
 
+        // Clear the active note as soon as the pointer leaves its canvas.
+        function clearCanvasHover(canvas) {
+            let didClear = false;
+            if (canvas.id === 'fretboardCanvas' && fbHovered) { fbHovered = null; didClear = true; }
+            if (canvas.id === 'pianoCanvas' && pianoHovered) { pianoHovered = null; didClear = true; }
+            if (canvas.id === 'notationCanvas' && notationHovered) { notationHovered = null; didClear = true; }
+            if (canvas.id === 'theoryCanvas' && theoryHovered) { theoryHovered = null; didClear = true; }
+            if (canvas.id === 'circleCanvas' && circleHovered) { circleHovered = null; didClear = true; }
+
+            if (tooltip) tooltip.style.display = 'none';
+            if (didClear) drawAll();
+        }
+
         // --- INIT ---
         window.addEventListener('load', () => {
             fbCanvas = document.getElementById('fretboardCanvas');
@@ -126,6 +141,7 @@
                 cvs.addEventListener('pointermove', e => {
                     if (e.pointerType === 'mouse') handleMouse(e, cvs, hitboxes, hoverVarName);
                 });
+                cvs.addEventListener('pointerleave', () => clearCanvasHover(cvs));
                 // Native click events support taps while leaving horizontal swipes available to the scroll container.
                 cvs.addEventListener('click', e => handleMouse(e, cvs, hitboxes, hoverVarName));
             };

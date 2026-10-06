@@ -35,6 +35,7 @@
                 const isHovered = notationHovered && notationHovered.s === n.s && notationHovered.f === n.f;
                 const noteMidi = n.midi;
                 const isCrossHover = (fbHovered && fbHovered.s === n.s && fbHovered.f === n.f) || (pianoHovered && pianoHovered.midi === noteMidi);
+                const teachingAnnotation = getTeachingAnnotationForMidi(noteMidi);
                 const visualOctave = n.octave + 1; const staffY = getStaffY(n.note, visualOctave);
                 
                 ctx.strokeStyle = COLORS.text;
@@ -43,7 +44,16 @@
                 if (staffY <= 20) { ctx.beginPath(); ctx.moveTo(x - 12, 20); ctx.lineTo(x + 12, 20); ctx.stroke(); }
                 
                 ctx.beginPath(); ctx.ellipse(x, staffY, 8, 6, Math.PI / -2.5, 0, 2 * Math.PI); 
-                if (isHovered || isCrossHover) ctx.fillStyle = isDark ? '#D4AF37' : '#FDB827'; else ctx.fillStyle = COLORS.text; ctx.fill();
+                if (isHovered || isCrossHover) ctx.fillStyle = isDark ? '#D4AF37' : '#FDB827';
+                else ctx.fillStyle = teachingAnnotation ? getTeachingRole(teachingAnnotation.role).color : COLORS.text;
+                ctx.fill();
+                if (teachingAnnotation) {
+                    ctx.strokeStyle = getTeachingRole(teachingAnnotation.role).color;
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+                ctx.strokeStyle = COLORS.text;
+                ctx.lineWidth = 1;
                 
                 ctx.beginPath(); if (staffY < 80) { ctx.moveTo(x - 7, staffY); ctx.lineTo(x - 7, staffY + 35); } else { ctx.moveTo(x + 7, staffY); ctx.lineTo(x + 7, staffY - 35); } ctx.stroke();
                 
@@ -355,21 +365,79 @@
                 }
                 fbHitboxes.push({ type: 'note', x, y, radius: r, s: n.s, f: n.f, midi: n.midi, noteName: n.note, freq: midiToFreq(n.midi) });
             });
+
+            if (teachingModeEnabled) {
+                const hitPositions = new Set(fbHitboxes.map((hitbox) => `${hitbox.s}:${hitbox.f}`));
+                for (let string = 0; string < 6; string++) {
+                    for (let fret = 0; fret <= 24; fret++) {
+                        if (hitPositions.has(`${string}:${fret}`)) continue;
+                        const midi = OPEN_STRING_MIDI[5 - string] + fret;
+                        fbHitboxes.push({
+                            type: 'note',
+                            x: nutX + fret * fretGap - (fret === 0 ? 20 : fretGap / 2),
+                            y: stringY + string * stringGap,
+                            radius: 18,
+                            s: string,
+                            f: fret,
+                            midi,
+                            noteName: getNoteName(midi % 12),
+                            freq: midiToFreq(midi)
+                        });
+                    }
+                }
+            }
+
+            getTeachingFretboardMarkers().forEach((marker) => {
+                const x = nutX + marker.fret * fretGap - (marker.fret === 0 ? 20 : fretGap / 2);
+                const y = stringY + marker.string * stringGap;
+                const role = getTeachingRole(marker.role);
+                const hasBaseNote = notesToShow.some((note) => note.s === marker.string && note.f === marker.fret);
+
+                ctx.beginPath();
+                ctx.arc(x, y, 19, 0, Math.PI * 2);
+                ctx.strokeStyle = role.color;
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                if (!hasBaseNote) {
+                    ctx.beginPath();
+                    ctx.arc(x, y, 13, 0, Math.PI * 2);
+                    ctx.fillStyle = role.color;
+                    ctx.fill();
+                    ctx.fillStyle = '#fff';
+                    ctx.font = 'bold 10px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(getNoteName(marker.midi % 12), x, y);
+                }
+                ctx.fillStyle = role.color;
+                ctx.font = 'bold 9px Arial';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(role.marker, x + 14, y - 14);
+            });
         }
 
         function drawPiano() {
             const ctx = pianoCanvas.getContext('2d'); ctx.fillStyle = COLORS.bg; ctx.fillRect(0, 0, pianoCanvas.width, pianoCanvas.height); pianoHitboxes.length = 0;
-            const startMidi = 36; const endMidi = 84; let whiteKeyCount = 0; for(let m=startMidi; m<=endMidi; m++) { if(![1, 3, 6, 8, 10].includes(m % 12)) whiteKeyCount++; }
+            const startMidi = 36; const endMidi = 88; let whiteKeyCount = 0; for(let m=startMidi; m<=endMidi; m++) { if(![1, 3, 6, 8, 10].includes(m % 12)) whiteKeyCount++; }
             const keyWidth = pianoCanvas.width / whiteKeyCount; const keyHeight = 180; const blackKeyHeight = 110; const blackKeyWidth = keyWidth * 0.65; let xPos = 0;
             for (let m = startMidi; m <= endMidi; m++) {
                 const noteVal = m % 12; const isBlack = [1, 3, 6, 8, 10].includes(noteVal);
                 if (!isBlack) {
                     const isActive = activeGuitarMidi.has(m); const isHovered = pianoHovered && pianoHovered.midi === m; const isGuitarMatch = fbHovered && fbHovered.midi === m; const isNotationMatch = notationHovered && notationHovered.midi === m; const oct = Math.floor(m / 12) - 1; const noteName = getNoteName(noteVal);
-                    ctx.fillStyle = isActive ? (showOctaves ? OCTAVE_COLORS[oct] : COLORS.noteRoot) : COLORS.pianoWhite; if (isHovered || isGuitarMatch || isNotationMatch) ctx.fillStyle = '#ddd'; if (!isActive && !isHovered && !isGuitarMatch && !isNotationMatch) ctx.fillStyle = isDark ? '#333' : '#fcfcfc';
+                    const teachingAnnotation = getTeachingAnnotationForMidi(m);
+                    ctx.fillStyle = isHovered || isGuitarMatch || isNotationMatch ? '#ddd'
+                        : teachingAnnotation ? getTeachingRole(teachingAnnotation.role).color
+                            : isActive ? (showOctaves ? OCTAVE_COLORS[oct] : COLORS.noteRoot)
+                                : isDark ? '#333' : '#fcfcfc';
                     ctx.strokeStyle = COLORS.pianoBorder; ctx.lineWidth = 1; if (noteVal === 0) { ctx.lineWidth = 3; ctx.strokeStyle = isDark ? '#888' : '#333'; }
                     ctx.fillRect(xPos, 0, keyWidth, keyHeight); ctx.strokeRect(xPos, 0, keyWidth, keyHeight); ctx.lineWidth = 1; 
                     pianoHitboxes.push({ type: 'pianoKey', x: xPos, y: 0, w: keyWidth, h: keyHeight, midi: m, note: noteName, oct: oct, isBlack: false });
-                    if (isActive || isHovered || isGuitarMatch || isNotationMatch || noteVal === 0) { ctx.fillStyle = (isActive && showOctaves) ? 'white' : (isDark ? '#eee' : '#444'); ctx.font = (noteVal === 0 && !isActive) ? 'bold 14px Arial' : 'bold 12px Arial'; ctx.textAlign = 'center'; let label = noteName; if (showOctaves || noteVal === 0) label += oct; ctx.fillText(label, xPos + keyWidth/2, keyHeight - 15); }
+                    if (isActive || teachingAnnotation || isHovered || isGuitarMatch || isNotationMatch || noteVal === 0) { ctx.fillStyle = (isActive && showOctaves) || teachingAnnotation ? 'white' : (isDark ? '#eee' : '#444'); ctx.font = (noteVal === 0 && !isActive) ? 'bold 14px Arial' : 'bold 12px Arial'; ctx.textAlign = 'center'; let label = noteName; if (showOctaves || noteVal === 0) label += oct; ctx.fillText(label, xPos + keyWidth/2, keyHeight - 15); }
+                    if (teachingAnnotation) {
+                        ctx.fillStyle = '#fff'; ctx.font = 'bold 10px Arial'; ctx.textAlign = 'center';
+                        ctx.fillText(getTeachingRole(teachingAnnotation.role).marker, xPos + keyWidth / 2, 18);
+                    }
                     xPos += keyWidth;
                 }
             }
@@ -378,10 +446,17 @@
                 const noteVal = m % 12; const isBlack = [1, 3, 6, 8, 10].includes(noteVal);
                 if (!isBlack) { xPos += keyWidth; } else {
                     const bx = xPos - (blackKeyWidth / 2); const isActive = activeGuitarMidi.has(m); const isHovered = pianoHovered && pianoHovered.midi === m; const isGuitarMatch = fbHovered && fbHovered.midi === m; const isNotationMatch = notationHovered && notationHovered.midi === m; const oct = Math.floor(m / 12) - 1; const noteName = getNoteName(noteVal);
-                    ctx.fillStyle = isActive ? (showOctaves ? OCTAVE_COLORS[oct] : COLORS.noteRoot) : COLORS.pianoBlack; if (isHovered || isGuitarMatch || isNotationMatch) ctx.fillStyle = '#666'; 
+                    const teachingAnnotation = getTeachingAnnotationForMidi(m);
+                    ctx.fillStyle = isHovered || isGuitarMatch || isNotationMatch ? '#666'
+                        : teachingAnnotation ? getTeachingRole(teachingAnnotation.role).color
+                            : isActive ? (showOctaves ? OCTAVE_COLORS[oct] : COLORS.noteRoot) : COLORS.pianoBlack;
                     ctx.fillRect(bx, 0, blackKeyWidth, blackKeyHeight); ctx.strokeStyle = isDark ? '#555' : '#000'; ctx.strokeRect(bx, 0, blackKeyWidth, blackKeyHeight);
                     pianoHitboxes.push({ type: 'pianoKey', x: bx, y: 0, w: blackKeyWidth, h: blackKeyHeight, midi: m, note: noteName, oct: oct, isBlack: true });
-                    if (isActive || isHovered || isGuitarMatch || isNotationMatch) { ctx.fillStyle = 'white'; ctx.font = 'bold 10px Arial'; ctx.textAlign = 'center'; ctx.fillText(noteName, bx + blackKeyWidth/2, blackKeyHeight - 8); }
+                    if (isActive || teachingAnnotation || isHovered || isGuitarMatch || isNotationMatch) { ctx.fillStyle = 'white'; ctx.font = 'bold 10px Arial'; ctx.textAlign = 'center'; ctx.fillText(noteName, bx + blackKeyWidth/2, blackKeyHeight - 8); }
+                    if (teachingAnnotation) {
+                        ctx.fillStyle = '#fff'; ctx.font = 'bold 9px Arial'; ctx.textAlign = 'center';
+                        ctx.fillText(getTeachingRole(teachingAnnotation.role).marker, bx + blackKeyWidth / 2, 14);
+                    }
                 }
             }
         }

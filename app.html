@@ -204,6 +204,41 @@
         </div>
     </section>
 
+    <section class="teaching-panel" aria-labelledby="teachingNotesTitle">
+        <div class="teaching-panel-heading">
+            <div>
+                <p class="practice-eyebrow">TEACHER TOOL</p>
+                <h2 id="teachingNotesTitle">Teaching Notes</h2>
+                <p>Mark notes on the guitar or piano. Matching notes stay highlighted in both tools.</p>
+            </div>
+            <label class="teaching-mode-control" for="teachingModeToggle">
+                <input id="teachingModeToggle" type="checkbox">
+                <span>Teaching Mode</span>
+            </label>
+        </div>
+        <div class="teaching-controls" aria-describedby="teachingNotesStatus">
+            <label for="teachingRoleSelect">Marker</label>
+            <select id="teachingRoleSelect" aria-label="Teaching note marker">
+                <option value="note">Note</option>
+                <option value="root">Root</option>
+                <option value="third">3rd</option>
+                <option value="fifth">5th</option>
+                <option value="seventh">7th</option>
+            </select>
+            <label class="teaching-option" for="showTeachingNotesToggle">
+                <input id="showTeachingNotesToggle" type="checkbox" checked>
+                <span>Show notes</span>
+            </label>
+            <label class="teaching-option" for="matchTeachingOctavesToggle">
+                <input id="matchTeachingOctavesToggle" type="checkbox">
+                <span>Match all octaves</span>
+            </label>
+            <button id="undoTeachingNoteButton" type="button" disabled>Undo</button>
+            <button id="clearTeachingNotesButton" type="button" disabled>Clear notes</button>
+        </div>
+        <p id="teachingNotesStatus" class="teaching-status" role="status" aria-live="polite"></p>
+    </section>
+
     <div class="canvas-container">
         <div class="top-row">
             <div class="canvas-wrapper col-circle" data-customizable-section="circle" data-section-label="Circle of Fifths">
@@ -289,6 +324,7 @@
     <script src="assets/js/core/tuner.js"></script>
     <script src="assets/js/data/lesson-catalog.js"></script>
     <script src="assets/js/rendering/renderers.js"></script>
+    <script src="assets/js/ui/teaching-notes.js"></script>
     <script src="assets/js/ui/interactions.js"></script>
     <script src="assets/js/ui/export-pdf.js"></script>
     <script src="assets/js/ui/practice.js"></script>
