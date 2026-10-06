@@ -120,6 +120,61 @@
         </div>
     </div>
 
+    <section class="practice-panel" aria-labelledby="practiceTitle">
+        <div class="practice-heading">
+            <div>
+                <p class="practice-eyebrow">LEARN BY DOING</p>
+                <h2 id="practiceTitle">Guitar Theory Practice</h2>
+                <p class="practice-description">Hear, find, build, and name musical ideas on the guitar.</p>
+            </div>
+            <div class="practice-score" id="practiceScore" aria-live="polite">Correct: 0 · Tried: 0 · Streak: 0</div>
+        </div>
+
+        <div class="practice-controls">
+            <label for="practiceMode">Exercise</label>
+            <select id="practiceMode">
+                <option value="fretboard-note">Find a note on the fretboard</option>
+                <option value="ear-to-fretboard">Hear a note, then find it</option>
+                <option value="build-scale">Build a scale on one string</option>
+                <option value="scale-degree">Name a scale degree</option>
+                <option value="chord-quality">Identify a chord from its notes</option>
+                <option value="chord-shape">Identify a chord from its shape</option>
+                <option value="ear-chord">Identify a chord by ear</option>
+                <option value="diatonic-chord">Name a diatonic chord</option>
+                <option value="ear-interval">Hear an interval</option>
+                <option value="mic-note">Play a note into the microphone</option>
+            </select>
+            <button class="primary" id="newPracticeQuestion" type="button">New question</button>
+            <button id="replayPracticeAudio" type="button" hidden>Replay sound</button>
+            <button id="checkScaleNotes" class="primary" type="button" hidden>Check my scale</button>
+            <button id="micPracticeButton" type="button" hidden>Listen with microphone</button>
+        </div>
+
+        <h3 class="practice-question" id="practicePrompt" aria-live="polite">Choose an exercise and start a question.</h3>
+        <div class="practice-choices" id="practiceChoices" role="group" aria-label="Answer choices"></div>
+        <p class="practice-feedback" id="practiceFeedback" aria-live="polite"></p>
+
+        <div class="lesson-block">
+            <div class="lesson-heading-row">
+                <div>
+                    <p class="practice-eyebrow">QUICK LESSONS</p>
+                    <h3>Learn a concept</h3>
+                </div>
+                <label for="lessonTopic">Topic</label>
+                <select id="lessonTopic">
+                    <option value="fretboard">Notes on the fretboard</option>
+                    <option value="intervals">Intervals</option>
+                    <option value="scales">Building a scale</option>
+                    <option value="chords">Building triads</option>
+                    <option value="diatonic">Diatonic chords</option>
+                    <option value="caged">CAGED positions</option>
+                </select>
+            </div>
+            <p id="lessonText" class="lesson-text"></p>
+            <button id="lessonAudioButton" type="button">Hear an example</button>
+        </div>
+    </section>
+
     <div class="canvas-container">
         <div class="top-row">
             <div class="canvas-wrapper col-circle">
@@ -175,6 +230,7 @@
     <script src="assets/js/rendering/renderers.js"></script>
     <script src="assets/js/ui/interactions.js"></script>
     <script src="assets/js/ui/export-pdf.js"></script>
+    <script src="assets/js/ui/practice.js"></script>
     <script src="assets/js/ui/app.js"></script>
 </body>
 </html>

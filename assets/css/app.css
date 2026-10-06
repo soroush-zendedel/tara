@@ -66,6 +66,33 @@
         
         .controls-wrapper { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 900px; margin-bottom: 25px; align-items: center; }
 
+        .practice-panel { width: 100%; max-width: 1400px; margin: 0 auto 25px; padding: 22px 26px; border: 1px solid var(--border-color); border-radius: 20px; background: var(--card-bg); box-shadow: var(--shadow); }
+        .practice-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+        .practice-eyebrow { margin: 0 0 5px; color: var(--accent); font-size: 0.75rem; font-weight: 800; letter-spacing: 1.5px; }
+        .practice-heading h2 { margin: 0; font-size: 1.35rem; }
+        .practice-description { margin: 6px 0 0; color: var(--text-sec); }
+        .practice-score { flex: 0 0 auto; padding: 9px 13px; border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-sec); font-size: 0.85rem; font-weight: 700; }
+        .practice-controls { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+        .practice-controls label { font-weight: 700; }
+        .practice-controls select { max-width: 100%; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 20px; background: var(--bg-body); color: var(--text-main); font-size: 0.95rem; }
+        .practice-controls [hidden] { display: none !important; }
+        .practice-question { min-height: 1.5em; margin: 22px 0 14px; text-align: center; font-size: 1.15rem; }
+        .practice-choices { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+        .practice-answer { min-width: 100px; justify-content: center; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-main); }
+        .practice-answer:disabled { cursor: default; opacity: 0.72; }
+        .practice-answer:hover:not(:disabled), .practice-answer:focus-visible { border-color: var(--accent); outline: 2px solid var(--accent); outline-offset: 2px; }
+        .practice-feedback { min-height: 1.5em; margin: 13px 0 0; color: var(--text-sec); text-align: center; }
+        .practice-feedback.is-correct { color: #00a878; font-weight: 700; }
+        .practice-feedback.is-incorrect { color: #e74c3c; font-weight: 700; }
+        .lesson-block { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--border-color); }
+        .lesson-heading-row { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .lesson-heading-row > div { margin-right: auto; }
+        .lesson-heading-row h3 { margin: 0; }
+        .lesson-heading-row .practice-eyebrow { margin-bottom: 2px; }
+        .lesson-heading-row label { font-weight: 700; }
+        .lesson-heading-row select { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 18px; background: var(--bg-body); color: var(--text-main); }
+        .lesson-text { margin: 12px 0; color: var(--text-sec); line-height: 1.65; }
+
         .main-controls { 
             background: var(--card-bg); padding: 12px 20px; border-radius: 50px; 
             box-shadow: var(--shadow); border: 1px solid var(--border-color);
@@ -111,4 +138,5 @@
         .tuner-needle { width: 4px; height: 130px; background: var(--text-main); position: absolute; bottom: 0; left: 50%; transform-origin: bottom center; transition: transform 0.1s ease-out; }
         .close-tuner { position: absolute; top: 20px; right: 25px; padding: 0; border: 0; background: transparent; font-size: 28px; cursor: pointer; color: var(--text-sec); }
         .site-footer { margin-top: 40px; width: 100%; text-align: center; padding: 25px; color: var(--text-sec); font-size: 0.9rem; }
+        @media (max-width: 640px) { .practice-panel { padding: 18px 14px; } .practice-heading { flex-direction: column; } .practice-score { align-self: flex-start; } .practice-controls { justify-content: flex-start; } }
         @media (min-width: 1000px) { .canvas-container { flex-direction: row; flex-wrap: wrap; align-items: stretch; } .canvas-wrapper { width: 100%; } .col-circle, .col-theory { height: auto; } }

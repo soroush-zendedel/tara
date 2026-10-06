@@ -32,7 +32,8 @@
             }
 
             const tooltip = document.getElementById('tooltip');
-            if (found && (found.type === 'scaleNote' || found.type === 'note' || found.type === 'pianoKey' || found.type === 'notationNote')) {
+            const isHiddenAnswerPractice = canvas.id === 'fretboardCanvas' && practiceQuestion?.mode === 'fretboard-note' && !practiceQuestion.answered;
+            if (!isHiddenAnswerPractice && found && (found.type === 'scaleNote' || found.type === 'note' || found.type === 'pianoKey' || found.type === 'notationNote')) {
                  tooltip.style.display = 'block';
                  tooltip.style.left = clientX + 'px'; tooltip.style.top = clientY + 'px';
                  let f = found.freq || (found.midi ? midiToFreq(found.midi) : 0);
@@ -52,6 +53,7 @@
             
             if (e.type === 'mousedown' || e.type === 'touchstart') {
                 if (e.type === 'touchstart') e.preventDefault(); 
+                if (canvas.id === 'fretboardCanvas' && handleFretboardPracticeClick(found)) return;
                 if (audioCtx.state === 'suspended') audioCtx.resume();
                 if (!found) return;
                 
@@ -83,6 +85,7 @@
                     document.getElementById('scaleSelect').value = selectedScaleName;
                     currentNotationType = 'scale';
                     generateVisuals();
+                    refreshPracticeForKeyChange();
                 }
                 else if (found.freq || found.midi) {
                     let f = found.freq || midiToFreq(found.midi);
@@ -117,8 +120,8 @@
                 toggleTheme();
             }
 
-            rSel.addEventListener('change', (e) => { selectedRootIndex = parseInt(e.target.value); generateVisuals(); });
-            sSel.addEventListener('change', (e) => { selectedScaleName = e.target.value; generateVisuals(); });
+            rSel.addEventListener('change', (e) => { selectedRootIndex = parseInt(e.target.value); generateVisuals(); refreshPracticeForKeyChange(); });
+            sSel.addEventListener('change', (e) => { selectedScaleName = e.target.value; generateVisuals(); refreshPracticeForKeyChange(); });
 
             const attachEvents = (cvs, hitboxes, hoverVarName) => {
                 cvs.addEventListener('mousemove', e => handleMouse(e, cvs, hitboxes, hoverVarName));

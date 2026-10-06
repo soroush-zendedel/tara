@@ -15,6 +15,7 @@
 * **Chromatic Tuner:** Built-in guitar tuner using your device's microphone (Web Audio API).  
 * **Smart Metronome:** Adjustable BPM with visual and audio feedback.  
 * **PDF Export:** Generate and download a comprehensive PDF booklet of your current scales and charts with a single click.  
+* **Interactive Practice:** Calculate fretboard, scale, diatonic chord, ear-training, and microphone exercises; includes short lessons and locally saved progress.
 * **Dark/Light Theme:** Fully responsive UI with seamless theme switching.
 
 ## **📸 Screenshots**
@@ -93,6 +94,7 @@ Distributed under the MIT License. See LICENSE for more information.
 * **تیونر کروماتیک:** کوک کردن گیتار از طریق میکروفون دستگاه با دقت بالا.  
 * **مترونوم هوشمند:** دارای بازخورد دیداری و شنیداری با قابلیت تنظیم تمپو.  
 * **خروجی PDF جزوه:** ذخیره تمام نمودارها و آموزش‌های روی صفحه در قالب یک فایل PDF با یک کلیک.  
+* **تمرین تعاملی:** تمرین دسته، ساخت گام، آکوردهای دیاتونیک، تشخیص شنیداری، تمرین با میکروفون و درس‌های کوتاه همراه توضیح پاسخ و ذخیره‌ی محلی پیشرفت.
 * **تم تاریک/روشن:** رابط کاربری مدرن و سازگار با انواع صفحات نمایش.
 
 ### **⚙️ نحوه اجرا (اجرای محلی)**

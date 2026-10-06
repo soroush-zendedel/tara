@@ -246,7 +246,15 @@
             }
 
             let notesToShow = [];
-            if (currentNotationType === 'chord') { 
+            if (practiceQuestion?.mode === 'chord-shape') {
+                activeGuitarMidi.clear();
+                notesToShow = practiceQuestion.voicingNotes.map((note) => ({
+                    ...note,
+                    s: 5 - note.s,
+                    isRoot: note.midi % 12 === selectedRootIndex
+                }));
+                notesToShow.forEach((note) => activeGuitarMidi.add(note.midi));
+            } else if (currentNotationType === 'chord') {
                 notesToShow = currentVoicingNotes.map(n => ({ ...n, s: 5 - n.s, isRoot: (n.midi%12 === selectedRootIndex) })); 
             } else {
                 activeGuitarMidi.clear();
@@ -277,6 +285,52 @@
                 }
             }
 
+            if (practiceQuestion?.mode === 'build-scale') {
+                notesToShow = [];
+                activeGuitarMidi.clear();
+                const string = 5 - practiceQuestion.stringIndex;
+                const openMidi = OPEN_STRING_MIDI[practiceQuestion.stringIndex];
+                for (let fret = 0; fret <= 12; fret++) {
+                    const midi = openMidi + fret;
+                    const isSelected = practiceQuestion.selectedFrets.has(fret);
+                    notesToShow.push({
+                        s: string,
+                        f: fret,
+                        midi,
+                        note: getNoteName(midi % 12),
+                        isRoot: false,
+                        isScaleChoice: true,
+                        isSelected,
+                        isScaleTarget: practiceQuestion.answered && practiceQuestion.targetFrets.has(fret)
+                    });
+                    if (isSelected) activeGuitarMidi.add(midi);
+                }
+            } else if (practiceQuestion?.mode === 'fretboard-note' || practiceQuestion?.mode === 'ear-to-fretboard') {
+                if (!practiceQuestion.answered) {
+                    notesToShow = [];
+                    activeGuitarMidi.clear();
+                }
+                for (let string = 0; string < 6; string++) {
+                    const openMidi = OPEN_STRING_MIDI[5 - string];
+                    for (let fret = 0; fret <= 24; fret++) {
+                        const midi = openMidi + fret;
+                        if (!practiceQuestion.answered) {
+                            notesToShow.push({ s: string, f: fret, midi, note: getNoteName(midi % 12), isRoot: false, isPracticeTarget: false });
+                            continue;
+                        }
+                        if (midi % 12 !== practiceQuestion.targetPitchClass) continue;
+
+                        const existingNote = notesToShow.find((note) => note.s === string && note.f === fret);
+                        if (existingNote) existingNote.isPracticeTarget = true;
+                        else {
+                            notesToShow.push({ s: string, f: fret, midi, note: getNoteName(midi % 12), isRoot: false, isPracticeTarget: true });
+                        }
+
+                        activeGuitarMidi.add(midi);
+                    }
+                }
+            }
+
             notesToShow.forEach(n => {
                 const x = nutX + n.f*fretGap - (n.f===0 ? 20 : fretGap/2); const y = stringY + n.s*stringGap;
                 const isHovered = fbHovered && fbHovered.s === n.s && fbHovered.f === n.f;
@@ -287,8 +341,18 @@
                 ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2);
                 if (showOctaves) { const oct = Math.floor(n.midi/12)-1; ctx.fillStyle = OCTAVE_COLORS[oct] || COLORS.noteOther; } 
                 else { ctx.fillStyle = n.isRoot ? COLORS.noteRoot : ((isHovered || isPianoMatch) ? '#444' : COLORS.noteOther); }
+                if (n.isPracticeTarget) ctx.fillStyle = '#00b894';
+                if (n.isScaleChoice) ctx.fillStyle = n.isScaleTarget ? '#00b894' : n.isSelected ? COLORS.noteRoot : COLORS.noteOther;
                 ctx.fill(); ctx.fillStyle = (showOctaves || n.isRoot) ? 'white' : COLORS.noteText; ctx.font = 'bold 12px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
-                ctx.fillText(showOctaves ? n.note + (Math.floor(n.midi/12)-1) : n.note, x, y);
+                if (n.isPracticeTarget) { ctx.strokeStyle = '#006d58'; ctx.lineWidth = 3; ctx.stroke(); }
+                if (n.isScaleChoice && n.isScaleTarget) { ctx.strokeStyle = '#006d58'; ctx.lineWidth = 3; ctx.stroke(); }
+                const hideAnswerLabels = (
+                    ['fretboard-note', 'ear-to-fretboard'].includes(practiceQuestion?.mode) && !practiceQuestion.answered
+                ) || (practiceQuestion?.mode === 'build-scale' && !practiceQuestion.answered)
+                    || (practiceQuestion?.mode === 'chord-shape' && !practiceQuestion.answered);
+                if (!hideAnswerLabels) {
+                    ctx.fillText(showOctaves ? n.note + (Math.floor(n.midi/12)-1) : n.note, x, y);
+                }
                 fbHitboxes.push({ type: 'note', x, y, radius: r, s: n.s, f: n.f, midi: n.midi, noteName: n.note, freq: midiToFreq(n.midi) });
             });
         }

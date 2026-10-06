@@ -15,4 +15,6 @@ window.addEventListener('load', () => {
             setPos(position === 'all' ? 'all' : Number(position));
         });
     });
+
+    initializePracticeLab();
 });
