@@ -107,12 +107,14 @@ function initializeLiveInputs() {
         const midi = COMPUTER_KEY_NOTES.get(event.code);
         if (midi === undefined || event.repeat || computerKeyboardHeld.has(event.code)) return;
 
-        if (event.altKey) {
-            selectLiveInputKey(midi % 12, MINOR_KEY_CODES.has(event.code) ? 'Minor' : 'Major');
+        // Shift selects a chord layer; Alt changes it from major to minor.
+        // Alt by itself remains the scale-selection shortcut.
+        if (event.shiftKey) {
+            playLiveInputChord(midi, event.altKey ? 'minor' : 'major');
             return;
         }
-        if (event.ctrlKey || event.shiftKey) {
-            playLiveInputChord(midi, event.ctrlKey ? 'major' : 'minor');
+        if (event.altKey) {
+            selectLiveInputKey(midi % 12, MINOR_KEY_CODES.has(event.code) ? 'Minor' : 'Major');
             return;
         }
 
