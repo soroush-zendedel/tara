@@ -130,6 +130,8 @@
         .canvas-wrapper { background: var(--card-bg); padding: 15px; border-radius: 20px; box-shadow: var(--shadow); text-align: center; width: 100%; overflow: hidden; position: relative; border: 1px solid var(--border-color); }
         .canvas-wrapper h3 { margin: 0 0 15px 0; font-size: 1.1rem; color: var(--text-main); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
         canvas { width: 100% !important; height: auto !important; max-width: 100%; touch-action: none; border-radius: 10px; }
+        .instrument-scroll { width: 100%; overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }
+        .instrument-hint { display: none; margin: -5px 0 10px; color: var(--text-sec); font-size: 0.85rem; }
         .col-circle { flex: 1 1 350px; } .col-theory { flex: 2 1 600px; }
         #tooltip { position: fixed; display: none; background: rgba(45, 52, 54, 0.95); color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px; pointer-events: none; z-index: 9999; transform: translate(15px, 15px); backdrop-filter: blur(4px); }
         #tunerModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
@@ -138,5 +140,34 @@
         .tuner-needle { width: 4px; height: 130px; background: var(--text-main); position: absolute; bottom: 0; left: 50%; transform-origin: bottom center; transition: transform 0.1s ease-out; }
         .close-tuner { position: absolute; top: 20px; right: 25px; padding: 0; border: 0; background: transparent; font-size: 28px; cursor: pointer; color: var(--text-sec); }
         .site-footer { margin-top: 40px; width: 100%; text-align: center; padding: 25px; color: var(--text-sec); font-size: 0.9rem; }
-        @media (max-width: 640px) { .practice-panel { padding: 18px 14px; } .practice-heading { flex-direction: column; } .practice-score { align-self: flex-start; } .practice-controls { justify-content: flex-start; } }
+        @media (max-width: 640px) {
+            body { padding: 12px; }
+            .brand-link { font-size: 2rem; }
+            .instruction { max-width: 34rem; font-size: 0.82rem; line-height: 1.5; }
+            .controls-wrapper { gap: 10px; margin-bottom: 16px; }
+            .main-controls { width: 100%; padding: 12px; border-radius: 18px; }
+            .main-controls select { flex: 1 1 42%; min-width: 0; }
+            .main-controls button { min-height: 44px; }
+            .tools-bar { width: 100%; gap: 12px; padding: 12px; }
+            .metro-group { flex-wrap: wrap; justify-content: center; }
+            .practice-panel { padding: 18px 14px; border-radius: 16px; }
+            .practice-heading { flex-direction: column; gap: 12px; }
+            .practice-score { align-self: flex-start; }
+            .practice-controls { justify-content: flex-start; }
+            .practice-controls label { flex: 1 0 100%; }
+            .practice-controls select { flex: 1 1 100%; min-height: 44px; }
+            .practice-controls button { min-height: 44px; }
+            .practice-choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .practice-answer { min-width: 0; min-height: 44px; }
+            .lesson-heading-row > div { flex: 1 0 100%; }
+            .lesson-heading-row select { flex: 1 1 100%; min-height: 44px; }
+            .canvas-container, .top-row { gap: 14px; }
+            .canvas-wrapper { padding: 12px; border-radius: 16px; }
+            .instrument-hint { display: block; }
+            .instrument-scroll { touch-action: pan-x pan-y; }
+            .instrument-scroll canvas { width: 1400px !important; max-width: none; touch-action: pan-x pan-y; }
+            .fretboard-toolbar { justify-content: flex-start; }
+            .position-group { max-width: 100%; }
+            .toggle-wrapper { padding-left: 0; border-left: 0; }
+        }
         @media (min-width: 1000px) { .canvas-container { flex-direction: row; flex-wrap: wrap; align-items: stretch; } .canvas-wrapper { width: 100%; } .col-circle, .col-theory { height: auto; } }

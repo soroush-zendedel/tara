@@ -1,9 +1,9 @@
         // Translate pointer coordinates into canvas space and handle note selection.
         function handleMouse(e, canvas, hitboxes, hoverVarName) {
             const rect = canvas.getBoundingClientRect(); 
-            let clientX = e.clientX || (e.touches && e.touches[0].clientX);
-            let clientY = e.clientY || (e.touches && e.touches[0].clientY);
-            if(!clientX) return;
+            const clientX = e.clientX;
+            const clientY = e.clientY;
+            if (typeof clientX !== 'number' || typeof clientY !== 'number') return;
             const x = (clientX - rect.left) * (canvas.width / rect.width); 
             const y = (clientY - rect.top) * (canvas.height / rect.height);
             
@@ -51,8 +51,7 @@
 
             if (needsRedraw) { drawAll(); }
             
-            if (e.type === 'mousedown' || e.type === 'touchstart') {
-                if (e.type === 'touchstart') e.preventDefault(); 
+            if (e.type === 'click') {
                 if (canvas.id === 'fretboardCanvas' && handleFretboardPracticeClick(found)) return;
                 if (audioCtx.state === 'suspended') audioCtx.resume();
                 if (!found) return;
@@ -124,10 +123,11 @@
             sSel.addEventListener('change', (e) => { selectedScaleName = e.target.value; generateVisuals(); refreshPracticeForKeyChange(); });
 
             const attachEvents = (cvs, hitboxes, hoverVarName) => {
-                cvs.addEventListener('mousemove', e => handleMouse(e, cvs, hitboxes, hoverVarName));
-                cvs.addEventListener('mousedown', e => handleMouse(e, cvs, hitboxes, hoverVarName));
-                cvs.addEventListener('touchstart', e => handleMouse(e, cvs, hitboxes, hoverVarName), {passive: false});
-                cvs.addEventListener('touchmove', e => handleMouse(e, cvs, hitboxes, hoverVarName), {passive: false});
+                cvs.addEventListener('pointermove', e => {
+                    if (e.pointerType === 'mouse') handleMouse(e, cvs, hitboxes, hoverVarName);
+                });
+                // Native click events support taps while leaving horizontal swipes available to the scroll container.
+                cvs.addEventListener('click', e => handleMouse(e, cvs, hitboxes, hoverVarName));
             };
 
             attachEvents(fbCanvas, fbHitboxes, 'fbHovered');

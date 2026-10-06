@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tara | Interactive Music Theory Lab</title>
     
     <meta name="description" content="Tara - GuitarLab. A professional interactive laboratory for music theory, visualizing scales, chords, and fretboard patterns across multiple instruments.">
@@ -210,12 +210,18 @@
                     </label>
                 </div>
             </div>
-            <canvas id="fretboardCanvas" width="1400" height="320"></canvas>
+            <p class="instrument-hint">Swipe horizontally to explore all 24 frets.</p>
+            <div class="instrument-scroll" role="region" aria-label="Scrollable guitar fretboard" tabindex="0">
+                <canvas id="fretboardCanvas" width="1400" height="320"></canvas>
+            </div>
         </div>
 
         <div class="canvas-wrapper">
             <h3>Piano Reference</h3>
-            <canvas id="pianoCanvas" width="1400" height="200"></canvas>
+            <p class="instrument-hint">Swipe horizontally to explore the full piano keyboard.</p>
+            <div class="instrument-scroll" role="region" aria-label="Scrollable piano keyboard" tabindex="0">
+                <canvas id="pianoCanvas" width="1400" height="200"></canvas>
+            </div>
         </div>
     </div>
     <a href="https://soroush-zendedel.github.io/tara/" target="_blank" style="text-decoration:none; color:var(--text-sec); font-size:0.9rem; margin-top:15px;">Visit GitHub Page</a>
