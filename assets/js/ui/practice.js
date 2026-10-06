@@ -19,39 +19,6 @@ const PRACTICE_CHORDS = [
 ];
 const GUITAR_STRING_LABELS = ['Low E', 'A', 'D', 'G', 'B', 'High E'];
 
-const MINI_LESSONS = {
-    fretboard: {
-        title: 'Notes on the fretboard',
-        text: 'Standard tuning from the thickest string to the thinnest is E–A–D–G–B–E. Each fret raises a string by one semitone, so the note repeats at fret 12, one octave above the open string.',
-        example: [[40, 47, 52, 59]]
-    },
-    intervals: {
-        title: 'Intervals',
-        text: 'An interval measures the distance between two notes. One fret is one semitone; two frets are a whole tone. A perfect fifth spans seven semitones and is a useful anchor for hearing and finding notes.',
-        example: [[60], [67]]
-    },
-    scales: {
-        title: 'Building a scale',
-        text: 'A major scale follows the semitone pattern 2–2–1–2–2–2–1. Starting at any tonic and applying those steps builds the major scale. Other scale types use different interval patterns.',
-        example: [[60], [62], [64], [65], [67], [69], [71], [72]]
-    },
-    chords: {
-        title: 'Building triads',
-        text: 'A triad stacks a root, a third, and a fifth. A major triad uses 0–4–7 semitones from the root; a minor triad uses 0–3–7. Changing the third changes the chord quality.',
-        example: [[60, 64, 67]]
-    },
-    diatonic: {
-        title: 'Diatonic chords',
-        text: 'Diatonic triads are built by taking every other note of a scale. In a major key the common qualities are major, minor, minor, major, major, minor, diminished. These chords use only notes from that key.',
-        example: [[60, 64, 67], [62, 65, 69], [67, 71, 74], [60, 64, 67]]
-    },
-    caged: {
-        title: 'CAGED positions',
-        text: 'CAGED connects five familiar open-chord shapes—C, A, G, E, and D—across the neck. The shapes repeat in order as the same chord moves up the fretboard; use the root notes to orient each position.',
-        example: [[52, 55, 59, 64], [55, 59, 62, 67]]
-    }
-};
-
 function loadPracticeStats() {
     try {
         const saved = JSON.parse(localStorage.getItem('tara.practice.v1'));
@@ -289,12 +256,19 @@ async function playPracticeSound() {
 }
 
 async function playLessonExample() {
-    const lesson = MINI_LESSONS[document.getElementById('lessonTopic').value];
+    const lesson = getSelectedLesson();
+    if (!lesson) return;
     try {
         await resumePracticeAudio();
         let startTime = 0;
-        lesson.example.forEach((group) => {
-            group.forEach((midi, noteIndex) => playGuitarNote(midiToFreq(midi), startTime + noteIndex * 0.025, 0.55));
+        const audioGroups = lesson.audioScale
+            ? [...getScaleData().map((pitch) => [((pitch - selectedRootIndex + 12) % 12)]), [12]]
+            : (lesson.audio || []);
+        audioGroups.forEach((group) => {
+            group.forEach((offset, noteIndex) => {
+                const midi = lesson.audioMidi ? offset : 60 + selectedRootIndex + offset;
+                playGuitarNote(midiToFreq(midi), startTime + noteIndex * 0.025, 0.55);
+            });
             startTime += group.length === 1 ? 0.38 : 0.85;
         });
     } catch (error) {
@@ -474,11 +448,83 @@ function stopPracticeMicrophone() {
 function refreshPracticeForKeyChange() {
     const keyDependentModes = ['scale-degree', 'build-scale', 'chord-quality', 'chord-shape', 'ear-chord', 'diatonic-chord', 'ear-interval'];
     if (practiceQuestion && keyDependentModes.includes(practiceQuestion.mode)) startPracticeQuestion();
+    showLesson();
 }
 
-function showMiniLesson() {
-    const lesson = MINI_LESSONS[document.getElementById('lessonTopic').value];
-    document.getElementById('lessonText').innerText = `${lesson.title}. ${lesson.text}`;
+function getSelectedLesson() {
+    return LESSON_CATALOG.find((lesson) => lesson.id === document.getElementById('lessonTopic').value);
+}
+
+function populateLessonPicker() {
+    const picker = document.getElementById('lessonTopic');
+    const categories = [...new Set(LESSON_CATALOG.map((lesson) => lesson.category))];
+    picker.replaceChildren();
+    categories.forEach((category) => {
+        const group = document.createElement('optgroup');
+        group.label = category;
+        LESSON_CATALOG.filter((lesson) => lesson.category === category).forEach((lesson) => {
+            const option = document.createElement('option');
+            option.value = lesson.id;
+            option.textContent = lesson.title;
+            group.append(option);
+        });
+        picker.append(group);
+    });
+}
+
+function showLesson() {
+    const lesson = getSelectedLesson();
+    if (!lesson) return;
+    document.getElementById('lessonTitle').innerText = lesson.title;
+    document.getElementById('lessonSummary').innerText = lesson.summary;
+    document.getElementById('lessonText').innerText = lesson.body;
+    const stepList = document.getElementById('lessonSteps');
+    stepList.replaceChildren(...lesson.steps.map((step) => {
+        const item = document.createElement('li');
+        item.textContent = step;
+        return item;
+    }));
+    const scaleNotes = getScaleData().map(getNoteName).join(' · ');
+    document.getElementById('lessonContext').innerText =
+        `Current app context: ${getNoteName(selectedRootIndex)} ${selectedScaleName} · Notes: ${scaleNotes}`;
+    document.getElementById('lessonGoButton').innerText = lesson.target === 'circleCanvas'
+        ? 'Open the Circle of Fifths'
+        : lesson.target === 'tunerToggle' ? 'Open the tuner'
+            : lesson.target === 'metroBtn' ? 'Go to the metronome'
+                : lesson.target === 'downloadPdfButton' ? 'Go to PDF export'
+                    : lesson.target === 'practiceMode' ? 'Go to exercises'
+                        : 'Show the related tool';
+    document.getElementById('lessonPracticeButton').hidden = !lesson.practice;
+    document.getElementById('lessonAudioButton').hidden = !lesson.audio;
+}
+
+function openLessonTool() {
+    const lesson = getSelectedLesson();
+    if (!lesson) return;
+    if (lesson.target === 'practiceMode') {
+        document.getElementById('practiceMode').focus();
+        document.querySelector('.practice-controls').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+    }
+    const target = document.getElementById(lesson.target);
+    if (!target) return;
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (['rootSelect', 'scaleSelect', 'tunerToggle', 'metroBtn', 'downloadPdfButton'].includes(lesson.target)) target.focus({ preventScroll: true });
+}
+
+function startLessonPractice() {
+    const lesson = getSelectedLesson();
+    if (!lesson?.practice) return;
+    if (lesson.requiredScale && selectedScaleName !== lesson.requiredScale) {
+        selectedScaleName = lesson.requiredScale;
+        document.getElementById('scaleSelect').value = lesson.requiredScale;
+        generateVisuals();
+        refreshPracticeForKeyChange();
+    }
+    const modePicker = document.getElementById('practiceMode');
+    modePicker.value = lesson.practice;
+    startPracticeQuestion();
+    document.getElementById('practicePrompt').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 function initializePracticeLab() {
@@ -488,11 +534,14 @@ function initializePracticeLab() {
     document.getElementById('replayPracticeAudio').addEventListener('click', () => { void playPracticeSound(); });
     document.getElementById('checkScaleNotes').addEventListener('click', checkScaleSelection);
     document.getElementById('micPracticeButton').addEventListener('click', togglePracticeMicrophone);
-    document.getElementById('lessonTopic').addEventListener('change', showMiniLesson);
+    populateLessonPicker();
+    document.getElementById('lessonTopic').addEventListener('change', showLesson);
     document.getElementById('lessonAudioButton').addEventListener('click', () => { void playLessonExample(); });
+    document.getElementById('lessonGoButton').addEventListener('click', openLessonTool);
+    document.getElementById('lessonPracticeButton').addEventListener('click', startLessonPractice);
     window.addEventListener('beforeunload', stopPracticeMicrophone);
 
-    showMiniLesson();
+    showLesson();
     document.getElementById('practicePrompt').innerText = 'Choose an exercise or select New question when you are ready.';
     document.getElementById('replayPracticeAudio').hidden = true;
     document.getElementById('checkScaleNotes').hidden = true;

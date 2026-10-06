@@ -3,24 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tara | Interactive Music Theory Lab</title>
-    
-    <meta name="description" content="Tara - GuitarLab. A professional interactive laboratory for music theory, visualizing scales, chords, and fretboard patterns across multiple instruments.">
-    <meta name="keywords" content="Tara, GuitarLab, Guitar Scale Visualizer, Music Theory Lab, Fretboard Diagram Generator, Chord Charts, Tara - GuitarLab, Interactive Music Tools, Guitar Education">
+    <title>Interactive Guitar Theory &amp; Fretboard Tool | Tara GuitarLab</title>
+    <meta name="description" content="Explore guitar scales, chords, fretboard positions, piano notes, and standard notation with Tara GuitarLab’s free interactive music theory tools and practice lessons.">
+    <link rel="canonical" href="https://soroush-zendedel.github.io/tara/app.html">
+    <meta name="theme-color" content="#f0f2f5">
     <meta name="author" content="Tara - GuitarLab">
     <meta name="robots" content="index, follow">
 
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Tara GuitarLab">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://soroush-zendedel.github.io/tara/">
-    <meta property="og:title" content="Tara - GuitarLab">
-    <meta property="og:description" content="Tara - GuitarLab. A professional interactive laboratory for music theory, visualizing scales, chords, and fretboard patterns across multiple instruments.">
+    <meta property="og:url" content="https://soroush-zendedel.github.io/tara/app.html">
+    <meta property="og:title" content="Interactive Guitar Theory &amp; Fretboard Tool | Tara GuitarLab">
+    <meta property="og:description" content="Explore guitar scales, chords, fretboard positions, piano notes, and standard notation with free interactive tools and guided practice.">
     <meta property="og:image" content="https://soroush-zendedel.github.io/tara/img/preview.jpg">
+    <meta property="og:image:alt" content="Tara GuitarLab interactive guitar fretboard and music theory tools">
 
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://soroush-zendedel.github.io/tara/">
-    <meta property="twitter:title" content="Tara - GuitarLab">
-    <meta property="twitter:description" content="Tara - GuitarLab. A professional interactive laboratory for music theory, visualizing scales, chords, and fretboard patterns across multiple instruments.">
-    <meta property="twitter:image" content="https://soroush-zendedel.github.io/tara/img/preview.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Interactive Guitar Theory &amp; Fretboard Tool | Tara GuitarLab">
+    <meta name="twitter:description" content="Explore guitar scales, chords, fretboard positions, piano notes, and standard notation with free interactive tools and guided practice.">
+    <meta name="twitter:image" content="https://soroush-zendedel.github.io/tara/img/preview.jpg">
 
     <script type="application/ld+json">
     {
@@ -28,14 +30,19 @@
       "@type": "WebApplication",
       "name": "Tara",
       "alternateName": "GuitarLab",
-      "url": "https://soroush-zendedel.github.io/tara/",
-      "description": "An advanced interactive laboratory for visualizing music theory, scales, chords, and instrument patterns.",
+      "url": "https://soroush-zendedel.github.io/tara/app.html",
+      "description": "A free interactive guitar and music theory learning app for exploring scales, chords, fretboard positions, piano notes, notation, and ear training.",
       "applicationCategory": "EducationalApplication, MusicApplication",
-      "operatingSystem": "All",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires a modern web browser",
+      "inLanguage": "en",
+      "isAccessibleForFree": true,
+      "featureList": "Interactive guitar fretboard, scale and chord visualization, piano reference, standard notation and tablature, ear training, tuner, metronome, and PDF export",
       "author": {
         "@type": "Organization",
         "name": "Tara",
-        "url": "https://soroush-zendedel.github.io/tara/"
+        "url": "https://soroush-zendedel.github.io/tara/",
+        "sameAs": "https://github.com/soroush-zendedel/tara"
       },
       "offers": {
         "@type": "Offer",
@@ -73,7 +80,7 @@
     <h1 class="main-title" style="line-height: 1.1; margin-top: 5px; margin-bottom: 10px;">
         <!-- <span style="color: var(--accent);">Tara</span> - GuitarLab -->
         <span style="display: block; font-size: 0.45em; font-weight: 400; color: var(--text-sec); letter-spacing: 3px; margin-top: 8px; text-transform: uppercase;">
-            Interactive Music Theory Lab
+            Interactive Guitar &amp; Music Theory Lab
         </span>
         <!-- <a href="https://youtube.com/@tara" target="_blank" style="
             text-decoration: none;
@@ -158,20 +165,25 @@
             <div class="lesson-heading-row">
                 <div>
                     <p class="practice-eyebrow">QUICK LESSONS</p>
-                    <h3>Learn a concept</h3>
+                    <h3>Music theory learning guide</h3>
+                    <p class="lesson-description">Guided lessons linked to the tools and exercises in this app.</p>
                 </div>
                 <label for="lessonTopic">Topic</label>
-                <select id="lessonTopic">
-                    <option value="fretboard">Notes on the fretboard</option>
-                    <option value="intervals">Intervals</option>
-                    <option value="scales">Building a scale</option>
-                    <option value="chords">Building triads</option>
-                    <option value="diatonic">Diatonic chords</option>
-                    <option value="caged">CAGED positions</option>
-                </select>
+                <select id="lessonTopic" aria-label="Choose a lesson"></select>
             </div>
-            <p id="lessonText" class="lesson-text"></p>
-            <button id="lessonAudioButton" type="button">Hear an example</button>
+            <article class="lesson-content" aria-live="polite">
+                <h4 id="lessonTitle"></h4>
+                <p id="lessonSummary" class="lesson-summary"></p>
+                <p id="lessonText" class="lesson-text"></p>
+                <h4 class="lesson-steps-title">Try it in the app</h4>
+                <ol id="lessonSteps" class="lesson-steps"></ol>
+                <p id="lessonContext" class="lesson-context"></p>
+            </article>
+            <div class="lesson-actions">
+                <button class="primary" id="lessonGoButton" type="button">Open related tool</button>
+                <button id="lessonPracticeButton" type="button">Practice this concept</button>
+                <button id="lessonAudioButton" type="button">Hear an example</button>
+            </div>
         </div>
     </section>
 
@@ -179,17 +191,17 @@
         <div class="top-row">
             <div class="canvas-wrapper col-circle">
                 <h3>Circle of Fifths</h3>
-                <canvas id="circleCanvas" width="450" height="550" style="cursor: pointer;"></canvas>
+                <canvas id="circleCanvas" width="450" height="550" aria-label="Interactive Circle of Fifths showing major and relative minor keys" style="cursor: pointer;"></canvas>
             </div>
             <div class="canvas-wrapper col-theory">
                 <h3>Theory & Chords</h3>
-                <canvas id="theoryCanvas" width="1100" height="1100"></canvas>
+                <canvas id="theoryCanvas" width="1100" height="1100" aria-label="Scale notes, diatonic chords, and chord progressions for the selected key"></canvas>
             </div>
         </div>
 
         <div class="canvas-wrapper">
             <h3>Notation & Tab</h3>
-            <canvas id="notationCanvas" width="1400" height="400"></canvas>
+            <canvas id="notationCanvas" width="1400" height="400" aria-label="Standard music notation and guitar tablature for the selected scale or chord"></canvas>
         </div>
 
         <div class="canvas-wrapper">
@@ -212,7 +224,7 @@
             </div>
             <p class="instrument-hint">Swipe horizontally to explore all 24 frets.</p>
             <div class="instrument-scroll" role="region" aria-label="Scrollable guitar fretboard" tabindex="0">
-                <canvas id="fretboardCanvas" width="1400" height="320"></canvas>
+                <canvas id="fretboardCanvas" width="1400" height="320" aria-label="Interactive six-string guitar fretboard with notes highlighted for the selected scale or chord"></canvas>
             </div>
         </div>
 
@@ -220,7 +232,7 @@
             <h3>Piano Reference</h3>
             <p class="instrument-hint">Swipe horizontally to explore the full piano keyboard.</p>
             <div class="instrument-scroll" role="region" aria-label="Scrollable piano keyboard" tabindex="0">
-                <canvas id="pianoCanvas" width="1400" height="200"></canvas>
+            <canvas id="pianoCanvas" width="1400" height="200" aria-label="Interactive piano keyboard showing notes that match the guitar fretboard"></canvas>
             </div>
         </div>
     </div>
@@ -233,6 +245,7 @@
     <script src="assets/js/core/music-theory.js"></script>
     <script src="assets/js/core/audio.js"></script>
     <script src="assets/js/core/tuner.js"></script>
+    <script src="assets/js/data/lesson-catalog.js"></script>
     <script src="assets/js/rendering/renderers.js"></script>
     <script src="assets/js/ui/interactions.js"></script>
     <script src="assets/js/ui/export-pdf.js"></script>

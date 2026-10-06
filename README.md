@@ -15,7 +15,7 @@
 * **Chromatic Tuner:** Built-in guitar tuner using your device's microphone (Web Audio API).  
 * **Smart Metronome:** Adjustable BPM with visual and audio feedback.  
 * **PDF Export:** Generate and download a comprehensive PDF booklet of your current scales and charts with a single click.  
-* **Interactive Practice:** Calculate fretboard, scale, diatonic chord, ear-training, and microphone exercises; includes short lessons and locally saved progress.
+* **Interactive Practice:** Calculate fretboard, scale, diatonic chord, ear-training, and microphone exercises; includes a 20-lesson guide linked to the app's tools and locally saved progress.
 * **Dark/Light Theme:** Fully responsive UI with seamless theme switching.
 
 ## **📸 Screenshots**
