@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Tailwind CSS (CDN for rapid styling) -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <script>
         tailwind.config = {
             theme: {
@@ -32,42 +31,7 @@
         }
     </script>
 
-    <style>
-        /* Language Display Logic */
-        html[lang="fa"] .en-text { display: none !important; }
-        html[lang="en"] .fa-text { display: none !important; }
-        
-        html[lang="fa"] { font-family: 'Vazirmatn', sans-serif; }
-        html[lang="en"] { font-family: 'Inter', sans-serif; }
-
-        body {
-            background-color: #121212;
-            background-image: radial-gradient(circle at top, #1e1e1e 0%, #121212 100%);
-            color: #dfe6e9;
-            overflow-x: hidden;
-        }
-
-        .gradient-text {
-            background: linear-gradient(45deg, #dfe6e9, #FDB827);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .feature-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(253, 184, 39, 0.1);
-            border-color: rgba(253, 184, 39, 0.5);
-        }
-
-        /* Image Shadows */
-        .img-glow {
-            box-shadow: 0 0 40px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/landing.css">
 </head>
 <body class="antialiased min-h-screen flex flex-col">
 
@@ -81,7 +45,7 @@
             
             <div class="flex items-center gap-4">
                 <!-- Language Toggle -->
-                <button id="langToggle" onclick="toggleLanguage()" class="px-3 py-1 rounded-full border border-white/20 hover:border-tara-accent hover:text-tara-accent transition-colors text-sm font-semibold">
+                <button id="langToggle" type="button" class="px-3 py-1 rounded-full border border-white/20 hover:border-tara-accent hover:text-tara-accent transition-colors text-sm font-semibold">
                     <span class="fa-text">English</span>
                     <span class="en-text">فارسی</span>
                 </button>
@@ -293,20 +257,6 @@
         </div>
     </footer>
 
-    <!-- JavaScript for Language Toggle -->
-    <script>
-        function toggleLanguage() {
-            const htmlTag = document.documentElement;
-            const currentLang = htmlTag.getAttribute('lang');
-            
-            if (currentLang === 'fa') {
-                htmlTag.setAttribute('lang', 'en');
-                htmlTag.setAttribute('dir', 'ltr');
-            } else {
-                htmlTag.setAttribute('lang', 'fa');
-                htmlTag.setAttribute('dir', 'rtl');
-            }
-        }
-    </script>
+    <script src="assets/js/ui/landing.js"></script>
 </body>
 </html>

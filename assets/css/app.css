@@ -1,0 +1,114 @@
+        :root {
+            /* Palette */
+            --bg-body: #f0f2f5; 
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --text-main: #2d3436; 
+            --text-sec: #636e72;
+            --accent: #FDB827;
+            --card-bg: #ffffff;
+            --btn-bg: #2d3436; 
+            --btn-text: #ffffff;
+            --border-color: #dfe6e9;
+            --shadow: 0 10px 20px rgba(0,0,0,0.08);
+            
+            --tuner-bg: #f1f2f6; 
+            --tuner-needle: #ff7675; 
+            --tuner-ok: #00b894;
+            
+            --chart-header: #f1f2f6;
+            --chart-row-even: #ffffff;
+            --chart-row-odd: #fafafa;
+            --chart-hover: #fff3cd;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #121212; 
+            --bg-gradient: linear-gradient(135deg, #1e1e1e 0%, #121212 100%);
+            --text-main: #dfe6e9; 
+            --text-sec: #b2bec3;
+            --accent: #D4AF37;
+            --card-bg: #2d3436;
+            --btn-bg: #D4AF37; 
+            --btn-text: #1e1e1e;
+            --border-color: #444;
+            --shadow: 0 10px 20px rgba(0,0,0,0.4);
+            
+            --tuner-bg: #222; 
+            --tuner-needle: #ff7675; 
+            --tuner-ok: #00b894;
+
+            --chart-header: #353b48;
+            --chart-row-even: #2d3436;
+            --chart-row-odd: #252a2c;
+            --chart-hover: #443c20;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--bg-gradient); color: var(--text-main);
+            display: flex; flex-direction: column; align-items: center;
+            padding: 20px; margin: 0; min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+        
+        .brand-header { text-align: center; margin-bottom: 15px; }
+        .brand-link { 
+            font-size: 2.5rem; font-weight: 800; text-decoration: none; 
+            color: var(--text-main); letter-spacing: -1px; 
+            background: linear-gradient(45deg, var(--text-main), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .main-title { margin: 5px 0; font-size: 1.5rem; color: var(--text-main); font-weight: 700; text-align: center; }
+        .instruction { margin: 5px 0 20px 0; font-size: 0.9rem; color: var(--accent); font-weight: 600; text-align: center; }
+        
+        .controls-wrapper { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 900px; margin-bottom: 25px; align-items: center; }
+
+        .main-controls { 
+            background: var(--card-bg); padding: 12px 20px; border-radius: 50px; 
+            box-shadow: var(--shadow); border: 1px solid var(--border-color);
+            display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; width: auto;
+        }
+        .main-controls select { flex: 0 0 auto; width: auto; padding: 10px 15px; font-size: 15px; border: 1px solid var(--border-color); border-radius: 20px; cursor: pointer; background: var(--bg-body); color: var(--text-main); outline: none; font-weight: 600; }
+
+        .tools-bar { background: var(--card-bg); padding: 10px 20px; border-radius: 16px; box-shadow: var(--shadow); border: 1px solid var(--border-color); display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; align-items: center; }
+
+        .fretboard-toolbar { display: flex; gap: 15px; width: 100%; justify-content: center; align-items: center; flex-wrap: wrap; margin-bottom: 10px; padding: 10px; background: var(--card-bg); border-radius: 16px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
+        .position-group { display: flex; gap: 5px; flex-wrap: nowrap; overflow-x: auto; align-items: center; scrollbar-width: none; }
+        
+        .toggle-wrapper { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; padding-left: 15px; border-left: 1px solid var(--border-color); }
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--accent); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        button { padding: 10px 18px; font-size: 14px; border: none; border-radius: 50px; cursor: pointer; transition: all 0.2s; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        .pos-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); min-width: 60px; padding: 8px 12px; font-size: 13px; justify-content: center; }
+        .pos-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        button.primary { background-color: var(--btn-bg); color: var(--btn-text); }
+        button.primary:hover { transform: translateY(-2px); opacity: 0.9; }
+        .theme-toggle { background: transparent; color: var(--text-main); padding: 8px; width: 40px; height: 40px; justify-content: center; border: 1px solid var(--border-color); border-radius: 50%; }
+
+        .metro-group { display: flex; align-items: center; gap: 10px; }
+        .metro-light { width: 14px; height: 14px; border-radius: 50%; background-color: #b2bec3; }
+        .metro-light.flash { background-color: #ff7675; box-shadow: 0 0 12px #ff7675; transform: scale(1.3); }
+        #bpmInput { width: 70px; padding: 8px 5px; text-align: center; font-size: 16px; font-weight: bold; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-main); }
+
+        .canvas-container { display: flex; flex-direction: column; gap: 25px; width: 100%; max-width: 1400px; align-items: center; }
+        .top-row { display: flex; gap: 25px; width: 100%; flex-wrap: wrap; }
+        .canvas-wrapper { background: var(--card-bg); padding: 15px; border-radius: 20px; box-shadow: var(--shadow); text-align: center; width: 100%; overflow: hidden; position: relative; border: 1px solid var(--border-color); }
+        .canvas-wrapper h3 { margin: 0 0 15px 0; font-size: 1.1rem; color: var(--text-main); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        canvas { width: 100% !important; height: auto !important; max-width: 100%; touch-action: none; border-radius: 10px; }
+        .col-circle { flex: 1 1 350px; } .col-theory { flex: 2 1 600px; }
+        #tooltip { position: fixed; display: none; background: rgba(45, 52, 54, 0.95); color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px; pointer-events: none; z-index: 9999; transform: translate(15px, 15px); backdrop-filter: blur(4px); }
+        #tunerModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .tuner-box { background: var(--card-bg); padding: 30px; border-radius: 30px; width: 90%; max-width: 400px; text-align: center; position: relative; }
+        .tuner-gauge { width: 100%; max-width: 280px; height: 140px; margin: 0 auto; border-top-left-radius: 140px; border-top-right-radius: 140px; background: var(--tuner-bg); position: relative; overflow: hidden; }
+        .tuner-needle { width: 4px; height: 130px; background: var(--text-main); position: absolute; bottom: 0; left: 50%; transform-origin: bottom center; transition: transform 0.1s ease-out; }
+        .close-tuner { position: absolute; top: 20px; right: 25px; padding: 0; border: 0; background: transparent; font-size: 28px; cursor: pointer; color: var(--text-sec); }
+        .site-footer { margin-top: 40px; width: 100%; text-align: center; padding: 25px; color: var(--text-sec); font-size: 0.9rem; }
+        @media (min-width: 1000px) { .canvas-container { flex-direction: row; flex-wrap: wrap; align-items: stretch; } .canvas-wrapper { width: 100%; } .col-circle, .col-theory { height: auto; } }

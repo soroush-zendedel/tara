@@ -46,8 +46,14 @@ This project is completely built with **Vanilla HTML, CSS, and JavaScript**. No 
 2. Navigate to the project directory:  
    cd tara
 
-3. Open index.html (Landing Page) or app.html (Main Application) in any modern web browser.  
-   * *Note: The Tuner feature requires a localhost environment or HTTPS to access the microphone.*
+3. Start a local static server from the repository root:
+   ```bash
+   python -m http.server 8000
+   ```
+4. Open `http://localhost:8000/` for the landing page or `http://localhost:8000/app.html` for the application.
+   *The tuner requires HTTPS or localhost so the browser can request microphone access.*
+
+The app is split into ordinary HTML, CSS, and ordered browser JavaScript files under `assets/`; it has no build step or package manager requirement.
 
 ## **🛠️ Tech Stack**
 
@@ -95,5 +101,9 @@ Distributed under the MIT License. See LICENSE for more information.
 ۱. مخزن را کلون کنید:  
 git clone https://github.com/soroush-zendedel/tara.git
 
-۲. فایل index.html (صفحه فرود) یا app.html (برنامه اصلی) را در مرورگر خود باز کنید و لذت ببرید\!  
-*(توجه: برای استفاده از میکروفون در بخش تیونر، اجرای برنامه روی localhost یا بستر HTTPS الزامی است).*
+۲. از ریشه پروژه یک سرور محلی اجرا کنید:
+```bash
+python -m http.server 8000
+```
+۳. صفحه فرود را در `http://localhost:8000/` یا برنامه را در `http://localhost:8000/app.html` باز کنید.
+*(برای دسترسی تیونر به میکروفون، HTTPS یا localhost لازم است.)*

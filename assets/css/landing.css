@@ -1,0 +1,35 @@
+        /* Language Display Logic */
+        html[lang="fa"] .en-text { display: none !important; }
+        html[lang="en"] .fa-text { display: none !important; }
+        
+        html[lang="fa"] { font-family: 'Vazirmatn', sans-serif; }
+        html[lang="en"] { font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: #121212;
+            background-image: radial-gradient(circle at top, #1e1e1e 0%, #121212 100%);
+            color: #dfe6e9;
+            overflow-x: hidden;
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, #dfe6e9, #FDB827);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(253, 184, 39, 0.1);
+            border-color: rgba(253, 184, 39, 0.5);
+        }
+
+        /* Image Shadows */
+        .img-glow {
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
