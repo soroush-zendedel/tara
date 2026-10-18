@@ -55,7 +55,7 @@ h1 span { color: var(--gold); }
 .button.secondary { border-color: #ffffff28; color: #fff; }
 .button.secondary:hover { border-color: var(--gold); }
 .hero-image { min-width: 0; margin: 0; padding: .55rem; border: 1px solid var(--line); border-radius: 1.15rem; background: #ffffff06; box-shadow: 0 24px 64px #0005; }
-.hero-image img { display: block; width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: .75rem; }
+.hero-image img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; border-radius: .75rem; }
 .hero-image figcaption { padding: .65rem .4rem .1rem; color: var(--muted); font-size: .78rem; }
 .content-section { padding-block: clamp(3.2rem, 7vw, 5.5rem); border-top: 1px solid var(--line); }
 .section-heading { max-width: 50rem; margin-bottom: 1rem; }
