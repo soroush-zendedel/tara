@@ -45,7 +45,7 @@
 
 ## **🚀 Quick Start (Local Setup)**
 
-This project is completely built with **Vanilla HTML, CSS, and JavaScript**. No build tools or package managers are required\!
+The finished site uses **HTML, CSS, and vanilla JavaScript**. Running it does not require Node.js, npm, pnpm, or a build step. Python is used below only to serve the files locally.
 
 1. Clone the repository:  
    git clone https://github.com/soroush-zendedel/tara.git
@@ -60,7 +60,41 @@ This project is completely built with **Vanilla HTML, CSS, and JavaScript**. No 
 4. Open `http://localhost:8000/` for the English landing page, `http://localhost:8000/fa/` for the Persian landing page, `http://localhost:8000/about.html` or `http://localhost:8000/fa/about.html` for the About pages, `http://localhost:8000/app.html` for GuitarLab, or `http://localhost:8000/book.html` for the flipbook editor.
    *The tuner requires HTTPS or localhost so the browser can request microphone access.*
 
-The Persian and English landing and About pages are independent HTML documents. The app is split into ordinary HTML, CSS, and ordered browser JavaScript files under `assets/`; it has no build step or package manager requirement.
+All runtime styles, fonts, icons, images, and JavaScript libraries are included in this repository. After you have the project files, the pages and app work without an internet connection; only external links such as GitHub require a connection when opened. Third-party asset licenses are included in `assets/licenses/`. Use the local server above rather than opening the HTML files directly, so browser features such as local assets and microphone access work reliably.
+
+The Persian and English landing and About pages are independent HTML documents. The app is split into ordinary HTML, CSS, and ordered browser JavaScript files under `assets/`. The generated landing-page Tailwind stylesheet is checked in at `assets/css/tailwind.min.css`; its source and configuration are `assets/css/tailwind-input.css` and `tailwind.config.cjs`.
+
+### Run and develop with Docker Compose
+
+Install Docker Desktop or Docker Engine with Compose v2, then run this from the project root:
+
+```bash
+docker compose up --build -d
+```
+
+Open `http://localhost:8001/` (or `/fa/`, `/about.html`, `/fa/about.html`, and `/app.html`). The service is named `site`, but it is the only default service, so there is no need to add its name to the command. `--build` is accepted for the usual Compose workflow; this static site has no custom image build, so Docker runs the prebuilt Nginx image and serves the project files mounted read-only. Edits to HTML, CSS, JavaScript, and images appear after refreshing the browser. Stop the service with `docker compose down`; view its output with `docker compose logs -f site`.
+
+If port 8001 is already in use, set a different host port before starting Compose, for example in PowerShell: `$env:TARA_PORT = "8002"`, then run `docker compose up --build -d` and open `http://localhost:8002/`. Tailwind class changes still need the CSS build described below; the updated stylesheet is served as soon as it is rebuilt. The first Compose run needs the `nginx:alpine` image available and may download it; to prepare for later offline use, run `docker compose pull site` while connected.
+
+### Style and site development
+
+You do **not** need npm or pnpm for ordinary content changes, edits to `assets/css/landing.css`, `assets/css/about.css`, or `assets/css/app.css`, or for running the site. Edit those files and refresh the local page.
+
+The landing pages also use Tailwind utility classes in `index.html` and `fa/index.html`. If you add, remove, or change one of those classes, install the development dependency once and rebuild the checked-in stylesheet:
+
+```bash
+pnpm install
+pnpm run build:css
+```
+
+Alternatively, with npm:
+
+```bash
+npm install
+npm run build:css
+```
+
+To rebuild automatically while editing Tailwind classes, use `pnpm run watch:css` (or `npm run watch:css`) in a second terminal. Keep `assets/css/tailwind.min.css` in the change/commit so the published site does not need Node.js or a build step. After rebuilding, run the local server from the project root as described above and check both `/` and `/fa/` at desktop and mobile widths. The app's styling is ordinary CSS in `assets/css/app.css`; it does not use Tailwind.
 
 ## **🛠️ Tech Stack**
 
@@ -107,7 +141,8 @@ Distributed under the MIT License. See LICENSE for more information.
 
 ### **⚙️ نحوه اجرا (اجرای محلی)**
 
-این پروژه کاملاً با جاوا اسکریپت خالص (Vanilla JS) و HTML/CSS نوشته شده است و نیازی به نصب هیچ پیش‌نیازی ندارد:  
+برای اجرای نسخهٔ آماده به Node.js، npm، pnpm یا فرایند build نیازی نیست. Python فقط برای اجرای سرور محلی در دستور زیر استفاده می‌شود:
+
 ۱. مخزن را کلون کنید:  
 git clone https://github.com/soroush-zendedel/tara.git
 
@@ -117,3 +152,42 @@ python -m http.server 8000
 ```
 ۳. صفحه فرود انگلیسی را در `http://localhost:8000/`، صفحه فارسی را در `http://localhost:8000/fa/` یا برنامه را در `http://localhost:8000/app.html` باز کنید.
 *(برای دسترسی تیونر به میکروفون، HTTPS یا localhost لازم است.)*
+
+### اجرا و توسعه با Docker Compose
+
+Docker Desktop یا Docker Engine به‌همراه Compose نسخهٔ ۲ را نصب کنید و از ریشهٔ پروژه اجرا کنید:
+
+```bash
+docker compose up --build -d
+```
+
+سپس `http://localhost:8001/` را باز کنید (یا مسیرهای `/fa/`، `/about.html`، `/fa/about.html` و `/app.html`). سرویس `site` تنها سرویس پیش‌فرض Compose است و لازم نیست نامش را به دستور اضافه کنید. گزینهٔ `--build` با این فرمان کار می‌کند، اما سایت ایستا image اختصاصی برای build ندارد؛ Docker از image آمادهٔ Nginx استفاده می‌کند و فایل‌های پروژه را فقط‌خواندنی در آن mount می‌کند. تغییر HTML، CSS، جاوااسکریپت یا تصویر با تازه‌کردن مرورگر دیده می‌شود. برای توقف سرویس `docker compose down` و برای مشاهدهٔ خروجی `docker compose logs -f site` را اجرا کنید.
+
+اگر پورت ۸۰۰۱ اشغال است، پیش از اجرا پورت دیگری تعیین کنید؛ در PowerShell:
+
+```powershell
+$env:TARA_PORT = "8002"
+docker compose up --build -d
+```
+
+بعد `http://localhost:8002/` را باز کنید. تغییر کلاس‌های Tailwind همچنان به build CSS طبق بخش بعد نیاز دارد و خروجی به‌محض تولید از طریق Compose در دسترس خواهد بود. بار اول باید imageِ `nginx:alpine` دریافت شود؛ برای اجرای آفلاین بعدی، وقتی اینترنت دارید `docker compose pull site` را اجرا کنید.
+
+### توسعه و تغییر ظاهر
+
+برای تغییر متن‌ها یا ویرایش CSS معمولی، فایل مربوط را مستقیماً تغییر دهید؛ برای این کار به npm یا pnpm نیازی نیست. استایل صفحهٔ اصلی و فارسی در `assets/css/landing.css`، صفحه‌های درباره در `assets/css/about.css` و برنامه در `assets/css/app.css` است.
+
+صفحه‌های فرود از کلاس‌های Tailwind در `index.html` و `fa/index.html` هم استفاده می‌کنند. اگر کلاس Tailwind اضافه، حذف یا عوض کردید، یک‌بار وابستگی توسعه را نصب و CSS نهایی را دوباره تولید کنید:
+
+```bash
+pnpm install
+pnpm run build:css
+```
+
+یا با npm:
+
+```bash
+npm install
+npm run build:css
+```
+
+برای تولید خودکار هنگام ویرایش کلاس‌ها، `pnpm run watch:css` یا `npm run watch:css` را در یک ترمینال دیگر اجرا کنید. فایل تولیدشدهٔ `assets/css/tailwind.min.css` را همراه تغییرات نگه دارید تا سایت منتشرشده برای اجرا به Node.js یا build نیاز نداشته باشد. سپس با سرور محلی بالا، صفحه‌های `/` و `/fa/` را در اندازهٔ دسکتاپ و موبایل بررسی کنید. ظاهر برنامه Tailwind ندارد و با CSS معمولی در `assets/css/app.css` مدیریت می‌شود.

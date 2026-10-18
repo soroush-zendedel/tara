@@ -1,0 +1,42 @@
+services:
+  site:
+    image: nginx:alpine
+    ports:
+      - "${TARA_PORT:-8001}:80"
+    volumes:
+      - type: bind
+        source: ./index.html
+        target: /usr/share/nginx/html/index.html
+        read_only: true
+      - type: bind
+        source: ./about.html
+        target: /usr/share/nginx/html/about.html
+        read_only: true
+      - type: bind
+        source: ./app.html
+        target: /usr/share/nginx/html/app.html
+        read_only: true
+      - type: bind
+        source: ./CHANGELOG.md
+        target: /usr/share/nginx/html/CHANGELOG.md
+        read_only: true
+      - type: bind
+        source: ./sitemap.xml
+        target: /usr/share/nginx/html/sitemap.xml
+        read_only: true
+      - type: bind
+        source: ./assets
+        target: /usr/share/nginx/html/assets
+        read_only: true
+      - type: bind
+        source: ./en
+        target: /usr/share/nginx/html/en
+        read_only: true
+      - type: bind
+        source: ./fa
+        target: /usr/share/nginx/html/fa
+        read_only: true
+      - type: bind
+        source: ./img
+        target: /usr/share/nginx/html/img
+        read_only: true

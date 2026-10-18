@@ -49,31 +49,10 @@
       }
     }
 </script>
-<!-- Fonts: Vazirmatn for Persian, Inter for English -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;family=Vazirmatn:wght@400;600;800&amp;display=swap" rel="stylesheet">
-<!-- FontAwesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- Tailwind CSS (CDN for rapid styling) -->
-<script src="https://cdn.tailwindcss.com">
-</script>
-<script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        tara: {
-                            dark: '#121212',
-                            card: '#1e1e1e',
-                            accent: '#FDB827',
-                            accentHover: '#D4AF37',
-                            text: '#dfe6e9',
-                            textMuted: '#b2bec3'
-                        }
-                    }
-                }
-            }
-        }
-</script>
+<link rel="preload" href="../assets/fonts/vazirmatn-arabic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<link rel="stylesheet" href="../assets/vendor/fontawesome/css/all.min.css">
+<link rel="stylesheet" href="../assets/css/tailwind.min.css">
 <link rel="stylesheet" href="../assets/css/landing.css">
 </head>
 <body class="antialiased min-h-screen flex flex-col">
