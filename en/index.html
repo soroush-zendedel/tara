@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tara GuitarLab | Guitar Music Theory, Fretboard & Practice</title>
+<meta name="author" content="Soroush Zendedel">
+    <meta name="description" content="Learn guitar music theory with interactive fretboard and piano views, scales, chords, guided lessons, practice, MIDI input, and teaching tools.">
+<link rel="canonical" href="https://soroush-zendedel.github.io/tara/en/">
+    <link rel="alternate" hreflang="fa" href="https://soroush-zendedel.github.io/tara/">
+    <link rel="alternate" hreflang="en" href="https://soroush-zendedel.github.io/tara/en/">
+    <link rel="alternate" hreflang="x-default" href="https://soroush-zendedel.github.io/tara/">
+<meta name="theme-color" content="#121212">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Tara GuitarLab">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://soroush-zendedel.github.io/tara/en/">
+<meta property="og:title" content="Tara GuitarLab | Guitar Music Theory, Fretboard & Practice">
+<meta property="og:description" content="Learn guitar music theory with interactive fretboard and piano views, scales, chords, guided lessons, practice, MIDI input, and teaching tools.">
+<meta property="og:image" content="https://soroush-zendedel.github.io/tara/img/preview.jpg">
+<meta property="og:image:alt" content="Tara GuitarLab interactive music theory tools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tara GuitarLab | Guitar Music Theory, Fretboard & Practice">
+<meta name="twitter:description" content="Learn guitar music theory with interactive fretboard and piano views, scales, chords, guided lessons, practice, MIDI input, and teaching tools.">
+<meta name="twitter:image" content="https://soroush-zendedel.github.io/tara/img/preview.jpg">
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://soroush-zendedel.github.io/tara/#website",
+      "name": "Tara GuitarLab",
+      "alternateName": "Tara",
+      "url": "https://soroush-zendedel.github.io/tara/en/",
+      "inLanguage": "en",
+      "about": { "@id": "https://soroush-zendedel.github.io/tara/#application" },
+      "creator": {
+        "@type": "Person",
+        "@id": "https://soroush-zendedel.github.io/#person",
+        "name": "Soroush Zendedel",
+        "url": "https://soroush-zendedel.github.io/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Tara GuitarLab",
+        "url": "https://soroush-zendedel.github.io/tara/en/",
+        "sameAs": "https://github.com/soroush-zendedel/tara"
+      }
+    }
+</script>
+<!-- Fonts: Vazirmatn for Persian, Inter for English -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;family=Vazirmatn:wght@400;600;800&amp;display=swap" rel="stylesheet">
+<!-- FontAwesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Tailwind CSS (CDN for rapid styling) -->
+<script src="https://cdn.tailwindcss.com">
+</script>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tara: {
+                            dark: '#121212',
+                            card: '#1e1e1e',
+                            accent: '#FDB827',
+                            accentHover: '#D4AF37',
+                            text: '#dfe6e9',
+                            textMuted: '#b2bec3'
+                        }
+                    }
+                }
+            }
+        }
+</script>
+<link rel="stylesheet" href="../assets/css/landing.css">
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+<!-- Navigation -->
+<nav class="w-full fixed top-0 z-50 bg-tara-dark/80 backdrop-blur-md border-b border-white/10">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<i class="fas fa-guitar text-tara-accent text-2xl">
+</i>
+<span class="font-bold text-xl tracking-tight text-white">
+Tara&#32;
+<span class="text-tara-textMuted font-normal text-sm uppercase tracking-widest ml-1">
+GuitarLab
+</span>
+</span>
+</div>
+<div class="flex items-center gap-4">
+<!-- Language Toggle -->
+<a href="../" lang="fa" hreflang="fa" class="px-3 py-1 rounded-full border border-white/20 hover:border-tara-accent hover:text-tara-accent transition-colors text-sm font-semibold">فارسی</a>
+<a href="../about.html" class="hidden md:inline text-sm font-semibold text-tara-textMuted hover:text-white">About Tara</a>
+<a href="https://github.com/soroush-zendedel/tara" target="_blank" class="text-tara-textMuted hover:text-white transition-colors">
+<i class="fab fa-github text-xl">
+</i>
+</a>
+<a href="#release-notes" class="text-xs sm:text-sm font-semibold text-tara-textMuted hover:text-tara-accent transition-colors whitespace-nowrap" aria-label="Read Tara GuitarLab v1.0.0 release notes">
+What's new
+</a>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<main class="flex-grow pt-24">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-16 pb-20">
+<h1 class="text-5xl md:text-7xl font-extrabold mb-6">
+<span class="block gradient-text leading-tight">
+Learn Guitar Music Theory&#32;
+<br>
+&amp;
+ the Fretboard
+</span>
+</h1>
+<p class="mt-4 text-xl text-tara-textMuted max-w-2xl mx-auto leading-relaxed">
+                Tara GuitarLab is a free interactive lab for seeing and hearing scales, chords, and notes across guitar and piano, with guided lessons, practice, live input, and teaching tools.
+</p>
+<div class="mt-10 flex justify-center gap-4">
+<!-- Link to the actual app (assuming you renamed your code file to app.html) -->
+<a href="../app.html" class="px-8 py-4 bg-tara-accent hover:bg-tara-accentHover text-tara-dark font-bold rounded-full transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(253,184,39,0.4)] flex items-center gap-2">
+<i class="fas fa-play">
+</i>
+<span class="">
+Launch App
+</span>
+</a>
+<a href="#features" class="px-8 py-4 bg-tara-card border border-white/10 hover:border-white/30 text-white font-semibold rounded-full transition-all flex items-center gap-2">
+<i class="fas fa-arrow-down">
+</i>
+<span class="">
+Features
+</span>
+</a>
+</div>
+</div>
+<!-- Fretboard Banner -->
+<div class="max-w-7xl mx-auto px-4 mb-24 overflow-hidden rounded-2xl relative group">
+<div class="absolute inset-0 bg-tara-accent/10 group-hover:bg-transparent transition-colors z-10 pointer-events-none">
+</div>
+<img src="../img/FretBoard.jpg" alt="Interactive guitar fretboard with highlighted scale notes" class="w-full h-auto rounded-2xl img-glow" fetchpriority="high" decoding="async">
+</div>
+<!-- Features Section -->
+<section id="features" class="py-16 bg-tara-dark">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- Section Title -->
+<div class="text-center mb-16">
+<h2 class="text-3xl font-bold text-tara-accent">
+Comprehensive&#32;
+&
+ Integrated Features
+</h2>
+<div class="w-24 h-1 bg-tara-accent mx-auto mt-4 rounded-full opacity-50">
+</div>
+</div>
+<!-- Feature 1 -->
+<div class="flex flex-col lg:flex-row items-center gap-12 mb-24">
+<div class="flex-1">
+<h2 class="text-2xl font-bold text-white mb-4">
+Interactive Circle of Fifths
+</h2>
+<p class="text-tara-textMuted text-lg leading-relaxed">
+                            Understanding harmonic relationships has never been easier. Click on the circle to select Major and relative Minor keys, and instantly view their key signatures on the standard staff.
+</p>
+</div>
+<div class="flex-1 w-full flex justify-center">
+<img src="../img/Circle.jpg" alt="Circle of Fifths showing major and relative minor keys" class="rounded-xl img-glow max-w-sm w-full" loading="lazy" decoding="async">
+</div>
+</div>
+<!-- Feature 2 -->
+<div class="flex flex-col lg:flex-row-reverse items-center gap-12 mb-24">
+<div class="flex-1">
+<h2 class="text-2xl font-bold text-white mb-4">
+Theory, Chords&#32;
+&
+ Progressions
+</h2>
+<p class="text-tara-textMuted text-lg leading-relaxed">
+                            Auto-generate scale degrees, interval formulas, and diatonic chords. Explore popular chord progressions (Pop, Jazz, Blues) in your chosen key. Click any chord to hear it and see its voicings mapped out.
+</p>
+</div>
+<div class="flex-1 w-full">
+<img src="../img/Scale.jpg" alt="Scale degrees, diatonic chords, and chord progressions" class="rounded-xl img-glow w-full" loading="lazy" decoding="async">
+</div>
+</div>
+<!-- Feature 3 -->
+<div class="flex flex-col lg:flex-row items-center gap-12 mb-24">
+<div class="flex-1">
+<h2 class="text-2xl font-bold text-white mb-4">
+Piano Keyboard Reference
+</h2>
+<p class="text-tara-textMuted text-lg leading-relaxed">
+                            Explore the same pitches across the guitar fretboard and piano. Hover or select a note to follow it between instruments, then listen to it and compare its positions.
+</p>
+</div>
+<div class="flex-1 w-full">
+<img src="../img/PianoKeys.jpg" alt="Guitar notes mapped to piano keys" class="rounded-xl img-glow w-full" loading="lazy" decoding="async">
+</div>
+</div>
+<!-- Feature 4 -->
+<div class="flex flex-col lg:flex-row-reverse items-center gap-12 mb-16">
+<div class="flex-1">
+<h2 class="text-2xl font-bold text-white mb-4">
+Standard Notation&#32;
+&
+ Tablature
+</h2>
+<p class="text-tara-textMuted text-lg leading-relaxed">
+                            Scales and chords are simultaneously drawn on standard musical staves and guitar TABs. This visual aid bridges the gap between reading sheet music and fretboard navigation.
+</p>
+</div>
+<div class="flex-1 w-full">
+<img src="../img/NotationAndTabs.jpg" alt="Example of standard notation and guitar tablature" class="rounded-xl img-glow w-full" loading="lazy" decoding="async">
+</div>
+</div>
+<!-- Feature 5 -->
+<div class="flex flex-col lg:flex-row items-center gap-12">
+<div class="flex-1">
+<h2 class="text-2xl font-bold text-white mb-4">
+Guided Lessons and Guitar Practice
+</h2>
+<p class="text-tara-textMuted text-lg leading-relaxed">
+                            Follow concise lessons on intervals, scales, chords, fretboard mapping, and the Circle of Fifths. Then practise with note-finding, scale-building, chord-shape, ear-training, and microphone exercises.
+</p>
+<a href="../app.html" class="inline-block mt-5 text-tara-accent hover:text-white">
+Explore lessons and practice →
+</a>
+</div>
+<div class="flex-1 w-full flex justify-center">
+<img src="../img/lessons.png" alt="Tara GuitarLab lessons for learning scales and guitar theory" class="rounded-xl img-glow max-w-xl w-full" loading="lazy" decoding="async">
+</div>
+</div>
+<!-- Teacher workflow -->
+<div class="flex flex-col lg:flex-row-reverse items-center gap-12 mt-24">
+<div class="flex-1">
+<h2 class="text-2xl font-bold text-white mb-4">
+Teacher Notes and Ordered Playback
+</h2>
+<p class="text-tara-textMuted text-lg leading-relaxed">
+                            Mark notes directly on the guitar or piano, assign roles such as root, third, fifth, and seventh, and play the marked notes in order. Step through the sequence, undo or redo changes, and use keyboard or MIDI input while demonstrating.
+</p>
+</div>
+<div class="flex-1 w-full">
+<img src="../img/notes.png" alt="Tara GuitarLab teaching workspace with connected guitar theory tools" class="rounded-xl img-glow w-full" loading="lazy" decoding="async">
+</div>
+</div>
+<div class="flex flex-col lg:flex-row items-center gap-12 mt-24">
+<div class="flex-1">
+<h2 class="text-2xl font-bold text-white mb-4">
+A Workspace That Fits Your Lesson
+</h2>
+<p class="text-tara-textMuted text-lg leading-relaxed">
+                            Hide panels you do not need, restore them when you want, and focus a guitar, piano, or theory view in a fitted full-screen layout. Computer-keyboard and MIDI input make demonstrations and musical examples immediate.
+</p>
+</div>
+<div class="flex-1 w-full">
+<img src="../img/FretBoard.jpg" alt="Responsive guitar fretboard view for focused music theory demonstrations" class="rounded-xl img-glow w-full" loading="lazy" decoding="async">
+</div>
+</div>
+</div>
+</section>
+<!-- Tools Grid -->
+<section class="py-16 bg-tara-card border-y border-white/5">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-12">
+<h2 class="text-2xl font-bold text-white">
+Built-in Utilities
+</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Audio -->
+<div class="bg-tara-dark p-6 rounded-2xl border border-white/10 text-center feature-card">
+<div class="w-16 h-16 bg-tara-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="fas fa-volume-up text-3xl text-tara-accent">
+</i>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">
+Accurate Audio Playback
+</h3>
+<p class="text-sm text-tara-textMuted">
+Click any note or chord to hear its precise synthesized audio output.
+</p>
+</div>
+<!-- Tuner -->
+<div class="bg-tara-dark p-6 rounded-2xl border border-white/10 text-center feature-card">
+<div class="w-16 h-16 bg-tara-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="fas fa-microphone text-3xl text-tara-accent">
+</i>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">
+Chromatic Tuner
+</h3>
+<p class="text-sm text-tara-textMuted">
+Tune your guitar directly in the browser using your device's microphone.
+</p>
+</div>
+<!-- Metronome -->
+<div class="bg-tara-dark p-6 rounded-2xl border border-white/10 text-center feature-card">
+<div class="w-16 h-16 bg-tara-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="fas fa-stopwatch text-3xl text-tara-accent">
+</i>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">
+Smart Metronome
+</h3>
+<p class="text-sm text-tara-textMuted">
+Adjustable BPM with visual and audio feedback for rhythm practice.
+</p>
+</div>
+<!-- Export -->
+<div class="bg-tara-dark p-6 rounded-2xl border border-white/10 text-center feature-card">
+<div class="w-16 h-16 bg-tara-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="fas fa-file-pdf text-3xl text-tara-accent">
+</i>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">
+PDF Export
+</h3>
+<p class="text-sm text-tara-textMuted">
+Export all current diagrams and charts into a printable PDF booklet with one click.
+</p>
+</div>
+<div class="bg-tara-dark p-6 rounded-2xl border border-white/10 text-center feature-card">
+<div class="w-16 h-16 bg-tara-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="fas fa-keyboard text-3xl text-tara-accent">
+</i>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">
+Computer Keyboard&#32;
+&amp;
+ MIDI
+</h3>
+<p class="text-sm text-tara-textMuted">
+Play notes from computer keys or connect a MIDI instrument for live input.
+</p>
+</div>
+<div class="bg-tara-dark p-6 rounded-2xl border border-white/10 text-center feature-card">
+<div class="w-16 h-16 bg-tara-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="fas fa-chalkboard-teacher text-3xl text-tara-accent">
+</i>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">
+Teacher Demonstration Tools
+</h3>
+<p class="text-sm text-tara-textMuted">
+Mark, label, and play selected notes in order across the linked instruments.
+</p>
+</div>
+<div class="bg-tara-dark p-6 rounded-2xl border border-white/10 text-center feature-card">
+<div class="w-16 h-16 bg-tara-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="fas fa-expand-arrows-alt text-3xl text-tara-accent">
+</i>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">
+Customizable Workspace
+</h3>
+<p class="text-sm text-tara-textMuted">
+Hide panels you do not need and focus on instrument tools in full-screen views.
+</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Keep the newest release first; add future versions above this entry. -->
+<section id="release-notes" class="py-16 bg-tara-dark border-y border-white/10" aria-labelledby="releaseNotesTitle">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<article id="release-1-0-0" class="release-card bg-tara-card border border-white/10 rounded-3xl p-6 md:p-10">
+<header class="mb-8">
+<p class="text-tara-accent text-sm font-extrabold tracking-widest uppercase">
+Latest release ·&#32;
+<time datetime="2026-10-06">
+October 6, 2026
+</time>
+</p>
+<h2 id="releaseNotesTitle" class="text-3xl md:text-4xl font-extrabold text-white mt-3">
+What's New in Tara GuitarLab&#32;
+<span class="text-tara-accent">
+v1.0.0
+</span>
+</h2>
+<p class="text-tara-textMuted text-lg mt-4 max-w-3xl">
+The first tracked release brings the project together as a connected, interactive lab for learning and teaching guitar music theory.
+</p>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="release-highlight">
+<h3>
+See theory across instruments
+</h3>
+<p>
+Explore scales, chords, the Circle of Fifths, notation, and tablature alongside linked guitar fretboard and piano views.
+</p>
+</div>
+<div class="release-highlight">
+<h3>
+Learn and practise
+</h3>
+<p>
+Use guided lessons and interactive exercises for note finding, intervals, scale building, chord recognition, and ear training.
+</p>
+</div>
+<div class="release-highlight">
+<h3>
+Teach with marked notes
+</h3>
+<p>
+Annotate guitar and piano notes, assign chord-tone roles, play a sequence, step through it, and undo or redo edits.
+</p>
+</div>
+<div class="release-highlight">
+<h3>
+Play with keyboard or MIDI
+</h3>
+<p>
+Use computer keys or a MIDI keyboard for live examples, with shortcuts for key selection, chords, fretboard positions, and tempo.
+</p>
+</div>
+<div class="release-highlight">
+<h3>
+Focus the workspace
+</h3>
+<p>
+Hide and restore sections, then open instrument diagrams in responsive full-screen views on desktop or mobile.
+</p>
+</div>
+<div class="release-highlight">
+<h3>
+Keep useful tools close
+</h3>
+<p>
+Use the tuner, metronome, synthesized note playback, recent-playback display, and printable PDF export.
+</p>
+</div>
+</div>
+<div class="mt-8 flex flex-wrap items-center gap-4">
+<a href="../app.html" class="inline-flex items-center gap-2 px-6 py-3 bg-tara-accent text-tara-dark font-bold rounded-full hover:bg-tara-accentHover transition-colors">
+<i class="fas fa-play" aria-hidden="true">
+</i>
+ Try v1.0.0
+</a>
+<a href="../CHANGELOG.md" class="text-tara-textMuted hover:text-white underline underline-offset-4">
+Full changelog
+</a>
+</div>
+</article>
+</div>
+</section>
+<!-- CTA Bottom -->
+<section class="py-20 text-center relative overflow-hidden">
+<div class="absolute inset-0 bg-tara-accent opacity-5">
+</div>
+<div class="relative z-10 max-w-3xl mx-auto px-4">
+<h2 class="text-3xl md:text-5xl font-bold text-white mb-6">
+Ready to elevate your music theory?
+</h2>
+<p class="text-tara-textMuted mb-10 text-lg">
+Tara is completely free, open-source, and runs directly in your browser. No installation required.
+</p>
+<a href="../app.html" class="inline-block px-10 py-4 bg-tara-accent hover:bg-tara-accentHover text-tara-dark font-bold text-xl rounded-full transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(253,184,39,0.3)]">
+<span class="">
+Enter the Lab
+</span>
+</a>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-tara-dark border-t border-white/10 py-8 text-center text-tara-textMuted">
+<div class="max-w-7xl mx-auto px-4">
+<p class="font-serif">
+Developed with&#32;
+<i class="fas fa-heart text-red-500 mx-1">
+</i>
+ by&#32;
+<a href="https://soroush-zendedel.github.io/" rel="author" class="hover:text-white underline-offset-4 hover:underline">
+Soroush Zendedel
+</a>
+</p>
+<p class="text-sm mt-2">
+© 2026 Tara GuitarLab. Open Source Project.
+</p>
+<a href="about.html" class="inline-block mt-2 text-sm hover:text-white">About Tara</a>
+</div>
+</footer>
+</body>
+</html>

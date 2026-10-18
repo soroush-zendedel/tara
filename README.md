@@ -57,10 +57,10 @@ This project is completely built with **Vanilla HTML, CSS, and JavaScript**. No 
    ```bash
    python -m http.server 8000
    ```
-4. Open `http://localhost:8000/` for the landing page or `http://localhost:8000/app.html` for the application.
+4. Open `http://localhost:8000/` for the Persian landing page, `http://localhost:8000/en/` for the English landing page, `http://localhost:8000/about.html` or `http://localhost:8000/en/about.html` for the About pages, `http://localhost:8000/app.html` for GuitarLab, or `http://localhost:8000/book.html` for the flipbook editor.
    *The tuner requires HTTPS or localhost so the browser can request microphone access.*
 
-The app is split into ordinary HTML, CSS, and ordered browser JavaScript files under `assets/`; it has no build step or package manager requirement.
+The Persian and English landing and About pages are independent HTML documents. The app is split into ordinary HTML, CSS, and ordered browser JavaScript files under `assets/`; it has no build step or package manager requirement.
 
 ## **🛠️ Tech Stack**
 

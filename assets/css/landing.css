@@ -1,7 +1,3 @@
-        /* Language Display Logic */
-        html[lang="fa"] .en-text { display: none !important; }
-        html[lang="en"] .fa-text { display: none !important; }
-        
         html[lang="fa"] { font-family: 'Vazirmatn', sans-serif; }
         html[lang="en"] { font-family: 'Inter', sans-serif; }
 
@@ -54,5 +50,127 @@
             color: #b2bec3;
             font-size: 0.92rem;
             line-height: 1.65;
+        }
+
+        /* Keep the landing-page type scale consistent across languages. */
+        main > div:first-child h1 {
+            font-size: clamp(2.25rem, 4.2vw, 3.75rem);
+            line-height: 1.28;
+            letter-spacing: -0.025em;
+        }
+        main > div:first-child > p {
+            font-size: clamp(1rem, 1.3vw, 1.125rem);
+            line-height: 1.85;
+        }
+        main > div:first-child .mt-10 a {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        #features > div > .text-center h2 {
+            font-size: clamp(1.625rem, 2.5vw, 2rem);
+            line-height: 1.4;
+        }
+        #features .flex-1 > h2 {
+            font-size: clamp(1.3rem, 1.9vw, 1.55rem);
+            line-height: 1.5;
+        }
+        #features p {
+            font-size: 1.0625rem;
+            line-height: 1.85;
+        }
+        #features a {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .bg-tara-card > div > .text-center h2 {
+            font-size: 1.5rem;
+            line-height: 1.4;
+        }
+        .bg-tara-card h3 {
+            font-size: 1.0625rem;
+            line-height: 1.5;
+        }
+        .bg-tara-card p {
+            font-size: 0.875rem;
+            line-height: 1.75;
+        }
+        #releaseNotesTitle {
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            line-height: 1.3;
+        }
+        #release-notes .release-highlight h3 {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        #release-notes .release-highlight p {
+            font-size: 0.9rem;
+            line-height: 1.75;
+        }
+        main > section:last-child h2 {
+            font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+            line-height: 1.4;
+        }
+
+        @media (max-width: 640px) {
+            main {
+                padding-top: 5rem;
+            }
+            main > div:first-child {
+                padding-top: 2.5rem;
+                padding-bottom: 3.5rem;
+            }
+            main > div:first-child h1 {
+                font-size: clamp(2rem, 7.5vw, 2.4rem);
+                line-height: 1.35;
+                letter-spacing: -0.02em;
+            }
+            main > div:first-child > p {
+                font-size: 1rem;
+                line-height: 1.9;
+            }
+            main > div:first-child .mt-10 {
+                gap: 0.75rem;
+                flex-wrap: wrap;
+            }
+            main > div:first-child .mt-10 a {
+                padding: 0.8rem 1.25rem;
+                font-size: 0.9375rem;
+            }
+            #features,
+            .bg-tara-card,
+            #release-notes {
+                padding-top: 3.5rem;
+                padding-bottom: 3.5rem;
+            }
+            main > div:nth-child(2) {
+                margin-bottom: 3rem;
+            }
+            #features > div > .text-center {
+                margin-bottom: 2.5rem;
+            }
+            #features > div > .text-center h2 {
+                font-size: 1.55rem;
+            }
+            #features .flex-1 > h2 {
+                font-size: 1.3rem;
+                line-height: 1.55;
+            }
+            #features p {
+                font-size: 1rem;
+                line-height: 1.9;
+            }
+            #releaseNotesTitle {
+                font-size: 1.75rem;
+            }
+            main > section:last-child h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            main > div:first-child .mt-10 a {
+                padding-inline: 1rem;
+                font-size: 0.875rem;
+            }
         }
     </style>
