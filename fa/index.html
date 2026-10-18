@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+تارا گیتارلب | تئوری موسیقی گیتار، فرت‌بورد و تمرین
+</title>
+<meta name="author" content="Soroush Zendedel">
+    <meta name="description" content="تئوری موسیقی گیتار را با فرت‌بورد و پیانوی تعاملی، گام‌ها و آکوردها، درس و تمرین هدایت‌شده، ورودی MIDI و ابزارهای آموزشی تارا یاد بگیرید.">
+<link rel="canonical" href="https://soroush-zendedel.github.io/tara/fa/">
+    <link rel="alternate" hreflang="fa" href="https://soroush-zendedel.github.io/tara/fa/">
+    <link rel="alternate" hreflang="en" href="https://soroush-zendedel.github.io/tara/">
+    <link rel="alternate" hreflang="x-default" href="https://soroush-zendedel.github.io/tara/">
+<meta name="theme-color" content="#121212">
+<meta property="og:locale" content="fa_IR">
+<meta property="og:site_name" content="Tara GuitarLab">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://soroush-zendedel.github.io/tara/fa/">
+<meta property="og:title" content="تارا گیتارلب | تئوری موسیقی گیتار، فرت‌بورد و تمرین">
+<meta property="og:description" content="تئوری موسیقی گیتار را با فرت‌بورد و پیانوی تعاملی، گام‌ها و آکوردها، درس و تمرین هدایت‌شده، ورودی MIDI و ابزارهای آموزشی تارا یاد بگیرید.">
+<meta property="og:image" content="https://soroush-zendedel.github.io/tara/img/preview.jpg">
+<meta property="og:image:alt" content="نمایی از ابزارهای تعاملی آموزش تئوری موسیقی تارا گیتارلب">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="تارا گیتارلب | تئوری موسیقی گیتار، فرت‌بورد و تمرین">
+<meta name="twitter:description" content="تئوری موسیقی گیتار را با فرت‌بورد و پیانوی تعاملی، گام‌ها و آکوردها، درس و تمرین هدایت‌شده، ورودی MIDI و ابزارهای آموزشی تارا یاد بگیرید.">
+<meta name="twitter:image" content="https://soroush-zendedel.github.io/tara/img/preview.jpg">
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://soroush-zendedel.github.io/tara/#website",
+      "name": "Tara GuitarLab",
+      "alternateName": "Tara",
+      "url": "https://soroush-zendedel.github.io/tara/",
+      "inLanguage": ["en", "fa"],
+      "about": { "@id": "https://soroush-zendedel.github.io/tara/#application" },
+      "creator": {
+        "@type": "Person",
+        "@id": "https://soroush-zendedel.github.io/#person",
+        "name": "Soroush Zendedel",
+        "url": "https://soroush-zendedel.github.io/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Tara GuitarLab",
+        "url": "https://soroush-zendedel.github.io/tara/",
+        "sameAs": "https://github.com/soroush-zendedel/tara"
+      }
+    }
+</script>
+<!-- Fonts: Vazirmatn for Persian, Inter for English -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;family=Vazirmatn:wght@400;600;800&amp;display=swap" rel="stylesheet">
+<!-- FontAwesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Tailwind CSS (CDN for rapid styling) -->
+<script src="https://cdn.tailwindcss.com">
+</script>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tara: {
+                            dark: '#121212',
+                            card: '#1e1e1e',
+                            accent: '#FDB827',
+                            accentHover: '#D4AF37',
+                            text: '#dfe6e9',
+                            textMuted: '#b2bec3'
+                        }
+                    }
+                }
+            }
+        }
+</script>
+<link rel="stylesheet" href="../assets/css/landing.css">
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+<!-- Navigation -->
+<nav class="w-full fixed top-0 z-50 bg-tara-dark/80 backdrop-blur-md border-b border-white/10">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<i class="fas fa-guitar text-tara-accent text-2xl">
+</i>
+<span class="font-bold text-xl tracking-tight text-white">
+Tara&#32;
+<span class="text-tara-textMuted font-normal text-sm uppercase tracking-widest ml-1 mr-1">
+GuitarLab
+</span>
+</span>
+</div>
+<div class="flex items-center gap-2 sm:gap-4">
+<!-- Language Toggle -->
+<a href="../" lang="en" hreflang="en" class="px-3 py-1 rounded-full border border-white/20 hover:border-tara-accent hover:text-tara-accent transition-colors text-sm font-semibold">English</a>
+<a href="about.html" class="text-xs sm:text-sm font-semibold text-tara-textMuted hover:text-white whitespace-nowrap">دربارهٔ تارا</a>
+<a href="https://github.com/soroush-zendedel/tara" target="_blank" class="hidden sm:inline text-tara-textMuted hover:text-white transition-colors">
+<i class="fab fa-github text-xl">
+</i>
+</a>
+<a href="#release-notes" class="hidden sm:inline text-xs sm:text-sm font-semibold text-tara-textMuted hover:text-tara-accent transition-colors whitespace-nowrap" aria-label="یادداشت انتشار تارا گیتارلب نسخهٔ ۱.۰.۰">
+تازه‌ها
+</a>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<main class="flex-grow pt-24">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-16 pb-20">
+<h1 class="text-5xl md:text-7xl font-extrabold mb-6">
+<span class="block gradient-text leading-tight">
+تئوری موسیقی گیتار&#32;
+<br>
+ و فرت‌بورد را عمیق یاد بگیرید
+</span>
+</h1>
+<p class="mt-4 text-xl text-tara-textMuted max-w-2xl mx-auto leading-relaxed">
+                تارا یک آزمایشگاه تعاملی رایگان برای دیدن و شنیدن گام‌ها، آکوردها و نت‌ها روی گیتار و پیانو است؛ با درس‌های هدایت‌شده، تمرین، ورودی زنده و ابزارهای مدرس.
+</p>
+<div class="mt-10 flex justify-center gap-4">
+<!-- Link to the actual app (assuming you renamed your code file to app.html) -->
+<a href="../app.html" class="px-8 py-4 bg-tara-accent hover:bg-tara-accentHover text-tara-dark font-bold rounded-full transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(253,184,39,0.4)] flex items-center gap-2">
+<i class="fas fa-play">
+</i>
+<span class="">
+اجرای برنامه
+</span>
+</a>
+<a href="#features" class="px-8 py-4 bg-tara-card border border-white/10 hover:border-white/30 text-white font-semibold rounded-full transition-all flex items-center gap-2">
+<i class="fas fa-arrow-down">
+</i>
+<span class="">
+ویژگی‌ها
+</span>
+</a>
+</div>
+</div>
+<!-- Fretboard Banner -->
+<div class="max-w-7xl mx-auto px-4 mb-24 overflow-hidden rounded-2xl relative group">
+<div class="absolute inset-0 bg-tara-accent/10 group-hover:bg-transparent transition-colors z-10 pointer-events-none">
+</div>
+<img src="../img/FretBoard.jpg" alt="نمای فرت‌بورد تعاملی گیتار با نت‌های گام مشخص‌شده" class="w-full h-auto rounded-2xl img-glow" fetchpriority="high" decoding="async">
+</div>
+<!-- Features Section -->
+<section id="features" class="py-16 bg-tara-dark">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- Section Title -->
+<div class="text-center mb-16">
+<h2 class="text-3xl font-bold text-tara-accent">
+امکانات جامع و یکپارچه
+</h2>
+<div class="w-24 h-1 bg-tara-accent mx-auto mt-4 rounded-full opacity-50">
+</div>
+</div>
+<!-- Feature 1 -->
+<div class="flex flex-col lg:flex-row items-center gap-12 mb-24">
+<div class="flex-1">
+<h2 class="text-2xl font-bold text-white mb-4">
+دایره پنجم‌ها (Circle of Fifths)
+</h2>
+<p class="text-tara-textMuted text-lg leading-relaxed">
+                            درک روابط هارمونیک هیچ‌گاه تا این حد ساده نبوده است. با کلیک بر روی دایره، گام ماژور و مینور نسبی آن را انتخاب کنید و فوراً سرکلیدها و علامت‌های تغییردهنده (دیز و بمل) را روی خطوط حامل مشاهده کنید.
+</p>
+</div>
+<div class="flex-1 w-full flex justify-center">
+<img src="../img/Circle.jpg" alt="دایره پنجم‌ها برای مشاهده ارتباط گام‌های ماژور و مینور نسبی" class="rounded-xl img-glow max-w-sm w-full" loading="lazy" decoding="async">
+</div>
+</div>
+<!-- Feature 2 -->
+<div class="flex flex-col lg:flex-row-reverse items-center gap-12 mb-24">
+<div class="flex-1">
+<h2 class="text-2xl font-bold text-white mb-4">
+تئوری، آکوردها و توالی‌ها
+</h2>
+<p class="text-tara-textMuted text-lg leading-relaxed">
+                            تولید خودکار درجات گام، فرمول‌های فاصله‌ای و آکوردهای دیاتونیک. توالی‌های معروف آکورد (مانند Pop، Jazz، Blues) را در گام انتخابی کشف کنید. با کلیک روی هر آکورد، صدای آن را بشنوید و الگوهای آن را روی دسته‌ی گیتار ببینید.
+</p>
+</div>
+<div class="flex-1 w-full">
+<img src="../img/Scale.jpg" alt="جدول درجات گام، آکوردهای دیاتونیک و توالی‌های آکورد" class="rounded-xl img-glow w-full" loading="lazy" decoding="async">
+</div>
+</div>
+<!-- Feature 3 -->
+<div class="flex flex-col lg:flex-row items-center gap-12 mb-24">
+<div class="flex-1">
+<h2 class="text-2xl font-bold text-white mb-4">
+تطبیق با کلاویه پیانو
+</h2>
+<p class="text-tara-textMuted text-lg leading-relaxed">
+                            ارتباط تصویری مستقیم بین نت‌های روی فرت‌بورد و کلاویه‌های پیانو. با نگه‌داشتن موس روی نت‌های گیتار، معادل آن‌ها را روی پیانو ببینید و درک عمیق‌تری از ساختار نت‌ها پیدا کنید.
+</p>
+</div>
+<div class="flex-1 w-full">
+<img src="../img/PianoKeys.jpg" alt="نمای تطبیق نت‌های گیتار با کلیدهای پیانو" class="rounded-xl img-glow w-full" loading="lazy" decoding="async">
+</div>
+</div>
+<!-- Feature 4 -->
+<div class="flex flex-col lg:flex-row-reverse items-center gap-12 mb-16">
+<div class="flex-1">
+<h2 class="text-2xl font-bold text-white mb-4">
+نت‌خوانی استاندارد و تبلچر
+</h2>
+<p class="text-tara-textMuted text-lg leading-relaxed">
+                            گام‌ها و آکوردها به صورت همزمان روی خطوط حامل استاندارد و تبلچر (TAB) گیتار ترسیم می‌شوند. این ابزار کمک بزرگی برای تقویت مهارت نت‌خوانی و پیدا کردن جایگاه نت‌ها روی دسته‌ی ساز است.
+</p>
+</div>
+<div class="flex-1 w-full">
+<img src="../img/NotationAndTabs.jpg" alt="نمونه نت‌نویسی استاندارد و تبلچر گیتار" class="rounded-xl img-glow w-full" loading="lazy" decoding="async">
+</div>
+</div>
+<!-- Feature 5 -->
+<div class="flex flex-col lg:flex-row items-center gap-12">
+<div class="flex-1">
+<h2 class="text-2xl font-bold text-white mb-4">
+درس‌های هدایت‌شده و تمرین موسیقی
+</h2>
+<p class="text-tara-textMuted text-lg leading-relaxed">
+                            با راهنمای آموزشی تارا، مفاهیمی مانند فاصله‌ها، گام‌ها، درجات، آکوردهای دیاتونیک و دایره پنجم‌ها را یاد بگیرید و سپس با تمرین‌های فرت‌بورد، تشخیص شنیداری و میکروفون آن‌ها را به کار ببرید.
+</p>
+<a href="../app.html" class="inline-block mt-5 text-tara-accent hover:text-white">
+رفتن به درس‌ها و تمرین‌ها ←
+</a>
+</div>
+<div class="flex-1 w-full flex justify-center">
+<img src="../img/lessons.png" alt="نمایی از برنامه تارا برای یادگیری گام‌ها و تئوری گیتار" class="rounded-xl img-glow max-w-xl w-full" loading="lazy" decoding="async">
+</div>
+</div>
+<!-- Teacher workflow -->
+<div class="flex flex-col lg:flex-row-reverse items-center gap-12 mt-24">
+<div class="flex-1">
+<h2 class="text-2xl font-bold text-white mb-4">
+یادداشت‌های مدرس و پخش ترتیبی نت‌ها
+</h2>
+<p class="text-tara-textMuted text-lg leading-relaxed">
+                            نت‌ها را روی گیتار یا پیانو علامت بزنید، نقش‌هایی مثل پایه، سوم، پنجم و هفتم به آن‌ها بدهید و به ترتیب پخششان کنید. بین نت‌ها حرکت کنید و با ورودی صفحه‌کلید یا MIDI هنگام تدریس اجرا کنید.
+</p>
+</div>
+<div class="flex-1 w-full">
+<img src="../img/notes.png" alt="Tara GuitarLab teaching workspace with connected guitar theory tools" class="rounded-xl img-glow w-full" loading="lazy" decoding="async">
+</div>
+</div>
+<div class="flex flex-col lg:flex-row items-center gap-12 mt-24">
+<div class="flex-1">
+<h2 class="text-2xl font-bold text-white mb-4">
+فضای کاری متناسب با درس شما
+</h2>
+<p class="text-tara-textMuted text-lg leading-relaxed">
+                            بخش‌هایی را که لازم ندارید پنهان کنید و هر زمان خواستید بازگردانید. نمای گیتار، پیانو یا تئوری را تمام‌صفحه کنید و برای اجرای نمونه‌ها از صفحه‌کلید کامپیوتر یا MIDI استفاده کنید.
+</p>
+</div>
+<div class="flex-1 w-full">
+<img src="../img/FretBoard.jpg" alt="Responsive guitar fretboard view for focused music theory demonstrations" class="rounded-xl img-glow w-full" loading="lazy" decoding="async">
+</div>
+</div>
+</div>
+</section>
+<!-- Tools Grid -->
+<section class="py-16 bg-tara-card border-y border-white/5">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-12">
+<h2 class="text-2xl font-bold text-white">
+جعبه ابزار داخلی
+</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Audio -->
+<div class="bg-tara-dark p-6 rounded-2xl border border-white/10 text-center feature-card">
+<div class="w-16 h-16 bg-tara-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="fas fa-volume-up text-3xl text-tara-accent">
+</i>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">
+پخش صوتی دقیق
+</h3>
+<p class="text-sm text-tara-textMuted">
+با کلیک روی هر نت یا آکورد، صدای سنتز شده‌ی دقیق آن را بشنوید.
+</p>
+</div>
+<!-- Tuner -->
+<div class="bg-tara-dark p-6 rounded-2xl border border-white/10 text-center feature-card">
+<div class="w-16 h-16 bg-tara-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="fas fa-microphone text-3xl text-tara-accent">
+</i>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">
+تیونر کروماتیک
+</h3>
+<p class="text-sm text-tara-textMuted">
+گیتار خود را به کمک میکروفون دستگاه، مستقیماً در مرورگر کوک کنید.
+</p>
+</div>
+<!-- Metronome -->
+<div class="bg-tara-dark p-6 rounded-2xl border border-white/10 text-center feature-card">
+<div class="w-16 h-16 bg-tara-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="fas fa-stopwatch text-3xl text-tara-accent">
+</i>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">
+مترونوم هوشمند
+</h3>
+<p class="text-sm text-tara-textMuted">
+تنظیم تمپو (BPM) با بازخورد دیداری و شنیداری برای تمرین ریتم.
+</p>
+</div>
+<!-- Export -->
+<div class="bg-tara-dark p-6 rounded-2xl border border-white/10 text-center feature-card">
+<div class="w-16 h-16 bg-tara-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="fas fa-file-pdf text-3xl text-tara-accent">
+</i>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">
+خروجی PDF جزوه
+</h3>
+<p class="text-sm text-tara-textMuted">
+با یک کلیک، تمام نمودارها و آکوردها را به صورت یک جزوه PDF ذخیره کنید.
+</p>
+</div>
+<div class="bg-tara-dark p-6 rounded-2xl border border-white/10 text-center feature-card">
+<div class="w-16 h-16 bg-tara-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="fas fa-keyboard text-3xl text-tara-accent">
+</i>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">
+ورودی صفحه‌کلید و MIDI
+</h3>
+<p class="text-sm text-tara-textMuted">
+نت‌ها را با کلیدهای کامپیوتر بنوازید یا ساز MIDI را برای اجرای زنده وصل کنید.
+</p>
+</div>
+<div class="bg-tara-dark p-6 rounded-2xl border border-white/10 text-center feature-card">
+<div class="w-16 h-16 bg-tara-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="fas fa-chalkboard-teacher text-3xl text-tara-accent">
+</i>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">
+ابزارهای نمایش برای مدرس
+</h3>
+<p class="text-sm text-tara-textMuted">
+نت‌ها را روی ساز علامت‌گذاری کنید، نقش بدهید و با ترتیب دلخواه پخش کنید.
+</p>
+</div>
+<div class="bg-tara-dark p-6 rounded-2xl border border-white/10 text-center feature-card">
+<div class="w-16 h-16 bg-tara-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="fas fa-expand-arrows-alt text-3xl text-tara-accent">
+</i>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">
+نمای قابل تنظیم
+</h3>
+<p class="text-sm text-tara-textMuted">
+بخش‌های غیرضروری را پنهان و ابزارهای ساز را در نمای تمام‌صفحه بررسی کنید.
+</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Keep the newest release first; add future versions above this entry. -->
+<section id="release-notes" class="py-16 bg-tara-dark border-y border-white/10" aria-labelledby="releaseNotesTitle">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<article id="release-1-0-0" class="release-card bg-tara-card border border-white/10 rounded-3xl p-6 md:p-10">
+<header class="mb-8">
+<p class="text-tara-accent text-sm font-extrabold tracking-widest uppercase">
+آخرین انتشار ·&#32;
+<time datetime="2026-10-06">
+October 6, 2026
+</time>
+</p>
+<h2 id="releaseNotesTitle" class="text-3xl md:text-4xl font-extrabold text-white mt-3">
+تازه‌های تارا گیتارلب&#32;
+<span class="text-tara-accent">
+v1.0.0
+</span>
+</h2>
+<p class="text-tara-textMuted text-lg mt-4 max-w-3xl">
+نخستین انتشار رسمی، ابزارهای تئوری موسیقی گیتار را در یک آزمایشگاه تعاملی برای یادگیری و آموزش گرد هم آورده است.
+</p>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="release-highlight">
+<h3>
+تئوری موسیقی روی سازهای مختلف
+</h3>
+<p>
+گام‌ها، آکوردها، دایرهٔ پنجم‌ها، نت‌نویسی و تبلچر را در کنار نمایش هماهنگ فرت‌بورد گیتار و پیانو بررسی کنید.
+</p>
+</div>
+<div class="release-highlight">
+<h3>
+یادگیری و تمرین
+</h3>
+<p>
+با درس‌های راهنما و تمرین‌های تعاملی، جای نت‌ها، فاصله‌ها، ساخت گام، تشخیص آکورد و تربیت شنوایی را یاد بگیرید.
+</p>
+</div>
+<div class="release-highlight">
+<h3>
+آموزش با نت‌های نشانه‌گذاری‌شده
+</h3>
+<p>
+روی نت‌های گیتار و پیانو یادداشت بگذارید، نقش نت‌های آکورد را مشخص کنید، توالی را پخش کنید و تغییرها را بازگردانید یا دوباره انجام دهید.
+</p>
+</div>
+<div class="release-highlight">
+<h3>
+نواختن با صفحه‌کلید یا MIDI
+</h3>
+<p>
+برای اجرای زنده از صفحه‌کلید رایانه یا MIDI استفاده کنید و با میان‌برها گام، آکورد، جایگاه فرت‌بورد و تمپو را تغییر دهید.
+</p>
+</div>
+<div class="release-highlight">
+<h3>
+تمرکز روی فضای کار
+</h3>
+<p>
+بخش‌ها را پنهان یا دوباره نمایش دهید و نمودار سازها را در نمای تمام‌صفحهٔ سازگار با رایانه و موبایل باز کنید.
+</p>
+</div>
+<div class="release-highlight">
+<h3>
+ابزارهای کاربردی در دسترس
+</h3>
+<p>
+از تیونر، مترونوم، پخش نت‌های سنتزشده، نمایش نت‌های اخیر و خروجی PDF قابل چاپ استفاده کنید.
+</p>
+</div>
+</div>
+<div class="mt-8 flex flex-wrap items-center gap-4">
+<a href="../app.html" class="inline-flex items-center gap-2 px-6 py-3 bg-tara-accent text-tara-dark font-bold rounded-full hover:bg-tara-accentHover transition-colors">
+<i class="fas fa-play" aria-hidden="true">
+</i>
+ نسخهٔ ۱.۰.۰ را امتحان کنید
+</a>
+<a href="../CHANGELOG.md" class="text-tara-textMuted hover:text-white underline underline-offset-4">
+فهرست کامل تغییرات
+</a>
+</div>
+</article>
+</div>
+</section>
+<!-- CTA Bottom -->
+<section class="py-20 text-center relative overflow-hidden">
+<div class="absolute inset-0 bg-tara-accent opacity-5">
+</div>
+<div class="relative z-10 max-w-3xl mx-auto px-4">
+<h2 class="text-3xl md:text-5xl font-bold text-white mb-6">
+آماده ارتقای دانش موسیقی خود هستید؟
+</h2>
+<p class="text-tara-textMuted mb-10 text-lg">
+تارا کاملاً رایگان، متن‌باز و اجرا شونده روی مرورگر است. نیازی به نصب هیچ نرم‌افزاری نیست.
+</p>
+<a href="../app.html" class="inline-block px-10 py-4 bg-tara-accent hover:bg-tara-accentHover text-tara-dark font-bold text-xl rounded-full transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(253,184,39,0.3)]">
+<span class="">
+ورود به آزمایشگاه
+</span>
+</a>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-tara-dark border-t border-white/10 py-8 text-center text-tara-textMuted">
+<div class="max-w-7xl mx-auto px-4">
+<p class="font-serif">
+توسعه یافته با&#32;
+<i class="fas fa-heart text-red-500 mx-1">
+</i>
+ توسط&#32;
+<a href="https://soroush-zendedel.github.io/" rel="author" class="hover:text-white underline-offset-4 hover:underline">
+سروش زنده‌دل
+</a>
+</p>
+<p class="text-sm mt-2">
+© ۲۰۲۶ تارا گیتارلب. پروژهٔ متن‌باز.
+</p>
+<a href="about.html" class="inline-block mt-2 text-sm hover:text-white">دربارهٔ تارا</a>
+</div>
+</footer>
+</body>
+</html>
