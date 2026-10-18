@@ -1,193 +1,211 @@
-# **Tara \- GuitarLab 🎸🎹**
+# Tara GuitarLab
 
-**Tara GuitarLab** is an advanced, interactive laboratory for visualizing music theory, scales, chords, and their relationships across multiple instruments (Guitar & Piano) right in your browser.  
-[*برای مطالعه توضیحات فارسی به پایین صفحه مراجعه کنید 🇮🇷*](#توضیحات-فارسی)  
-🔗 [**Live Demo / اجرای آنلاین**](https://soroush-zendedel.github.io/tara/)
+**Tara GuitarLab** is a free, browser-based music theory and practice tool for guitar and piano. Explore scales, chords, notation, and exercises in English or Persian.
 
-**Current release:** `v1.0.0` · [What's new](https://soroush-zendedel.github.io/tara/#release-notes) · [Changelog](CHANGELOG.md)
+- **Live site:** [soroush-zendedel.github.io/tara](https://soroush-zendedel.github.io/tara/)
+- **Languages:** [English](https://soroush-zendedel.github.io/tara/) · [فارسی](https://soroush-zendedel.github.io/tara/fa/)
+- **App:** [Open GuitarLab](https://soroush-zendedel.github.io/tara/app.html)
+- **Release:** `v1.0.0` · [Changelog](CHANGELOG.md)
 
-## **✨ Features**
+## Features
 
-* **Interactive Fretboard:** Visualize any scale or chord across the entire guitar fretboard. Toggle between different CAGED positions and highlight octaves.  
-* **Circle of Fifths:** An interactive circle to instantly select Major and relative Minor keys.  
-* **Music Theory & Progressions:** Auto-generates scale degrees, diatonic chords, and common chord progressions (Pop, Jazz, Blues, etc.) for the selected key.  
-* **Piano Reference:** Direct visual connection between the guitar fretboard and piano keys.  
-* **Standard Notation & Tablature:** Automatically generates sheet music and guitar TABs for the selected scale or chord voicings.  
-* **Built-in Audio Synthesizer:** Click on any note or chord on the fretboard, theory chart, or piano to hear its precise synthesized audio.  
-* **Chromatic Tuner:** Built-in guitar tuner using your device's microphone (Web Audio API).  
-* **Smart Metronome:** Adjustable BPM with visual and audio feedback.  
-* **PDF Export:** Generate and download a comprehensive PDF booklet of your current scales and charts with a single click.  
-* **Interactive Practice:** Try note-finding, scale-building, interval, chord, ear-training, and microphone exercises; includes 20 guided lessons linked to the app's tools and locally saved progress.
-* **Teacher Notes:** Mark and label notes on the guitar or piano, play the selection in order, step through it, and undo or redo edits.
-* **Live Input:** Play notes with computer keys or a connected MIDI keyboard; use keyboard shortcuts for scales, chords, fretboard positions, and tempo.
-* **Customizable Workspace:** Hide or restore learning, theory, notation, fretboard, and piano sections; preferences persist on the current device.
-* **Mobile Instrument View:** Open instrument and theory diagrams in an immersive view with landscape orientation support and readable, scrollable detail.
-* **Dark/Light Theme:** Fully responsive UI with seamless theme switching.
+- Interactive guitar fretboard, piano, Circle of Fifths, scales, chords, and progressions
+- Standard notation, tablature, synthesized audio, microphone tuner, and metronome
+- Guided lessons, practice exercises, MIDI and keyboard input, and teacher notes
+- PDF export, customizable workspace, and dark or light theme
+- Responsive English and Persian landing and About pages
 
-## **📸 Screenshots**
+## Pages
 
-### **The Fretboard & Piano Connection**
+| Page | URL path |
+| --- | --- |
+| English landing page | `/` |
+| Persian landing page | `/fa/` |
+| English About page | `/about.html` |
+| Persian About page | `/fa/about.html` |
+| GuitarLab app | `/app.html` |
 
-![Fretboard](img/FretBoard.jpg)
-![PianoKeys](img/PianoKeys.jpg)
+## Run locally
 
-### **Music Theory & Diatonic Chords**
+The published site is static HTML, CSS, and JavaScript. Node.js, npm, pnpm, and a build step are **not** needed to run it. Use Python or Docker Compose from the project root.
 
-![Scale](img/Scale.jpg)
+### Python
 
-### **Interactive Circle of Fifths**
-
-![Circle](img/Circle.jpg)
-
-### **Auto-Generated Notation & Tabs**
-
-![Notation](img/NotationAndTabs.jpg)
-
-## **🚀 Quick Start (Local Setup)**
-
-The finished site uses **HTML, CSS, and vanilla JavaScript**. Running it does not require Node.js, npm, pnpm, or a build step. Python is used below only to serve the files locally.
-
-1. Clone the repository:  
-   git clone https://github.com/soroush-zendedel/tara.git
-
-2. Navigate to the project directory:  
-   cd tara
-
-3. Start a local static server from the repository root:
-   ```bash
-   python -m http.server 8000
-   ```
-4. Open `http://localhost:8000/` for the English landing page, `http://localhost:8000/fa/` for the Persian landing page, `http://localhost:8000/about.html` or `http://localhost:8000/fa/about.html` for the About pages, `http://localhost:8000/app.html` for GuitarLab, or `http://localhost:8000/book.html` for the flipbook editor.
-   *The tuner requires HTTPS or localhost so the browser can request microphone access.*
-
-All runtime styles, fonts, icons, images, and JavaScript libraries are included in this repository. After you have the project files, the pages and app work without an internet connection; only external links such as GitHub require a connection when opened. Third-party asset licenses are included in `assets/licenses/`. Use the local server above rather than opening the HTML files directly, so browser features such as local assets and microphone access work reliably.
-
-The Persian and English landing and About pages are independent HTML documents. The app is split into ordinary HTML, CSS, and ordered browser JavaScript files under `assets/`. The generated landing-page Tailwind stylesheet is checked in at `assets/css/tailwind.min.css`; its source and configuration are `assets/css/tailwind-input.css` and `tailwind.config.cjs`.
-
-### Run and develop with Docker Compose
-
-Install Docker Desktop or Docker Engine with Compose v2, then run this from the project root:
-
-```bash
-docker compose up --build -d
-```
-
-Open `http://localhost:8001/` (or `/fa/`, `/about.html`, `/fa/about.html`, and `/app.html`). The service is named `site`, but it is the only default service, so there is no need to add its name to the command. `--build` is accepted for the usual Compose workflow; this static site has no custom image build, so Docker runs the prebuilt Nginx image and serves the project files mounted read-only. Edits to HTML, CSS, JavaScript, and images appear after refreshing the browser. Stop the service with `docker compose down`; view its output with `docker compose logs -f site`.
-
-If port 8001 is already in use, set a different host port before starting Compose, for example in PowerShell: `$env:TARA_PORT = "8002"`, then run `docker compose up --build -d` and open `http://localhost:8002/`. Tailwind class changes still need the CSS build described below; the updated stylesheet is served as soon as it is rebuilt. The first Compose run needs the `nginx:alpine` image available and may download it; to prepare for later offline use, run `docker compose pull site` while connected.
-
-### Style and site development
-
-You do **not** need npm or pnpm for ordinary content changes, edits to `assets/css/landing.css`, `assets/css/about.css`, or `assets/css/app.css`, or for running the site. Edit those files and refresh the local page.
-
-The landing pages also use Tailwind utility classes in `index.html` and `fa/index.html`. If you add, remove, or change one of those classes, install the development dependency once and rebuild the checked-in stylesheet:
-
-```bash
-pnpm install
-pnpm run build:css
-```
-
-Alternatively, with npm:
-
-```bash
-npm install
-npm run build:css
-```
-
-To rebuild automatically while editing Tailwind classes, use `pnpm run watch:css` (or `npm run watch:css`) in a second terminal. Keep `assets/css/tailwind.min.css` in the change/commit so the published site does not need Node.js or a build step. After rebuilding, run the local server from the project root as described above and check both `/` and `/fa/` at desktop and mobile widths. The app's styling is ordinary CSS in `assets/css/app.css`; it does not use Tailwind.
-
-## **🛠️ Tech Stack**
-
-* **Core:** HTML5, CSS3, Vanilla JavaScript (ES6+)  
-* **Graphics & Rendering:** HTML5 \<canvas\> API  
-* **Audio & Tuning:** Web Audio API (AudioContext, AnalyserNode)  
-* **Export:** [jsPDF](https://github.com/parallax/jsPDF)  
-* **Landing Page UI:** Tailwind CSS
-
-## **🤝 Contributing**
-
-Contributions, issues, and feature requests are welcome\!  
-Feel free to check the [issues page](https://github.com/soroush-zendedel/tara/issues).
-
-1. Fork the Project  
-2. Create your Feature Branch (git checkout \-b feature/AmazingFeature)  
-3. Commit your Changes (git commit \-m 'Add some AmazingFeature')  
-4. Push to the Branch (git push origin feature/AmazingFeature)  
-5. Open a Pull Request
-
-## **📄 License**
-
-Distributed under the MIT License. See LICENSE for more information.
-
-## **توضیحات فارسی**
-
-**تارا گیتارلب (Tara GuitarLab)** یک آزمایشگاه تعاملی و پیشرفته برای تجسم تئوری موسیقی، گام‌ها، آکوردها و ارتباط آن‌ها روی سازهای مختلف (گیتار و پیانو) است که مستقیماً در مرورگر شما اجرا می‌شود.
-
-### **🌟 امکانات کلیدی**
-
-* **فرت‌بورد تعاملی (دسته گیتار):** نمایش کامل گام‌ها و آکوردها روی دسته گیتار با قابلیت فیلتر کردن پوزیشن‌ها (CAGED) و نمایش اکتاوها.  
-* **دایره پنجم‌ها:** انتخاب سریع گام‌های ماژور و مینور نسبی و مشاهده سرکلیدها.  
-* **تئوری و توالی آکوردها:** محاسبه خودکار درجات گام، آکوردهای دیاتونیک و توالی‌های معروف (پاپ، جز، بلوز و...).  
-* **تطبیق با پیانو:** نمایش همزمان نت‌های انتخاب شده روی کلاویه‌های پیانو برای درک بهتر فواصل.  
-* **نت‌نویسی و تبلچر (TAB):** رسم خودکار نت‌ها روی خطوط حامل استاندارد و تبلچر گیتار.  
-* **پخش صوتی دقیق:** امکان کلیک روی هر نت یا آکورد در تمام بخش‌های برنامه برای شنیدن صدای آن (تولید شده توسط سینتی‌سایزر داخلی).  
-* **تیونر کروماتیک:** کوک کردن گیتار از طریق میکروفون دستگاه با دقت بالا.  
-* **مترونوم هوشمند:** دارای بازخورد دیداری و شنیداری با قابلیت تنظیم تمپو.  
-* **خروجی PDF جزوه:** ذخیره تمام نمودارها و آموزش‌های روی صفحه در قالب یک فایل PDF با یک کلیک.  
-* **تمرین تعاملی:** تمرین دسته، ساخت گام، آکوردهای دیاتونیک، تشخیص شنیداری، تمرین با میکروفون و درس‌های کوتاه همراه توضیح پاسخ و ذخیره‌ی محلی پیشرفت.
-* **ابزار مدرس:** علامت‌گذاری و نام‌گذاری نت‌ها روی گیتار یا پیانو، پخش ترتیبی، حرکت بین نت‌ها و بازگردانی تغییرها.
-* **ورودی زنده:** نواختن نت‌ها با صفحه‌کلید کامپیوتر یا کیبورد MIDI و استفاده از میانبرها برای انتخاب گام، آکورد، پوزیشن و تمپو.
-* **تم تاریک/روشن:** رابط کاربری مدرن و سازگار با انواع صفحات نمایش.
-
-### **⚙️ نحوه اجرا (اجرای محلی)**
-
-برای اجرای نسخهٔ آماده به Node.js، npm، pnpm یا فرایند build نیازی نیست. Python فقط برای اجرای سرور محلی در دستور زیر استفاده می‌شود:
-
-۱. مخزن را کلون کنید:  
-git clone https://github.com/soroush-zendedel/tara.git
-
-۲. از ریشه پروژه یک سرور محلی اجرا کنید:
 ```bash
 python -m http.server 8000
 ```
-۳. صفحه فرود انگلیسی را در `http://localhost:8000/`، صفحه فارسی را در `http://localhost:8000/fa/` یا برنامه را در `http://localhost:8000/app.html` باز کنید.
-*(برای دسترسی تیونر به میکروفون، HTTPS یا localhost لازم است.)*
 
-### اجرا و توسعه با Docker Compose
+Open [http://localhost:8000](http://localhost:8000). The tuner can access the microphone on `localhost` or over HTTPS. A local web server is recommended instead of opening HTML files directly.
 
-Docker Desktop یا Docker Engine به‌همراه Compose نسخهٔ ۲ را نصب کنید و از ریشهٔ پروژه اجرا کنید:
+### Docker Compose
+
+Install Docker Desktop or Docker Engine with Compose v2, then run:
 
 ```bash
 docker compose up --build -d
 ```
 
-سپس `http://localhost:8001/` را باز کنید (یا مسیرهای `/fa/`، `/about.html`، `/fa/about.html` و `/app.html`). سرویس `site` تنها سرویس پیش‌فرض Compose است و لازم نیست نامش را به دستور اضافه کنید. گزینهٔ `--build` با این فرمان کار می‌کند، اما سایت ایستا image اختصاصی برای build ندارد؛ Docker از image آمادهٔ Nginx استفاده می‌کند و فایل‌های پروژه را فقط‌خواندنی در آن mount می‌کند. تغییر HTML، CSS، جاوااسکریپت یا تصویر با تازه‌کردن مرورگر دیده می‌شود. برای توقف سرویس `docker compose down` و برای مشاهدهٔ خروجی `docker compose logs -f site` را اجرا کنید.
-
-اگر پورت ۸۰۰۱ اشغال است، پیش از اجرا پورت دیگری تعیین کنید؛ در PowerShell:
+Open [http://localhost:8001](http://localhost:8001). The Nginx service mounts project files read-only; edits appear after refreshing the page. If port 8001 is busy, set another port in PowerShell and start Compose:
 
 ```powershell
 $env:TARA_PORT = "8002"
 docker compose up --build -d
 ```
 
-بعد `http://localhost:8002/` را باز کنید. تغییر کلاس‌های Tailwind همچنان به build CSS طبق بخش بعد نیاز دارد و خروجی به‌محض تولید از طریق Compose در دسترس خواهد بود. بار اول باید imageِ `nginx:alpine` دریافت شود؛ برای اجرای آفلاین بعدی، وقتی اینترنت دارید `docker compose pull site` را اجرا کنید.
+Stop the site with `docker compose down`. View its logs with `docker compose logs -f site`.
 
-### توسعه و تغییر ظاهر
+## Develop styles
 
-برای تغییر متن‌ها یا ویرایش CSS معمولی، فایل مربوط را مستقیماً تغییر دهید؛ برای این کار به npm یا pnpm نیازی نیست. استایل صفحهٔ اصلی و فارسی در `assets/css/landing.css`، صفحه‌های درباره در `assets/css/about.css` و برنامه در `assets/css/app.css` است.
+Ordinary content edits and changes to `assets/css/landing.css`, `assets/css/about.css`, or `assets/css/app.css` need no package manager. Tailwind utility classes on the English and Persian landing pages are compiled into the checked-in file `assets/css/tailwind.min.css`.
 
-صفحه‌های فرود از کلاس‌های Tailwind در `index.html` و `fa/index.html` هم استفاده می‌کنند. اگر کلاس Tailwind اضافه، حذف یا عوض کردید، یک‌بار وابستگی توسعه را نصب و CSS نهایی را دوباره تولید کنید:
+### Recommended: Tailwind in Docker
+
+Run this from the project root:
+
+```bash
+docker compose --profile dev up --build -d
+```
+
+This starts the website and a Tailwind watcher. Edit `index.html` or `fa/index.html`; the watcher updates `assets/css/tailwind.min.css`. Refresh the browser to see the result. Watch the CSS service with `docker compose logs -f css`.
+
+The first run downloads the Node image and package dependencies. Once the images and dependencies are cached, the development workflow can run offline. To stop both services, use `docker compose down`.
+
+### Optional: build on the host
+
+If Node.js and pnpm (or npm) are already installed, install dependencies and build the stylesheet:
 
 ```bash
 pnpm install
 pnpm run build:css
 ```
 
-یا با npm:
+Use `pnpm run watch:css` to rebuild automatically while editing. The equivalent npm scripts are `npm install`, `npm run build:css`, and `npm run watch:css`. Commit the generated `assets/css/tailwind.min.css` together with Tailwind class changes so the published site needs no build step.
+
+## Offline use
+
+Runtime fonts, icons, images, styles, and JavaScript libraries are stored in the repository. After obtaining the project files, the website runs without internet access. Docker's first run needs internet to download its images and CSS build dependencies; cache them in advance for offline use. Third-party asset licenses are in `assets/licenses/`.
+
+## Project structure
+
+- `index.html`, `fa/`, `en/`: language landing pages and localized content
+- `about.html`, `fa/about.html`: About pages
+- `app.html`, `assets/`: app markup, styles, scripts, and local dependencies
+- `assets/css/tailwind-input.css`, `tailwind.config.cjs`: Tailwind source and configuration
+- `assets/css/tailwind.min.css`: generated stylesheet served by the site
+- `compose.yaml`, `Dockerfile.css`: local website and CSS development services
+- `sitemap.xml`, `CHANGELOG.md`, `VERSION`: sitemap and release information
+
+## Contributing
+
+Issues and contributions are welcome. Please open an issue before larger changes, then submit a pull request. For Tailwind class changes, include the rebuilt `assets/css/tailwind.min.css`.
+
+## License
+
+This project is distributed under the MIT License. See [LICENSE](LICENSE).
+
+---
+
+# تارا گیتارلب
+
+**تارا گیتارلب** ابزاری رایگان و تحت مرورگر برای یادگیری و تمرین تئوری موسیقی با گیتار و پیانو است. گام‌ها، آکوردها، نت‌نویسی و تمرین‌ها را به فارسی یا انگلیسی ببینید.
+
+- **نسخهٔ آنلاین:** [soroush-zendedel.github.io/tara](https://soroush-zendedel.github.io/tara/)
+- **زبان‌ها:** [English](https://soroush-zendedel.github.io/tara/) · [فارسی](https://soroush-zendedel.github.io/tara/fa/)
+- **برنامه:** [ورود به GuitarLab](https://soroush-zendedel.github.io/tara/app.html)
+- **انتشار:** `v1.0.0` · [تغییرات نسخه‌ها](CHANGELOG.md)
+
+## امکانات
+
+- نمایش تعاملی دستهٔ گیتار، پیانو، دایرهٔ پنجم‌ها، گام‌ها، آکوردها و توالی‌ها
+- نت‌نویسی استاندارد و تبلچر، صدای تولیدشده، تیونر با میکروفون و مترونوم
+- درس‌ها و تمرین‌های هدایت‌شده، ورودی MIDI و صفحه‌کلید، و ابزار یادداشت مدرس
+- خروجی PDF، چیدمان قابل تنظیم، و پوستهٔ تاریک و روشن
+- صفحه‌های واکنش‌گرا به فارسی و انگلیسی
+
+## صفحه‌ها
+
+| صفحه | مسیر |
+| --- | --- |
+| صفحهٔ اصلی انگلیسی | `/` |
+| صفحهٔ اصلی فارسی | `/fa/` |
+| دربارهٔ تارا به انگلیسی | `/about.html` |
+| دربارهٔ تارا به فارسی | `/fa/about.html` |
+| برنامهٔ GuitarLab | `/app.html` |
+
+## اجرای محلی
+
+نسخهٔ سایت از HTML، CSS و JavaScript ایستا تشکیل شده است. برای اجرا به Node.js، npm، pnpm یا فرایند build نیازی نیست. از ریشهٔ پروژه یکی از روش‌های زیر را اجرا کنید.
+
+### با Python
 
 ```bash
-npm install
-npm run build:css
+python -m http.server 8000
 ```
 
-برای تولید خودکار هنگام ویرایش کلاس‌ها، `pnpm run watch:css` یا `npm run watch:css` را در یک ترمینال دیگر اجرا کنید. فایل تولیدشدهٔ `assets/css/tailwind.min.css` را همراه تغییرات نگه دارید تا سایت منتشرشده برای اجرا به Node.js یا build نیاز نداشته باشد. سپس با سرور محلی بالا، صفحه‌های `/` و `/fa/` را در اندازهٔ دسکتاپ و موبایل بررسی کنید. ظاهر برنامه Tailwind ندارد و با CSS معمولی در `assets/css/app.css` مدیریت می‌شود.
+سپس [http://localhost:8000](http://localhost:8000) را باز کنید. تیونر برای دسترسی به میکروفون به `localhost` یا HTTPS نیاز دارد. اجرای سایت با سرور محلی از بازکردن مستقیم فایل‌های HTML مطمئن‌تر است.
+
+### با Docker Compose
+
+Docker Desktop یا Docker Engine به‌همراه Compose نسخهٔ ۲ را نصب کنید و اجرا کنید:
+
+```bash
+docker compose up --build -d
+```
+
+سپس [http://localhost:8001](http://localhost:8001) را باز کنید. سرویس Nginx فایل‌های پروژه را فقط‌خواندنی mount می‌کند؛ پس از ویرایش فایل‌ها صفحه را تازه کنید. اگر پورت ۸۰۰۱ اشغال است، در PowerShell پورت دیگری تعیین کنید:
+
+```powershell
+$env:TARA_PORT = "8002"
+docker compose up --build -d
+```
+
+برای توقف سایت `docker compose down` و برای دیدن گزارش آن `docker compose logs -f site` را اجرا کنید.
+
+## توسعهٔ ظاهر
+
+ویرایش متن‌ها و تغییر فایل‌های `assets/css/landing.css`، `assets/css/about.css` و `assets/css/app.css` به ابزار مدیریت بسته نیاز ندارد. کلاس‌های Tailwind صفحه‌های اصلی انگلیسی و فارسی در فایل `assets/css/tailwind.min.css` کامپایل می‌شوند.
+
+### روش پیشنهادی: Tailwind با Docker
+
+از ریشهٔ پروژه اجرا کنید:
+
+```bash
+docker compose --profile dev up --build -d
+```
+
+این دستور سایت و watcher مربوط به Tailwind را اجرا می‌کند. فایل `index.html` یا `fa/index.html` را ویرایش کنید؛ watcher فایل `assets/css/tailwind.min.css` را به‌روز می‌کند. سپس صفحه را در مرورگر تازه کنید. گزارش سرویس CSS را با `docker compose logs -f css` ببینید.
+
+اجرای اول برای دریافت image مربوط به Node و وابستگی‌های CSS به اینترنت نیاز دارد. پس از ذخیره‌شدن imageها و وابستگی‌ها، توسعه بدون اینترنت هم انجام می‌شود. برای توقف هر دو سرویس `docker compose down` را اجرا کنید.
+
+### روش جایگزین: build روی میزبان
+
+اگر Node.js و pnpm (یا npm) نصب است، وابستگی‌ها را نصب و CSS را تولید کنید:
+
+```bash
+pnpm install
+pnpm run build:css
+```
+
+برای تولید خودکار هنگام ویرایش از `pnpm run watch:css` استفاده کنید. دستورهای معادل npm عبارت‌اند از `npm install`، `npm run build:css` و `npm run watch:css`. فایل تولیدشدهٔ `assets/css/tailwind.min.css` را همراه تغییر کلاس‌های Tailwind commit کنید تا سایت منتشرشده به build نیاز نداشته باشد.
+
+## استفادهٔ بدون اینترنت
+
+فونت‌ها، آیکون‌ها، تصاویر، استایل‌ها و کتابخانه‌های زمان اجرای برنامه داخل مخزن هستند. پس از دریافت فایل‌های پروژه، سایت بدون اینترنت اجرا می‌شود. اجرای نخست Docker برای دریافت imageها و وابستگی‌های build CSS به اینترنت نیاز دارد؛ برای استفادهٔ آفلاین آن‌ها را از قبل cache کنید. مجوز دارایی‌های شخص ثالث در `assets/licenses/` قرار دارد.
+
+## ساختار پروژه
+
+- `index.html`، `fa/` و `en/`: صفحه‌های اصلی زبان‌ها و محتوای ترجمه‌شده
+- `about.html` و `fa/about.html`: صفحه‌های درباره
+- `app.html` و `assets/`: ساختار برنامه، استایل‌ها، اسکریپت‌ها و وابستگی‌های محلی
+- `assets/css/tailwind-input.css` و `tailwind.config.cjs`: ورودی و تنظیمات Tailwind
+- `assets/css/tailwind.min.css`: فایل CSS تولیدشده و مورد استفادهٔ سایت
+- `compose.yaml` و `Dockerfile.css`: سرویس سایت و محیط توسعهٔ CSS
+- `sitemap.xml`، `CHANGELOG.md` و `VERSION`: نقشهٔ سایت و اطلاعات انتشار
+
+## مشارکت
+
+گزارش مسئله و مشارکت در توسعه خوش‌آمد است. برای تغییرات بزرگ، ابتدا یک مسئله ثبت و سپس درخواست ادغام ارسال کنید. در تغییر کلاس‌های Tailwind، فایل `assets/css/tailwind.min.css` تولیدشده را هم اضافه کنید.
+
+## مجوز
+
+این پروژه تحت مجوز MIT منتشر شده است. متن مجوز در [LICENSE](LICENSE) قرار دارد.

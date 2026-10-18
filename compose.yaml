@@ -40,3 +40,30 @@ services:
         source: ./img
         target: /usr/share/nginx/html/img
         read_only: true
+
+  css:
+    profiles: ["dev"]
+    image: tara-guitarlab-css:dev
+    build:
+      context: .
+      dockerfile: Dockerfile.css
+    volumes:
+      - type: bind
+        source: ./tailwind.config.cjs
+        target: /workspace/tailwind.config.cjs
+        read_only: true
+      - type: bind
+        source: ./index.html
+        target: /workspace/index.html
+        read_only: true
+      - type: bind
+        source: ./fa/index.html
+        target: /workspace/fa/index.html
+        read_only: true
+      - type: bind
+        source: ./assets/css/tailwind-input.css
+        target: /workspace/assets/css/tailwind-input.css
+        read_only: true
+      - type: bind
+        source: ./assets/css/tailwind.min.css
+        target: /workspace/assets/css/tailwind.min.css
