@@ -2,6 +2,14 @@
 
 All notable project changes are documented here. This project follows Semantic Versioning.
 
+## [1.0.1] - 2026-10-20
+
+### Improved
+
+- Added localized, visible breadcrumbs and matching `BreadcrumbList` structured data to the English and Persian About pages, following the portfolio → project → page hierarchy.
+- Corrected the interactive app's language alternate so it no longer points to the Persian project home as if it were an app translation.
+- Expanded the README with project-base-path, technical SEO, structured data, sitemap, and robots.txt notes in English and Persian.
+
 ## [1.0.0] - 2026-10-06
 
 First tracked release of Tara GuitarLab as an interactive guitar music theory learning lab.

@@ -5,7 +5,9 @@
 - **Live site:** [soroush-zendedel.github.io/tara](https://soroush-zendedel.github.io/tara/)
 - **Languages:** [English](https://soroush-zendedel.github.io/tara/) · [فارسی](https://soroush-zendedel.github.io/tara/fa/)
 - **App:** [Open GuitarLab](https://soroush-zendedel.github.io/tara/app.html)
-- **Release:** `v1.0.0` · [Changelog](CHANGELOG.md)
+- **Release:** `v1.0.1` · [Changelog](CHANGELOG.md)
+
+This repository is published as the `/tara/` project beneath the personal site at [soroush-zendedel.github.io](https://soroush-zendedel.github.io/). The English and Persian project pages are available at `/tara/` and `/tara/fa/` respectively.
 
 ## Features
 
@@ -24,6 +26,16 @@
 | English About page | `/about.html` |
 | Persian About page | `/fa/about.html` |
 | GuitarLab app | `/app.html` |
+
+The paths in this table are relative to the project publishing root (`/tara/`) on GitHub Pages. The portfolio site's own home pages live at `/` and `/fa/` and are outside this repository.
+
+## Technical SEO and structured data
+
+- Each indexable page declares its canonical URL under `https://soroush-zendedel.github.io/tara/`; English and Persian landing and About pages link to their language alternate.
+- The two About pages show a localized breadcrumb for the actual hierarchy: portfolio home → Tara GuitarLab home → current About page. Their visible trail and JSON-LD `BreadcrumbList` use the same labels and URLs. The landing pages and interactive app do not have a deeper hierarchy that warrants a breadcrumb.
+- Existing JSON-LD describes the site and application where applicable. The markup is kept aligned with visible page content; it does not promise a Google rich result.
+- `sitemap.xml` contains this project's canonical public URLs and language alternates. The portfolio-domain sitemap, if any, is managed outside this repository. This project currently has no `robots.txt` file.
+- When changing canonical URLs, localized page relationships, or breadcrumb paths, update the corresponding HTML and this project's sitemap together. Do not add URLs from other repositories to this sitemap.
 
 ## Run locally
 
@@ -112,7 +124,9 @@ This project is distributed under the MIT License. See [LICENSE](LICENSE).
 - **نسخهٔ آنلاین:** [soroush-zendedel.github.io/tara](https://soroush-zendedel.github.io/tara/)
 - **زبان‌ها:** [English](https://soroush-zendedel.github.io/tara/) · [فارسی](https://soroush-zendedel.github.io/tara/fa/)
 - **برنامه:** [ورود به GuitarLab](https://soroush-zendedel.github.io/tara/app.html)
-- **انتشار:** `v1.0.0` · [تغییرات نسخه‌ها](CHANGELOG.md)
+- **انتشار:** `v1.0.1` · [تغییرات نسخه‌ها](CHANGELOG.md)
+
+این مخزن به‌عنوان پروژهٔ `/tara/` زیر وب‌سایت شخصی [soroush-zendedel.github.io](https://soroush-zendedel.github.io/) منتشر می‌شود. صفحه‌های انگلیسی و فارسی پروژه به‌ترتیب در مسیرهای `/tara/` و `/tara/fa/` قرار دارند.
 
 ## امکانات
 
@@ -131,6 +145,16 @@ This project is distributed under the MIT License. See [LICENSE](LICENSE).
 | دربارهٔ تارا به انگلیسی | `/about.html` |
 | دربارهٔ تارا به فارسی | `/fa/about.html` |
 | برنامهٔ GuitarLab | `/app.html` |
+
+مسیرهای جدول نسبت به ریشهٔ انتشار این پروژه (`/tara/`) در GitHub Pages هستند. صفحه‌های اصلی وب‌سایت شخصی در مسیرهای `/` و `/fa/` قرار دارند و خارج از این مخزن مدیریت می‌شوند.
+
+## سئوی فنی و داده‌های ساخت‌یافته
+
+- هر صفحهٔ قابل نمایه‌سازی canonical خود را زیر `https://soroush-zendedel.github.io/tara/` مشخص می‌کند؛ صفحه‌های اصلی و دربارهٔ انگلیسی و فارسی نیز نسخهٔ زبانی متناظر را معرفی می‌کنند.
+- دو صفحهٔ درباره، breadcrumb هماهنگ با زبان و سلسله‌مراتب واقعی نشان می‌دهند: صفحهٔ اصلی وب‌سایت شخصی ← صفحهٔ اصلی تارا گیتارلب ← صفحهٔ درباره. مسیر قابل‌مشاهده و `BreadcrumbList` در JSON-LD نام‌ها و URLهای یکسان دارند. صفحه‌های اصلی پروژه و برنامهٔ تعاملی سلسله‌مراتب عمیق‌تری برای breadcrumb ندارند.
+- JSON-LD موجود، در موارد متناسب، وب‌سایت و برنامه را توصیف می‌کند. داده‌ها با محتوای قابل‌مشاهده هماهنگ‌اند و نمایش نتیجهٔ غنی گوگل را تضمین نمی‌کنند.
+- فایل `sitemap.xml` فقط URLهای canonical عمومی این پروژه و نسخه‌های زبانی را دارد. sitemap دامنهٔ اصلی، اگر وجود داشته باشد، بیرون از این مخزن مدیریت می‌شود. این پروژه در حال حاضر فایل `robots.txt` ندارد.
+- هنگام تغییر canonical، ارتباط صفحه‌های زبانی یا مسیر breadcrumb، HTML و sitemap همین پروژه را با هم به‌روز کنید. URL مخزن‌های دیگر را به این sitemap اضافه نکنید.
 
 ## اجرای محلی
 

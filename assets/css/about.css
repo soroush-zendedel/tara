@@ -76,6 +76,12 @@ h1 span { color: var(--gold); }
 .closing-cta .eyebrow { margin-bottom: .5rem; }
 .closing-cta h2 { margin-inline: auto; }
 .closing-cta > p:not(.eyebrow) { margin-bottom: 1.25rem; color: var(--muted); }
+.breadcrumb { margin: -1.5rem 0 2rem; color: var(--muted); font-size: .82rem; }
+.breadcrumb ol { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: 0; padding: 0; list-style: none; }
+.breadcrumb li + li::before { content: "/"; margin-inline-end: .5rem; color: #ffffff55; }
+.breadcrumb a { text-decoration: none; text-underline-offset: 3px; }
+.breadcrumb a:hover { color: var(--gold-soft); text-decoration: underline; }
+.breadcrumb [aria-current="page"] { color: var(--text); }
 .site-footer { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .82rem; }
 .site-footer a { text-decoration: none; }
 .site-footer a:hover { color: #fff; }
