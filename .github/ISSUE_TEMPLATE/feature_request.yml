@@ -1,0 +1,36 @@
+name: Feature request
+description: Suggest an improvement or a new learning tool.
+title: "[Feature]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the problem you want to solve and how this feature would help.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What would you like to improve?
+      description: Explain the learning or practice need behind your suggestion.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: What would you like to happen?
+      description: Describe the feature or behavior you have in mind.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Have you tried another workflow or workaround?
+    validations:
+      required: false
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Add examples, sketches, or related context.
+    validations:
+      required: false

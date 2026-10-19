@@ -1,0 +1,47 @@
+name: Bug report
+description: Report a problem with Tara GuitarLab.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve Tara GuitarLab. Please include enough detail to reproduce the problem.
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Describe the problem and where you encountered it.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: List the steps that lead to the problem.
+      placeholder: |
+        1. Open ...
+        2. Select ...
+        3. Notice ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include your browser, operating system, and whether you used English or Persian.
+      placeholder: Browser and version, operating system, app language
+    validations:
+      required: false
+  - type: textarea
+    id: additional
+    attributes:
+      label: Screenshots or additional context
+      description: Add screenshots or any other details that may help.
+    validations:
+      required: false
