@@ -34,7 +34,7 @@ The paths in this table are relative to the project publishing root (`/tara/`) o
 - Each indexable page declares its canonical URL under `https://soroush-zendedel.github.io/tara/`; English and Persian landing and About pages link to their language alternate.
 - The two About pages show a localized breadcrumb for the actual hierarchy: portfolio home → Tara GuitarLab home → current About page. Their visible trail and JSON-LD `BreadcrumbList` use the same labels and URLs. The landing pages and interactive app do not have a deeper hierarchy that warrants a breadcrumb.
 - Existing JSON-LD describes the site and application where applicable. The markup is kept aligned with visible page content; it does not promise a Google rich result.
-- `sitemap.xml` contains this project's canonical public URLs and language alternates. The portfolio-domain sitemap, if any, is managed outside this repository. This project currently has no `robots.txt` file.
+- `sitemap.xml` contains this project's canonical public URLs and language alternates. `robots.txt` allows crawling and advertises this sitemap. The `/en/` paths are legacy landing pages that redirect to the canonical English pages; they are excluded from indexing and are not listed in the sitemap. The portfolio-domain sitemap, if any, is managed outside this repository.
 - When changing canonical URLs, localized page relationships, or breadcrumb paths, update the corresponding HTML and this project's sitemap together. Do not add URLs from other repositories to this sitemap.
 
 ## Run locally
@@ -153,7 +153,7 @@ This project is distributed under the MIT License. See [LICENSE](LICENSE).
 - هر صفحهٔ قابل نمایه‌سازی canonical خود را زیر `https://soroush-zendedel.github.io/tara/` مشخص می‌کند؛ صفحه‌های اصلی و دربارهٔ انگلیسی و فارسی نیز نسخهٔ زبانی متناظر را معرفی می‌کنند.
 - دو صفحهٔ درباره، breadcrumb هماهنگ با زبان و سلسله‌مراتب واقعی نشان می‌دهند: صفحهٔ اصلی وب‌سایت شخصی ← صفحهٔ اصلی تارا گیتارلب ← صفحهٔ درباره. مسیر قابل‌مشاهده و `BreadcrumbList` در JSON-LD نام‌ها و URLهای یکسان دارند. صفحه‌های اصلی پروژه و برنامهٔ تعاملی سلسله‌مراتب عمیق‌تری برای breadcrumb ندارند.
 - JSON-LD موجود، در موارد متناسب، وب‌سایت و برنامه را توصیف می‌کند. داده‌ها با محتوای قابل‌مشاهده هماهنگ‌اند و نمایش نتیجهٔ غنی گوگل را تضمین نمی‌کنند.
-- فایل `sitemap.xml` فقط URLهای canonical عمومی این پروژه و نسخه‌های زبانی را دارد. sitemap دامنهٔ اصلی، اگر وجود داشته باشد، بیرون از این مخزن مدیریت می‌شود. این پروژه در حال حاضر فایل `robots.txt` ندارد.
+- فایل `sitemap.xml` فقط URLهای canonical عمومی این پروژه و نسخه‌های زبانی را دارد. `robots.txt` خزش را مجاز می‌کند و نشانی همین sitemap را اعلام می‌کند. مسیرهای قدیمی `/en/` به صفحه‌های canonical انگلیسی هدایت می‌شوند، برای ایندکس در نظر گرفته نشده‌اند و در sitemap نیستند. sitemap دامنهٔ اصلی، اگر وجود داشته باشد، بیرون از این مخزن مدیریت می‌شود.
 - هنگام تغییر canonical، ارتباط صفحه‌های زبانی یا مسیر breadcrumb، HTML و sitemap همین پروژه را با هم به‌روز کنید. URL مخزن‌های دیگر را به این sitemap اضافه نکنید.
 
 ## اجرای محلی
